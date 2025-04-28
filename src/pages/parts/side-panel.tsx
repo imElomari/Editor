@@ -1,19 +1,10 @@
+"use client"
+
 import { useAuth } from "../../context/AuthContext"
 import { useTheme } from "../../context/ThemeContext"
 import { Link, useLocation } from "react-router-dom"
 import { Button } from "../../components/ui/button"
-import {
-  ChevronLeft,
-  ChevronRight,
-  Home,
-  LogOut,
-  Moon,
-  Tag,
-  Sun,
-  X,
-  Layers,
-  User,
-} from "lucide-react"
+import { ChevronLeft, ChevronRight, Home, LogOut, Moon, Tag, Sun, X, Layers, User } from "lucide-react"
 import { cn } from "../../lib/utils"
 import { useMobile } from "../../hooks/use-mobile"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../components/ui/tooltip"
@@ -26,7 +17,7 @@ type SidePanelProps = {
   onToggleCollapse?: () => void
 }
 
-export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollapse = () => { } }: SidePanelProps) {
+export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollapse = () => {} }: SidePanelProps) {
   const { user, signOut } = useAuth()
   const { theme, toggleTheme } = useTheme()
   const location = useLocation()
@@ -260,4 +251,3 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
     </div>
   )
 }
-
