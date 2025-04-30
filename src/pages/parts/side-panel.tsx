@@ -34,20 +34,22 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
   return (
     <div
       className={cn(
-        "fixed inset-y-0 left-0 z-50 bg-background border-r shadow-lg transform transition-all duration-300 ease-in-out",
+        "fixed inset-y-0 left-0 z-50 bg-background border-r shadow-xl transform transition-all duration-300 ease-in-out",
         isOpen ? "translate-x-0" : "-translate-x-full",
         "md:translate-x-0 md:static md:z-0",
-        isCollapsed && !isMobile ? "md:w-16" : "md:w-64",
+        isCollapsed && !isMobile ? "md:w-20" : "md:w-72",
+        "flex flex-col",
+        "bg-gradient-to-b from-background to-background/95",
       )}
     >
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b">
-        <div className={cn("flex items-center", isCollapsed && !isMobile ? "justify-center w-full" : "space-x-2")}>
-          <Tag className="h-6 w-6" />
-          {(!isCollapsed || isMobile) && <span className="font-bold">Label Editor</span>}
+      <div className="flex items-center justify-between p-5 border-b bg-background/50 backdrop-blur-sm">
+        <div className={cn("flex items-center", isCollapsed && !isMobile ? "justify-center w-full" : "space-x-3")}>
+          <Tag className={cn("h-6 w-6 text-primary transition-all", isCollapsed && !isMobile ? "h-7 w-7" : "")} />
+          {(!isCollapsed || isMobile) && <span className="font-bold text-lg tracking-tight">Label Editor</span>}
         </div>
         {isMobile ? (
-          <Button variant="ghost" size="icon" onClick={onClose}>
+          <Button variant="ghost" size="icon" onClick={onClose} className="hover:bg-background/80">
             <X className="h-5 w-5" />
           </Button>
         ) : (
@@ -55,7 +57,7 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
             variant="ghost"
             size="icon"
             onClick={onToggleCollapse}
-            className={isCollapsed ? "hidden" : ""}
+            className={cn("hover:bg-background/80 transition-opacity", isCollapsed ? "hidden" : "")}
             aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             <ChevronLeft className="h-5 w-5" />
@@ -69,39 +71,45 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
           variant="ghost"
           size="icon"
           onClick={onToggleCollapse}
-          className="absolute -right-3 top-20 h-6 w-6 rounded-full border bg-background shadow-md"
+          className="absolute -right-3 top-20 h-7 w-7 rounded-full border bg-background shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
           aria-label="Expand sidebar"
         >
-          <ChevronRight className="h-4 w-4" />
+          <ChevronRight className="h-4 w-4 text-primary" />
         </Button>
       )}
 
       {/* Profile Section */}
-      <div className={cn("p-4 border-b", isCollapsed && !isMobile ? "flex justify-center" : "")}>
+      <div className={cn("p-5 border-b bg-muted/20", isCollapsed && !isMobile ? "flex justify-center py-6" : "")}>
         {isCollapsed && !isMobile ? (
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Link to="/profile">
-                  <Avatar>
-                    <AvatarImage src={user?.user_metadata?.avatar_url} />
-                    <AvatarFallback>{getInitials(user?.email || "")}</AvatarFallback>
+                <Link to="/profile" className="transition-transform hover:scale-105 duration-200">
+                  <Avatar className="h-12 w-12 border-2 border-primary/20 shadow-sm">
+                    <AvatarImage src={user?.user_metadata?.avatar_url || "/placeholder.svg"} />
+                    <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                      {getInitials(user?.email || "")}
+                    </AvatarFallback>
                   </Avatar>
                 </Link>
               </TooltipTrigger>
-              <TooltipContent side="right">
+              <TooltipContent side="right" className="font-medium">
                 <p>{user?.user_metadata?.name || user?.email}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
         ) : (
-          <Link to="/profile" className="flex items-center space-x-3">
-            <Avatar>
-              <AvatarImage src={user?.user_metadata?.avatar_url} />
-              <AvatarFallback>{getInitials(user?.email || "")}</AvatarFallback>
+          <Link to="/profile" className="flex items-center space-x-4 group">
+            <Avatar className="h-12 w-12 border-2 border-primary/20 shadow-sm transition-transform group-hover:scale-105 duration-200">
+              <AvatarImage src={user?.user_metadata?.avatar_url || "/placeholder.svg"} />
+              <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                {getInitials(user?.email || "")}
+              </AvatarFallback>
             </Avatar>
             <div className="overflow-hidden">
-              <p className="font-medium truncate">{user?.user_metadata?.name || user?.email}</p>
+              <p className="font-medium truncate group-hover:text-primary transition-colors">
+                {user?.user_metadata?.name || user?.email}
+              </p>
               <p className="text-sm text-muted-foreground truncate">{user?.email}</p>
             </div>
           </Link>
@@ -109,17 +117,23 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
       </div>
 
       {/* Navigation */}
-      <nav className={cn("p-4 space-y-2", isCollapsed && !isMobile ? "items-center" : "")}>
+      <nav className={cn("p-5 space-y-3 flex-grow", isCollapsed && !isMobile ? "items-center" : "")}>
+        <div className="text-xs uppercase text-muted-foreground font-semibold tracking-wider px-2 mb-2">
+          {!isCollapsed || isMobile ? "Main Navigation" : ""}
+        </div>
+
         {isCollapsed && !isMobile ? (
           <TooltipProvider>
-            <div className="flex flex-col items-center space-y-2">
+            <div className="flex flex-col items-center space-y-4">
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
                     to="/"
                     className={cn(
-                      "flex items-center justify-center w-10 h-10 rounded-md hover:bg-accent transition-colors",
-                      isActive("/") && "bg-accent text-accent-foreground",
+                      "flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200",
+                      isActive("/")
+                        ? "bg-primary/10 text-primary shadow-sm"
+                        : "hover:bg-accent hover:text-accent-foreground hover:scale-105",
                     )}
                     onClick={isMobile ? onClose : undefined}
                   >
@@ -134,8 +148,10 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                   <Link
                     to="/models"
                     className={cn(
-                      "flex items-center justify-center w-10 h-10 rounded-md hover:bg-accent transition-colors",
-                      isActive("/models") && "bg-accent text-accent-foreground",
+                      "flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200",
+                      isActive("/models")
+                        ? "bg-primary/10 text-primary shadow-sm"
+                        : "hover:bg-accent hover:text-accent-foreground hover:scale-105",
                     )}
                     onClick={isMobile ? onClose : undefined}
                   >
@@ -151,23 +167,27 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
             <Link
               to="/"
               className={cn(
-                "flex items-center space-x-3 px-3 py-2 rounded-md hover:bg-accent transition-colors",
-                isActive("/") && "bg-accent text-accent-foreground font-medium",
+                "flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200",
+                isActive("/")
+                  ? "bg-primary/10 text-primary font-medium shadow-sm"
+                  : "hover:bg-accent hover:text-accent-foreground",
               )}
               onClick={isMobile ? onClose : undefined}
             >
-              <Home className="h-5 w-5" />
+              <Home className="h-5 w-5 min-w-5" />
               <span>Dashboard</span>
             </Link>
             <Link
               to="/labels"
               className={cn(
-                "flex items-center space-x-3 px-3 py-2 rounded-md hover:bg-accent transition-colors",
-                isActive("") && "bg-accent text-accent-foreground font-medium",
+                "flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200",
+                isActive("/labels")
+                  ? "bg-primary/10 text-primary font-medium shadow-sm"
+                  : "hover:bg-accent hover:text-accent-foreground",
               )}
               onClick={isMobile ? onClose : undefined}
             >
-              <Layers className="h-5 w-5" />
+              <Layers className="h-5 w-5 min-w-5" />
               <span>My Labels</span>
             </Link>
           </>
@@ -177,19 +197,20 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
       {/* Settings */}
       <div
         className={cn(
-          "absolute bottom-0 left-0 right-0 p-4 border-t",
-          isCollapsed && !isMobile ? "flex flex-col items-center space-y-4" : "",
+          "p-5 border-t mt-auto bg-muted/20 backdrop-blur-sm",
+          isCollapsed && !isMobile ? "flex flex-col items-center space-y-4 py-6" : "",
         )}
       >
         {isCollapsed && !isMobile ? (
           <TooltipProvider>
-            <div className="flex flex-col items-center space-y-4">
+            <div className="flex flex-col items-center space-y-5">
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
-                    variant="ghost"
+                    variant="outline"
                     size="icon"
                     onClick={toggleTheme}
+                    className="rounded-xl h-12 w-12 border border-border/50 hover:bg-accent hover:text-accent-foreground transition-all duration-200 hover:scale-105"
                     aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
                   >
                     {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
@@ -201,12 +222,13 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
-                    variant="destructive"
+                    variant="outline"
                     size="icon"
                     onClick={() => {
                       signOut()
                       if (isMobile) onClose()
                     }}
+                    className="rounded-xl h-12 w-12 border border-destructive/30 text-destructive hover:bg-destructive/10 hover:border-destructive transition-all duration-200 hover:scale-105"
                     aria-label="Sign out"
                   >
                     <LogOut className="h-5 w-5" />
@@ -218,31 +240,36 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
           </TooltipProvider>
         ) : (
           <>
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center space-x-3">
-                <Link to={`/profile`} className="flex items-center space-x-3">
-                  <User />
-                  <span>Profile</span>
-                </Link>
-              </div>
+            <div className="text-xs uppercase text-muted-foreground font-semibold tracking-wider px-2 mb-3">
+              Settings
+            </div>
+            <div className="flex items-center justify-between mb-5">
+              <Link
+                to={`/profile`}
+                className="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-accent hover:text-accent-foreground transition-all duration-200 w-full"
+              >
+                <User className="h-5 w-5 min-w-5" />
+                <span>Profile</span>
+              </Link>
               <Button
-                variant="ghost"
+                variant="outline"
                 size="icon"
                 onClick={toggleTheme}
+                className="rounded-xl border border-border/50 hover:bg-accent hover:text-accent-foreground transition-all duration-200"
                 aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
               >
                 {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
               </Button>
             </div>
             <Button
-              variant="destructive"
-              className="w-full flex items-center justify-center space-x-2"
+              variant="outline"
+              className="w-full flex items-center justify-center space-x-2 py-6 rounded-xl border-destructive/30 text-destructive hover:bg-destructive/10 hover:border-destructive transition-all duration-200"
               onClick={() => {
                 signOut()
                 if (isMobile) onClose()
               }}
             >
-              <LogOut className="h-4 w-4" />
+              <LogOut className="h-5 w-5" />
               <span>Sign Out</span>
             </Button>
           </>

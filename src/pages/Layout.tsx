@@ -49,7 +49,7 @@ const Layout = ({ children }: LayoutProps) => {
                 <Menu className="h-8 w-8" />
               </Button>
               <Tag className="h-6 w-6 me-2" />
-              <h1 className="font-bold">3D Previewer</h1>
+              <h1 className="font-bold">Label Editor</h1>
             </div>
           )}
 
