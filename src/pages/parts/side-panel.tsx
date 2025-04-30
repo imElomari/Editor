@@ -141,25 +141,7 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                 <TooltipContent side="right">Dashboard</TooltipContent>
               </Tooltip>
 
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Link
-                    to="/models"
-                    className={cn(
-                      "flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200",
-                      isActive("/models")
-                        ? "bg-primary/10 text-primary shadow-sm"
-                        : "hover:bg-accent hover:text-accent-foreground hover:scale-105",
-                    )}
-                    onClick={isMobile ? onClose : undefined}
-                  >
-                    <Tags className="h-5 w-5" />
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent side="right">My Labels</TooltipContent>
-              </Tooltip>
-
-              <Tooltip>
+<Tooltip>
                 <TooltipTrigger asChild>
                   <Link
                     to="/projects"
@@ -174,9 +156,26 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                     <Tags className="h-5 w-5" />
                   </Link>
                 </TooltipTrigger>
-                <TooltipContent side="right">My Labels</TooltipContent>
+                <TooltipContent side="right">My Projects</TooltipContent>
               </Tooltip>
             </div>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link
+                    to="/labels"
+                    className={cn(
+                      "flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200",
+                      isActive("/models")
+                        ? "bg-primary/10 text-primary shadow-sm"
+                        : "hover:bg-accent hover:text-accent-foreground hover:scale-105",
+                    )}
+                    onClick={isMobile ? onClose : undefined}
+                  >
+                    <Tags className="h-5 w-5" />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent side="right">My Labels</TooltipContent>
+              </Tooltip>
           </TooltipProvider>
         ) : (
           <>
@@ -194,19 +193,6 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
               <span>Dashboard</span>
             </Link>
             <Link
-              to="/labels"
-              className={cn(
-                "flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200",
-                isActive("/labels")
-                  ? "bg-primary/10 text-primary font-medium shadow-sm"
-                  : "hover:bg-accent hover:text-accent-foreground",
-              )}
-              onClick={isMobile ? onClose : undefined}
-            >
-              <Tags className="h-5 w-5 min-w-5" />
-              <span>My Labels</span>
-            </Link>
-            <Link
               to="/projects"
               className={cn(
                 "flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200",
@@ -218,6 +204,19 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
             >
               <FolderOpenDot className="h-5 w-5 min-w-5" />
               <span>My Projects</span>
+            </Link>
+            <Link
+              to="/labels"
+              className={cn(
+                "flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200",
+                isActive("/labels")
+                  ? "bg-primary/10 text-primary font-medium shadow-sm"
+                  : "hover:bg-accent hover:text-accent-foreground",
+              )}
+              onClick={isMobile ? onClose : undefined}
+            >
+              <Tags className="h-5 w-5 min-w-5" />
+              <span>My Labels</span>
             </Link>
           </>
         )}
