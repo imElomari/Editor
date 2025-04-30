@@ -6,6 +6,7 @@ import ProtectedRoute from './context/ProtectedRoute'
 import Layout from './pages/Layout'
 import Dashboard from './pages/Dashboard'
 import ProfilePage from './pages/profile-page'
+import ProjectsPage from './pages/ProjectsList'
 
 function App() {
 
@@ -27,6 +28,16 @@ function App() {
                      <ProfilePage />
                   </Layout>
                 </ProtectedRoute>} />
+                <Route 
+            path="/projects" 
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <ProjectsPage />
+                </Layout>
+              </ProtectedRoute>
+            } 
+          />
           </Routes>
         </BrowserRouter>
       </AuthProvider> 
