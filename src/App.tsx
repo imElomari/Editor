@@ -7,6 +7,9 @@ import Layout from './pages/Layout'
 import Dashboard from './pages/Dashboard'
 import ProfilePage from './pages/profile-page'
 import ProjectsPage from './pages/ProjectsList'
+import LabelsPage from './pages/LabelsList'
+import EditorPage from './pages/EditorPage'
+import ProjectDetails from './pages/ProjectDetails'
 
 function App() {
 
@@ -27,17 +30,36 @@ function App() {
                   <Layout>
                      <ProfilePage />
                   </Layout>
-                </ProtectedRoute>} />
-                <Route 
-            path="/projects" 
-            element={
+                </ProtectedRoute>} 
+            />
+            <Route path="/projects" element={
               <ProtectedRoute>
                 <Layout>
                   <ProjectsPage />
                 </Layout>
+              </ProtectedRoute>} 
+             />
+             <Route path="/labels" element={
+              <ProtectedRoute>
+                <Layout>
+                  <LabelsPage />
+                </Layout>
+              </ProtectedRoute>} 
+             />
+             <Route path="/editor/:labelId" element={
+              <ProtectedRoute>
+                <Layout>
+                  <EditorPage />
+                </Layout>
               </ProtectedRoute>
-            } 
-          />
+            } />
+             <Route path="/projects/:projectId" element={
+              <ProtectedRoute>
+                <Layout>
+                  <ProjectDetails />
+                </Layout>
+              </ProtectedRoute>
+            } />
           </Routes>
         </BrowserRouter>
       </AuthProvider> 
