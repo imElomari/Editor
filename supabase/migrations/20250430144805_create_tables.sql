@@ -52,7 +52,7 @@ CREATE TABLE labels (
 );
 
 -- Create Assets Table
-create type asset_type as enum ('image', 'background', 'font');
+CREATE TYPE asset_type AS ENUM ('image', 'background', 'font', 'vector', 'icon');
 
 CREATE TABLE assets (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -67,6 +67,32 @@ CREATE TABLE assets (
     
     CONSTRAINT assets_name_owner_unique UNIQUE (name, owner_id)
 );
+
+-- Enable RLS for assets table
+ALTER TABLE assets ENABLE ROW LEVEL SECURITY;
+
+-- Assets table policies
+CREATE POLICY "Users can insert assets"
+  ON assets FOR INSERT
+  WITH CHECK (auth.uid() = owner_id);
+
+CREATE POLICY "Users can view their own assets"
+  ON assets FOR SELECT
+  USING (
+    auth.uid() = owner_id OR 
+    project_id IN (
+      SELECT id FROM projects 
+      WHERE owner_id = auth.uid()
+    )
+  );
+
+CREATE POLICY "Users can update their own assets"
+  ON assets FOR UPDATE
+  USING (auth.uid() = owner_id);
+
+CREATE POLICY "Users can delete their own assets"
+  ON assets FOR DELETE
+  USING (auth.uid() = owner_id);
 
 -- Create Indexes
 CREATE INDEX idx_projects_owner ON projects(owner_id);
