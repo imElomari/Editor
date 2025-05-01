@@ -20,12 +20,14 @@ export type Project = {
     updated_at: string;
     deleted_at?: string;
   };
+  export type AssetType = 'vector' | 'background' | 'icon' | 'image' | 'font';
+  
   export interface Asset {
     id: string;
     owner_id: string;
     project_id: string;
     name: string;
-    type: string;
+    type: AssetType;
     url: string;
     metadata: {
       size: number;

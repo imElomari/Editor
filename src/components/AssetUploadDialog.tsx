@@ -13,6 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../components/ui/dialog";
+import { AssetType } from "../lib/types";
 
 interface AssetUploadDialogProps {
   projectId?: string;
@@ -32,7 +33,7 @@ export function AssetUploadDialog({ projectId, isOpen, onClose, onSuccess }: Ass
     }
   };
 
-  const getMimeTypeCategory = (mimeType: string): asset_type => {
+  const getMimeTypeCategory = (mimeType: string): AssetType => {
     if (mimeType.startsWith('image/')) {
       if (mimeType === 'image/svg+xml') return 'vector';
       if (mimeType.includes('background')) return 'background';
