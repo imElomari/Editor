@@ -30,54 +30,79 @@ export function AssetUploadDialog({ projectId, isOpen, onClose, onSuccess }: Ass
     }
   };
   
-    // Update the handleUpload function
 
-  const handleUpload = async () => {
-    if (!file || !projectId || !user) {
-      console.error("Missing required fields: file, projectId, or user");
-      return;
-    }
-
+  const handleUpload = async () => {  
+    if (!file) return;
+    
     setLoading(true);
     try {
-      const { error } = await supabase.storage
-          .from('project-assets')
-          .upload(`${projectId}/${file.name}`, file);
-
-      if (error) {
-        console.error("Storage upload error:", error);
-        return;
-      }
-
-      const { data } = supabase.storage
-          .from('project-assets')
-          .getPublicUrl(`${projectId}/${file.name}`);
-
-      const publicUrl = data?.publicUrl;
-
-      const { error: dbError } = await supabase
-          .from('assets')
-          .insert({
+      if (!user) throw new Error('User not authenticated');
+  
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}.${fileExt}`;
+      const filePath = `${user.id}/${fileName}`;
+      
+      // 1. Upload to storage bucket
+      const { data: storageData, error: uploadError } = await supabase.storage
+        .from('project-assets')
+        .upload(filePath, file, {
+          upsert: false,
+          cacheControl: '3600'
+        });
+  
+      if (uploadError) throw uploadError;
+      if (!storageData) throw new Error('Upload failed - no data returned');
+  
+      // 2. Get the complete storage URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('project-assets')
+        .getPublicUrl(filePath);
+  
+      // 3. Insert record into assets table
+      const { data: assetData, error: dbError } = await supabase
+        .from('assets')
+        .insert([
+          {
             name: file.name,
-            type: file.type,
-            url: publicUrl,
-            project_id: projectId,
-            owner_id: user.id, // Ensure this matches auth.uid()
-          });
-
-      if (dbError) {
-        console.error("Database insertion error:", dbError);
-        return;
-      }
-
-      onSuccess?.();
+            type: getAssetType(file.type),
+            url: publicUrl, // Use Supabase's generated public URL
+            owner_id: user.id,
+            project_id: projectId || null,
+            metadata: {
+              originalName: file.name,
+              mimeType: file.type,
+              size: file.size,
+              storagePath: filePath,
+              bucket: 'project-assets'
+            }
+          }
+        ])
+        .select()
+        .single();
+  
+      if (dbError) throw dbError;
+      
+      console.log('Asset created:', assetData);
+      onSuccess();
       onClose();
-    } catch (err) {
-      console.error("Unexpected error:", err);
+      
+    } catch (error) {
+      console.error('Upload error:', error);
     } finally {
       setLoading(false);
     }
   };
+  
+  // Helper function to map MIME types to your asset_type enum
+  const getAssetType = (mimeType: string): 'image' | 'background' | 'font' | 'vector' | 'icon' => {
+    if (mimeType.startsWith('image/')) {
+      if (mimeType === 'image/svg+xml') return 'vector';
+      return 'image';
+    }
+    if (mimeType.startsWith('font/')) return 'font';
+    return 'image'; // default fallback
+  };
+
   
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

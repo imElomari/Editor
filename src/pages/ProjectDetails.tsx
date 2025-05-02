@@ -16,20 +16,8 @@ import { toast } from "sonner";
 import LabelCard from "../components/LabelCard";
 import { LabelDialog } from "../components/LabelDialog";
 import { AssetUploadDialog } from "../components/AssetUploadDialog";
+import { getAssetUrl } from "../lib/utils";
 
-export function getAssetUrl(path: string): string {
-  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-  // Return as-is if it's already a full URL
-  if (path.startsWith('http')) {
-    return path;
-  }
-  // Remove any leading double slashes
-  const cleanPath = path.replace(/^\/+/, '');
-  // Ensure supabaseUrl doesn't end with a slash
-  const baseUrl = supabaseUrl.replace(/\/$/, '');
-  // Construct the full URL
-  return `${baseUrl}/${cleanPath}`;
-}
 
 export default function ProjectDetails() {
   const { projectId } = useParams();
@@ -186,14 +174,18 @@ export default function ProjectDetails() {
         {asset.type === 'image' ? (
           <div className="relative w-full h-32 mb-2">
             <img 
-                src={getAssetUrl(asset.url)}
-                alt={asset.name}
-                className="absolute inset-0 w-full h-full object-contain rounded-md"
-                onError={(e) => {
-                  console.error('Image failed to load:', asset.url);
-                  e.currentTarget.src = '/placeholder-image.png';
-                }}
-              />
+              src={getAssetUrl(asset)}
+              alt={asset.name}
+              className="absolute inset-0 w-full h-full object-contain rounded-md"
+              onError={(e) => {
+                console.error('Image failed to load:', {
+                  originalUrl: asset.url,
+                  constructedUrl: getAssetUrl(asset),
+                  metadata: asset.metadata
+                });
+                e.currentTarget.src = '/placeholder-image.png';
+              }}
+            />
           </div>
         ) : (
           <div className="w-full h-32 bg-muted rounded-md mb-2 flex items-center justify-center">
@@ -208,7 +200,7 @@ export default function ProjectDetails() {
               variant="ghost" 
               size="sm" 
               className="h-8 w-8 p-0"
-              onClick={() => window.open(asset.url, '_blank')}
+              onClick={() => window.open(getAssetUrl(asset), '_blank')}
             >
               <ImageIcon className="h-4 w-4" />
             </Button>
@@ -216,12 +208,12 @@ export default function ProjectDetails() {
         </div>
       </div>
     ))}
-        </div>
-      ) : (
-        <div className="text-center py-12 bg-muted/30 rounded-lg">
-          <p className="text-muted-foreground">No assets yet</p>
-        </div>
-      )}
+  </div>
+) : (
+  <div className="text-center py-12 bg-muted/30 rounded-lg">
+    <p className="text-muted-foreground">No assets yet</p>
+  </div>
+)}
             <AssetUploadDialog
             projectId={projectId}
             isOpen={isAssetDialogOpen}
