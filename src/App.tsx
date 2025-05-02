@@ -10,6 +10,7 @@ import ProjectsPage from './pages/ProjectsList'
 import LabelsPage from './pages/LabelsList'
 import EditorPage from './pages/EditorPage'
 import ProjectDetails from './pages/ProjectDetails'
+import TrashPage from './pages/TrashPage'
 
 function App() {
 
@@ -57,6 +58,13 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <ProjectDetails />
+                </Layout>
+              </ProtectedRoute>
+            } />
+            <Route path="/trash" element={
+              <ProtectedRoute>
+                <Layout>
+                  <TrashPage />
                 </Layout>
               </ProtectedRoute>
             } />

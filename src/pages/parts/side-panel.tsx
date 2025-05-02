@@ -4,7 +4,7 @@ import { useAuth } from "../../context/AuthContext"
 import { useTheme } from "../../context/ThemeContext"
 import { Link, useLocation } from "react-router-dom"
 import { Button } from "../../components/ui/button"
-import { ChevronLeft, ChevronRight, Home, LogOut, Moon, Tag, Sun, X, User, Tags, FolderOpenDot } from "lucide-react"
+import { ChevronLeft, ChevronRight, Home, LogOut, Moon, Tag, Sun, X, User, Tags, FolderKanban, Trash2 } from "lucide-react"
 import { cn } from "../../lib/utils"
 import { useMobile } from "../../hooks/use-mobile"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../components/ui/tooltip"
@@ -165,7 +165,7 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                     to="/labels"
                     className={cn(
                       "flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200",
-                      isActive("/models")
+                      isActive("/labels")
                         ? "bg-primary/10 text-primary shadow-sm"
                         : "hover:bg-accent hover:text-accent-foreground hover:scale-105",
                     )}
@@ -175,6 +175,23 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent side="right">My Labels</TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link
+                    to="/Trash"
+                    className={cn(
+                      "flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200",
+                      isActive("/Trash")
+                        ? "bg-primary/10 text-primary shadow-sm"
+                        : "hover:bg-accent hover:text-accent-foreground hover:scale-105",
+                    )}
+                    onClick={isMobile ? onClose : undefined}
+                  >
+                    <Trash2 className="h-5 w-5" />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent side="right">Trash</TooltipContent>
               </Tooltip>
           </TooltipProvider>
         ) : (
@@ -202,7 +219,7 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
               )}
               onClick={isMobile ? onClose : undefined}
             >
-              <FolderOpenDot className="h-5 w-5 min-w-5" />
+              <FolderKanban className="h-5 w-5 min-w-5" />
               <span>My Projects</span>
             </Link>
             <Link
@@ -217,6 +234,19 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
             >
               <Tags className="h-5 w-5 min-w-5" />
               <span>My Labels</span>
+            </Link>
+            <Link
+              to="/Trash"
+              className={cn(
+                "flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200",
+                isActive("/Trash")
+                  ? "bg-primary/10 text-primary font-medium shadow-sm"
+                  : "hover:bg-accent hover:text-accent-foreground",
+              )}
+              onClick={isMobile ? onClose : undefined}
+            >
+              <Trash2 className="h-5 w-5 min-w-5" />
+              <span>Trash</span>
             </Link>
           </>
         )}
