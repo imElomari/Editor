@@ -68,32 +68,10 @@ CREATE TABLE assets (
     CONSTRAINT assets_name_owner_unique UNIQUE (name, owner_id)
 );
 
--- Enable RLS for assets table
+-- Enable RLS
 ALTER TABLE assets ENABLE ROW LEVEL SECURITY;
-
--- Assets table policies
-CREATE POLICY "Users can insert assets"
-  ON assets FOR INSERT
-  WITH CHECK (auth.uid() = owner_id);
-
-CREATE POLICY "Users can view their own assets"
-  ON assets FOR SELECT
-  USING (
-    auth.uid() = owner_id OR 
-    project_id IN (
-      SELECT id FROM projects 
-      WHERE owner_id = auth.uid()
-    )
-  );
-
-CREATE POLICY "Users can update their own assets"
-  ON assets FOR UPDATE
-  USING (auth.uid() = owner_id);
-
-CREATE POLICY "Users can delete their own assets"
-  ON assets FOR DELETE
-  USING (auth.uid() = owner_id);
-
+ALTER TABLE labels ENABLE ROW LEVEL SECURITY;
+ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
 -- Create Indexes
 CREATE INDEX idx_projects_owner ON projects(owner_id);
 CREATE INDEX idx_projects_deleted_at ON projects(deleted_at);
@@ -128,32 +106,9 @@ CREATE TRIGGER soft_delete_project
     EXECUTE FUNCTION soft_delete();
 
 
--- Helper function to generate storage URLs
-CREATE OR REPLACE FUNCTION generate_storage_url(
-  bucket_name text,
-  file_path text
-) RETURNS text AS $$
+CREATE OR REPLACE FUNCTION generate_storage_url(bucket text, path text)
+RETURNS text AS $$
 BEGIN
-    RETURN '/storage/v1/object/public/' || bucket_name || '/' || auth.uid() || '/' || file_path;
+  RETURN '/storage/v1/object/public/' || bucket || '/' || path;
 END;
 $$ LANGUAGE plpgsql;
-
--- Trigger to automatically update asset URL after storage
-CREATE OR REPLACE FUNCTION update_asset_url()
-RETURNS TRIGGER AS $$
-BEGIN
-  NEW.url = generate_storage_url(
-    CASE 
-      WHEN NEW.project_id IS NULL THEN 'global-assets'
-      ELSE 'project-assets'
-    END,
-    NEW.name
-  );
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER set_asset_url
-  BEFORE INSERT OR UPDATE ON assets
-  FOR EACH ROW
-  EXECUTE FUNCTION update_asset_url();

@@ -1,21 +1,10 @@
--- Drop existing policies if they exist
-DO $$ 
-BEGIN
-    -- Storage policies
-    DROP POLICY IF EXISTS "Users can view their project assets" ON storage.objects;
-    DROP POLICY IF EXISTS "Users can upload project assets" ON storage.objects;
-    DROP POLICY IF EXISTS "Users can update project assets" ON storage.objects;
-    DROP POLICY IF EXISTS "Users can delete project assets" ON storage.objects;
-    DROP POLICY IF EXISTS "Users can view global assets" ON storage.objects;
-    DROP POLICY IF EXISTS "Users can upload global assets" ON storage.objects;
-    DROP POLICY IF EXISTS "Users can update global assets" ON storage.objects;
-    DROP POLICY IF EXISTS "Users can delete global assets" ON storage.objects;
-END $$;
+-- Enable Row Level Security
+ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY;
 
--- Create storage buckets
+-- Create storage buckets with proper configurations
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 VALUES 
-  ('project-assets', 'project-assets', false, 52428800,
+  ('project-assets', 'project-assets', true, 52428800, -- 50MB limit
     ARRAY[
       'image/jpeg',
       'image/png',
@@ -28,7 +17,7 @@ VALUES
       'font/woff2'
     ]
   ),
-  ('global-assets', 'global-assets', false, 52428800,
+  ('global-assets', 'global-assets', true, 52428800, -- 50MB limit
     ARRAY[
       'image/jpeg',
       'image/png',
@@ -41,78 +30,79 @@ VALUES
       'font/woff2'
     ]
   )
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (id) DO UPDATE SET
+  public = EXCLUDED.public,
+  file_size_limit = EXCLUDED.file_size_limit,
+  allowed_mime_types = EXCLUDED.allowed_mime_types;
 
--- Project assets policies
-CREATE POLICY "Users can view their project assets"
-  ON storage.objects FOR SELECT
-  USING (
-    bucket_id = 'project-assets' AND 
-    EXISTS (
-      SELECT 1 FROM projects 
-      WHERE id::text = SPLIT_PART(name, '/', 1)
-      AND owner_id = auth.uid()
-    )
-  );
+-- Create policies for the storage buckets
 
-CREATE POLICY "Users can upload project assets"
-  ON storage.objects FOR INSERT 
-  WITH CHECK (
-    bucket_id = 'project-assets' AND 
-    EXISTS (
-      SELECT 1 FROM projects 
-      WHERE id::text = SPLIT_PART(name, '/', 1)
-      AND owner_id = auth.uid()
-    )
-  );
+-- Project Assets Policies
+CREATE POLICY "Enable read access for authenticated users"
+ON storage.objects FOR SELECT
+USING (
+  bucket_id = 'project-assets' 
+  AND auth.role() = 'authenticated'
+);
 
-CREATE POLICY "Users can update project assets"
-  ON storage.objects FOR UPDATE
-  USING (
-    bucket_id = 'project-assets' AND 
-    EXISTS (
-      SELECT 1 FROM projects 
-      WHERE id::text = SPLIT_PART(name, '/', 1)
-      AND owner_id = auth.uid()
-    )
-  );
+CREATE POLICY "Enable upload access for authenticated users"
+ON storage.objects FOR INSERT
+WITH CHECK (
+  bucket_id = 'project-assets' 
+  AND auth.role() = 'authenticated'
+);
 
-CREATE POLICY "Users can delete project assets"
-  ON storage.objects FOR DELETE
-  USING (
-    bucket_id = 'project-assets' AND 
-    EXISTS (
-      SELECT 1 FROM projects 
-      WHERE id::text = SPLIT_PART(name, '/', 1)
-      AND owner_id = auth.uid()
-    )
-  );
+CREATE POLICY "Allow authenticated users to upload project assets"
+ON storage.objects FOR INSERT
+WITH CHECK (
+  bucket_id = 'project-assets'
+  AND auth.role() = 'authenticated'
+);
 
--- Global assets policies
-CREATE POLICY "Users can view global assets"
-  ON storage.objects FOR SELECT 
-  USING (
-    bucket_id = 'global-assets' AND 
-    auth.uid()::text = SPLIT_PART(name, '/', 1)
-  );
+CREATE POLICY "Allow users to update their own project assets"
+ON storage.objects FOR UPDATE
+USING (
+  bucket_id = 'project-assets'
+  AND auth.role() = 'authenticated'
+  AND (storage.foldername(name))[1] = auth.uid()::text
+);
 
-CREATE POLICY "Users can upload global assets"
-  ON storage.objects FOR INSERT 
-  WITH CHECK (
-    bucket_id = 'global-assets' AND 
-    auth.uid()::text = SPLIT_PART(name, '/', 1)
-  );
+CREATE POLICY "Allow users to delete their own project assets"
+ON storage.objects FOR DELETE
+USING (
+  bucket_id = 'project-assets'
+  AND auth.role() = 'authenticated'
+  AND (storage.foldername(name))[1] = auth.uid()::text
+);
 
-CREATE POLICY "Users can update global assets"
-  ON storage.objects FOR UPDATE
-  USING (
-    bucket_id = 'global-assets' AND 
-    auth.uid()::text = SPLIT_PART(name, '/', 1)
-  );
+-- Global Assets Policies
+CREATE POLICY "Allow public read access to global assets"
+ON storage.objects FOR SELECT
+USING (
+  bucket_id = 'global-assets'
+  AND auth.role() = 'authenticated'
+);
 
-CREATE POLICY "Users can delete global assets"
-  ON storage.objects FOR DELETE
-  USING (
-    bucket_id = 'global-assets' AND 
-    auth.uid()::text = SPLIT_PART(name, '/', 1)
-  );
+CREATE POLICY "Allow authenticated users to upload global assets"
+ON storage.objects FOR INSERT
+WITH CHECK (
+  bucket_id = 'global-assets'
+  AND auth.role() = 'authenticated'
+  AND (storage.foldername(name))[1] = auth.uid()::text
+);
+
+CREATE POLICY "Allow users to update their own global assets"
+ON storage.objects FOR UPDATE
+USING (
+  bucket_id = 'global-assets'
+  AND auth.role() = 'authenticated'
+  AND (storage.foldername(name))[1] = auth.uid()::text
+);
+
+CREATE POLICY "Allow users to delete their own global assets"
+ON storage.objects FOR DELETE
+USING (
+  bucket_id = 'global-assets'
+  AND auth.role() = 'authenticated'
+  AND (storage.foldername(name))[1] = auth.uid()::text
+);
