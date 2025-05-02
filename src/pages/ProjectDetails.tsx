@@ -17,6 +17,20 @@ import LabelCard from "../components/LabelCard";
 import { LabelDialog } from "../components/LabelDialog";
 import { AssetUploadDialog } from "../components/AssetUploadDialog";
 
+export function getAssetUrl(path: string): string {
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+  // Return as-is if it's already a full URL
+  if (path.startsWith('http')) {
+    return path;
+  }
+  // Remove any leading double slashes
+  const cleanPath = path.replace(/^\/+/, '');
+  // Ensure supabaseUrl doesn't end with a slash
+  const baseUrl = supabaseUrl.replace(/\/$/, '');
+  // Construct the full URL
+  return `${baseUrl}/${cleanPath}`;
+}
+
 export default function ProjectDetails() {
   const { projectId } = useParams();
   const navigate = useNavigate();
@@ -87,6 +101,7 @@ export default function ProjectDetails() {
       </div>
     );
   }
+  
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -162,33 +177,51 @@ export default function ProjectDetails() {
             </div>
 
             {assets.length > 0 ? (
-              <div className="grid gap-6 md:grid-cols-3 lg:grid-cols-4">
-                {assets.map((asset) => (
-                  <div 
-                    key={asset.id} 
-                    className="border rounded-lg p-4 hover:shadow-md transition-shadow"
-                  >
-                    {asset.type.startsWith('image') ? (
-                      <img 
-                        src={asset.url} 
-                        alt={asset.name}
-                        className="w-full h-32 object-cover rounded-md mb-2"
-                      />
-                    ) : (
-                      <div className="w-full h-32 bg-muted rounded-md mb-2 flex items-center justify-center">
-                        <ImageIcon className="h-8 w-8 text-muted-foreground" />
-                      </div>
-                    )}
-                    <p className="font-medium truncate">{asset.name}</p>
-                    <p className="text-sm text-muted-foreground">{asset.type}</p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-12 bg-muted/30 rounded-lg">
-                <p className="text-muted-foreground">No assets yet</p>
-              </div>
-            )}
+  <div className="grid gap-6 md:grid-cols-3 lg:grid-cols-4">
+    {assets.map((asset) => (
+      <div 
+        key={asset.id} 
+        className="border rounded-lg p-4 hover:shadow-md transition-shadow"
+      >
+        {asset.type === 'image' ? (
+          <div className="relative w-full h-32 mb-2">
+            <img 
+                src={getAssetUrl(asset.url)}
+                alt={asset.name}
+                className="absolute inset-0 w-full h-full object-contain rounded-md"
+                onError={(e) => {
+                  console.error('Image failed to load:', asset.url);
+                  e.currentTarget.src = '/placeholder-image.png';
+                }}
+              />
+          </div>
+        ) : (
+          <div className="w-full h-32 bg-muted rounded-md mb-2 flex items-center justify-center">
+            <ImageIcon className="h-8 w-8 text-muted-foreground" />
+          </div>
+        )}
+        <div className="space-y-1">
+          <p className="font-medium truncate">{asset.name}</p>
+          <div className="flex items-center justify-between">
+            <p className="text-xs text-muted-foreground">{asset.type}</p>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="h-8 w-8 p-0"
+              onClick={() => window.open(asset.url, '_blank')}
+            >
+              <ImageIcon className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      </div>
+    ))}
+        </div>
+      ) : (
+        <div className="text-center py-12 bg-muted/30 rounded-lg">
+          <p className="text-muted-foreground">No assets yet</p>
+        </div>
+      )}
             <AssetUploadDialog
             projectId={projectId}
             isOpen={isAssetDialogOpen}
