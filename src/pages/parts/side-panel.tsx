@@ -84,7 +84,9 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Link to="/profile" className="transition-transform hover:scale-105 duration-200">
+                <Link to="/profile" 
+                className="transition-transform hover:scale-105 duration-200"
+                onClick={isMobile ? onClose : undefined}>
                   <Avatar className="h-12 w-12 border-2 border-primary/20 shadow-sm">
                     <AvatarImage src={user?.user_metadata?.avatar_url || "/placeholder.svg"} />
                     <AvatarFallback className="bg-primary/10 text-primary font-semibold">
@@ -305,6 +307,7 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
               <Link
                 to={`/profile`}
                 className="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-accent hover:text-accent-foreground transition-all duration-200 w-full"
+                onClick={isMobile ? onClose : undefined}
               >
                 <User className="h-5 w-5 min-w-5" />
                 <span>Profile</span>
