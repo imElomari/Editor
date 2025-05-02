@@ -6,6 +6,11 @@ import ProtectedRoute from './context/ProtectedRoute'
 import Layout from './pages/Layout'
 import Dashboard from './pages/Dashboard'
 import ProfilePage from './pages/profile-page'
+import ProjectsPage from './pages/ProjectsList'
+import LabelsPage from './pages/LabelsList'
+import EditorPage from './pages/EditorPage'
+import ProjectDetails from './pages/ProjectDetails'
+import TrashPage from './pages/TrashPage'
 
 function App() {
 
@@ -26,7 +31,43 @@ function App() {
                   <Layout>
                      <ProfilePage />
                   </Layout>
-                </ProtectedRoute>} />
+                </ProtectedRoute>} 
+            />
+            <Route path="/projects" element={
+              <ProtectedRoute>
+                <Layout>
+                  <ProjectsPage />
+                </Layout>
+              </ProtectedRoute>} 
+             />
+             <Route path="/labels" element={
+              <ProtectedRoute>
+                <Layout>
+                  <LabelsPage />
+                </Layout>
+              </ProtectedRoute>} 
+             />
+             <Route path="/editor/:labelId" element={
+              <ProtectedRoute>
+                <Layout>
+                  <EditorPage />
+                </Layout>
+              </ProtectedRoute>
+            } />
+             <Route path="/projects/:projectId" element={
+              <ProtectedRoute>
+                <Layout>
+                  <ProjectDetails />
+                </Layout>
+              </ProtectedRoute>
+            } />
+            <Route path="/trash" element={
+              <ProtectedRoute>
+                <Layout>
+                  <TrashPage />
+                </Layout>
+              </ProtectedRoute>
+            } />
           </Routes>
         </BrowserRouter>
       </AuthProvider> 

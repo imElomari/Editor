@@ -1,0 +1,210 @@
+import { useState, useEffect } from "react";
+import { supabase } from "../lib/supabase";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Plus, Search, Loader2, ArrowUpDown, Filter } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
+import { toast } from "sonner";
+import { Label, Project } from "../lib/types";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
+import LabelCard from "../components/LabelCard";
+import { LabelDialog } from "../components/LabelDialog";
+
+export default function LabelsPage() {
+  const [labels, setLabels] = useState<Label[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState("newest");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [projectFilter, setProjectFilter] = useState("all");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedLabel, setSelectedLabel] = useState<Label | undefined>();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    fetchLabels();
+    fetchProjects();
+  }, []);
+
+  async function fetchProjects() {
+    try {
+      const { data, error } = await supabase
+        .from("projects")
+        .select("*")
+        .eq("owner_id", user?.id)
+        .is("deleted_at", null);
+
+      if (error) throw error;
+      setProjects(data || []);
+    } catch {
+      toast.error("Error fetching projects");
+    }
+  }
+
+  async function fetchLabels() {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("labels")
+        .select("*, projects(name)")
+        .eq("owner_id", user?.id)
+        .is("deleted_at", null);
+
+      if (error) throw error;
+      setLabels(data || []);
+    } catch (error) {
+      toast.error("Error fetching labels");
+      console.error("Error:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const handleEdit = (label: Label) => {
+    setSelectedLabel(label);
+    setIsDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+    setSelectedLabel(undefined);
+  };
+
+  const filteredLabels = labels
+    .filter((label) => {
+      const matchesSearch = 
+        label.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        label.description?.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      const matchesStatus = statusFilter === "all" || label.status === statusFilter;
+      const matchesProject = projectFilter === "all" || label.project_id === projectFilter;
+      
+      return matchesSearch && matchesStatus && matchesProject;
+    })
+    .sort((a, b) => {
+      if (sortBy === "newest") {
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+      }
+      if (sortBy === "oldest") {
+        return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+      }
+      if (sortBy === "name") {
+        return a.name.localeCompare(b.name);
+      }
+      return 0;
+    });
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex flex-col gap-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">Labels</h1>
+            <p className="text-muted-foreground mt-1">Manage your label designs</p>
+          </div>
+          <Button onClick={() => setIsDialogOpen(true)} size="lg">
+            <Plus className="h-5 w-5 mr-2" />
+            New Label
+          </Button>
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search labels..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+          
+          <Select value={projectFilter} onValueChange={setProjectFilter}>
+            <SelectTrigger className="w-[180px]">
+              <Filter className="h-4 w-4 mr-2" />
+              <SelectValue placeholder="Filter by project" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Projects</SelectItem>
+              {projects.map((project) => (
+                <SelectItem key={project.id} value={project.id}>
+                  {project.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger className="w-[180px]">
+              <Filter className="h-4 w-4 mr-2" />
+              <SelectValue placeholder="Filter by status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Status</SelectItem>
+              <SelectItem value="draft">Draft</SelectItem>
+              <SelectItem value="published">Published</SelectItem>
+              <SelectItem value="archived">Archived</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select value={sortBy} onValueChange={setSortBy}>
+            <SelectTrigger className="w-[180px]">
+              <ArrowUpDown className="h-4 w-4 mr-2" />
+              <SelectValue placeholder="Sort by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="newest">Newest First</SelectItem>
+              <SelectItem value="oldest">Oldest First</SelectItem>
+              <SelectItem value="name">Name</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {loading ? (
+          <div className="flex items-center justify-center h-48">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        ) : (
+          <>
+            {filteredLabels.length > 0 ? (
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {filteredLabels.map((label) => (
+                  <LabelCard 
+                    key={label.id} 
+                    label={label}
+                    onDelete={fetchLabels}
+                    onEdit={handleEdit}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 bg-muted/30 rounded-lg">
+                <p className="text-muted-foreground">
+                  {searchQuery || statusFilter !== "all" || projectFilter !== "all"
+                    ? "No labels found matching your filters"
+                    : "No labels yet"}
+                </p>
+                <Button 
+                  variant="outline" 
+                  className="mt-4"
+                  onClick={() => setIsDialogOpen(true)}
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Create your first label
+                </Button>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+
+      <LabelDialog 
+        label={selectedLabel}
+        isOpen={isDialogOpen}
+        onClose={handleCloseDialog}
+        onSuccess={fetchLabels}
+      />
+    </div>
+  );
+}
