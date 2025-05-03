@@ -97,8 +97,8 @@ const ProfilePage = () => {
         </TabsList>
 
         <TabsContent value="info" className="space-y-6">
-          <Card className="border border-border/40 shadow-lg overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-t-lg h-32"></div>
+          <Card className="border border-border/40 shadow-lg overflow-hidden relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-t-lg h-32 z-0"></div>
 
             <CardHeader className="relative z-10 pb-0">
               <div className="flex flex-col items-center">
@@ -116,7 +116,7 @@ const ProfilePage = () => {
               </div>
             </CardHeader>
 
-            <CardContent className="pt-8 pb-6">
+            <CardContent className="pt-8 pb-6 relative z-1">
               <div className="grid gap-6 md:grid-cols-2">
                 <InfoCard
                   icon={<Clock className="h-5 w-5 text-primary" />}
@@ -154,7 +154,7 @@ const ProfilePage = () => {
             <CardFooter className="border-t bg-muted/20 py-6">
               <Button
                 variant="destructive"
-                className="w-full flex items-center justify-center space-x-2 py-6"
+                className="w-full flex items-center justify-center space-x-2 py-6 relative z-1"
                 onClick={() => {
                   signOut()
                   navigate("/")

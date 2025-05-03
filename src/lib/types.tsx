@@ -32,7 +32,13 @@ export type Project = {
     metadata: {
       size: number;
       mimeType: string;
+      path?: string;
+      originalName?: string;
+      bucket?: string;
+      storagePath?: string;
       [key: string]: unknown;
     };
     created_at: string;
   }
+
+  
