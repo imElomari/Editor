@@ -46,19 +46,23 @@ const ProfilePage = () => {
       })
 
       if (error) {
-        toast.error("Error", {
+        toast.error("Password reset failed", {
           description: error.message || "Failed to send password reset email. Please try again.",
+          icon: true,
         })
       } else {
         setResetSent(true)
         toast.success("Password reset email sent", {
           description: "Check your email for the password reset link.",
+          duration: 5000,
+          icon: true,
         })
       }
     } catch (error) {
       console.error("Error resetting password:", error)
-      toast.error("Error", {
-        description: "An unexpected error occurred.",
+      toast.error("Password reset failed", {
+        description: "An unexpected error occurred. Please try again.",
+        icon: true,
       })
     } finally {
       setResetLoading(false)

@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect } from "react"
 import { useAuth } from "../context/AuthContext"
 import { supabase } from "../lib/supabase"
@@ -21,7 +23,7 @@ interface TrashItem {
   id: string
   name: string
   deleted_at: string
-  type: 'project' | 'label'
+  type: "project" | "label"
   description?: string
 }
 
@@ -60,12 +62,14 @@ export default function TrashPage() {
       if (projectsError) throw projectsError
       if (labelsError) throw labelsError
 
-      const projectItems = (projectsData || []).map(p => ({ ...p, type: 'project' as const }))
-      const labelItems = (labelsData || []).map(l => ({ ...l, type: 'label' as const }))
+      const projectItems = (projectsData || []).map((p) => ({ ...p, type: "project" as const }))
+      const labelItems = (labelsData || []).map((l) => ({ ...l, type: "label" as const }))
 
-      setItems([...projectItems, ...labelItems].sort((a, b) => 
-        new Date(b.deleted_at).getTime() - new Date(a.deleted_at).getTime()
-      ))
+      setItems(
+        [...projectItems, ...labelItems].sort(
+          (a, b) => new Date(b.deleted_at).getTime() - new Date(a.deleted_at).getTime(),
+        ),
+      )
     } catch (error) {
       console.error("Error:", error)
       toast.error("Failed to load trash items")
@@ -78,44 +82,54 @@ export default function TrashPage() {
     fetchTrashItems()
   }, [user])
 
-  const handleRestore = async () => {
-    if (!selectedItem) return
-
+  async function handleRestore() {
     try {
       const { error } = await supabase
-        .from(selectedItem.type === 'project' ? 'projects' : 'labels')
+        .from(selectedItem?.type === "project" ? "projects" : "labels")
         .update({ deleted_at: null })
-        .eq('id', selectedItem.id)
+        .eq("id", selectedItem?.id)
 
       if (error) throw error
 
-      toast.success(`${selectedItem.type === 'project' ? 'Project' : 'Label'} restored successfully`)
+      toast.success(`${selectedItem?.type === "project" ? "Project" : "Label"} restored`, {
+        description: `"${selectedItem?.name}" has been restored successfully.`,
+        icon: true,
+      })
       fetchTrashItems()
     } catch (error) {
       console.error("Error:", error)
-      toast.error("Failed to restore item")
+      toast.error("Error restoring item", {
+        description: "Failed to restore the item. Please try again.",
+        icon: true,
+      })
     } finally {
       setIsRestoreDialogOpen(false)
       setSelectedItem(null)
     }
   }
 
-  const handlePermanentDelete = async () => {
+  async function handlePermanentDelete() {
     if (!selectedItem) return
 
     try {
       const { error } = await supabase
-        .from(selectedItem.type === 'project' ? 'projects' : 'labels')
+        .from(selectedItem.type === "project" ? "projects" : "labels")
         .delete()
-        .eq('id', selectedItem.id)
+        .eq("id", selectedItem.id)
 
       if (error) throw error
 
-      toast.success(`${selectedItem.type === 'project' ? 'Project' : 'Label'} permanently deleted`)
+      toast.success(`${selectedItem.type === "project" ? "Project" : "Label"} deleted permanently`, {
+        description: `"${selectedItem.name}" has been permanently deleted.`,
+        icon: true,
+      })
       fetchTrashItems()
     } catch (error) {
       console.error("Error:", error)
-      toast.error("Failed to delete item")
+      toast.error("Failed to delete item", {
+        description: "An unexpected error occurred. Please try again.",
+        icon: true,
+      })
     } finally {
       setIsPermanentDeleteDialogOpen(false)
       setSelectedItem(null)
@@ -142,25 +156,21 @@ export default function TrashPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
-            <div className="space-y-4 w-full sm:w-auto">
-                <h1 className="text-2xl sm:text-3xl font-bold">My Trash</h1>
-                <div className="flex items-center gap-2 text-amber-500 bg-amber-500/10 px-3 py-2 rounded-md">
-                    <AlertTriangle className="h-4 w-4 flex-shrink-0" />
-                    <p className="text-xs sm:text-sm">
-                        Deleted items are kept for 30 days before being permanently removed
-                    </p>
-                </div>
-            </div>
-       </div>
+        <div className="space-y-4 w-full sm:w-auto">
+          <h1 className="text-2xl sm:text-3xl font-bold">My Trash</h1>
+          <div className="flex items-center gap-2 text-amber-500 bg-amber-500/10 px-3 py-2 rounded-md">
+            <AlertTriangle className="h-4 w-4 flex-shrink-0" />
+            <p className="text-xs sm:text-sm">Deleted items are kept for 30 days before being permanently removed</p>
+          </div>
+        </div>
+      </div>
 
       {items.length === 0 ? (
         <Card>
-        <CardContent className="py-12 sm:py-16 flex flex-col items-center justify-center text-center px-4">
+          <CardContent className="py-12 sm:py-16 flex flex-col items-center justify-center text-center px-4">
             <Trash2 className="h-12 w-12 text-muted-foreground mb-4" />
             <h3 className="text-lg font-medium">Trash is empty</h3>
-            <p className="text-sm text-muted-foreground mt-1 max-w-md">
-              Items that you delete will appear here
-            </p>
+            <p className="text-sm text-muted-foreground mt-1 max-w-md">Items that you delete will appear here</p>
           </CardContent>
         </Card>
       ) : (
@@ -170,29 +180,27 @@ export default function TrashPage() {
               <CardContent className="flex flex-col sm:flex-row sm:items-center justify-between p-4 gap-4">
                 <div className="flex items-start sm:items-center gap-3">
                   <div className="h-10 w-10 rounded-md bg-muted flex items-center justify-center flex-shrink-0">
-                    {item.type === 'project' ? (
+                    {item.type === "project" ? (
                       <FolderKanban className="h-5 w-5 text-blue-500" />
                     ) : (
                       <Tag className="h-5 w-5 text-primary" />
                     )}
                   </div>
                   <div className="min-w-0 flex-1">
-                  <div className="font-medium flex flex-wrap items-center gap-2">
-                    <span className="truncate">{item.name}</span>
-                    <Badge variant="outline" className="flex-shrink-0">
-                      {item.type === 'project' ? 'Project' : 'Label'}
-                    </Badge>
+                    <div className="font-medium flex flex-wrap items-center gap-2">
+                      <span className="truncate">{item.name}</span>
+                      <Badge variant="outline" className="flex-shrink-0">
+                        {item.type === "project" ? "Project" : "Label"}
+                      </Badge>
+                    </div>
+                    <div className="text-xs sm:text-sm text-muted-foreground">
+                      <span className="whitespace-nowrap">{getDaysRemaining(item.deleted_at)} days remaining</span>
+                      <span className="mx-2">•</span>
+                      <span className="whitespace-nowrap">
+                        Deleted {new Date(item.deleted_at).toLocaleDateString()}
+                      </span>
+                    </div>
                   </div>
-                  <div className="text-xs sm:text-sm text-muted-foreground">
-                    <span className="whitespace-nowrap">
-                      {getDaysRemaining(item.deleted_at)} days remaining
-                    </span>
-                    <span className="mx-2">•</span>
-                    <span className="whitespace-nowrap">
-                      Deleted {new Date(item.deleted_at).toLocaleDateString()}
-                    </span>
-                  </div>
-                </div>
                 </div>
                 <div className="flex items-center gap-2 sm:flex-shrink-0 w-full sm:w-auto">
                   <Button
@@ -217,7 +225,7 @@ export default function TrashPage() {
                     }}
                   >
                     <Trash2 className="h-4 w-4 mr-2" />
-                    Delete 
+                    Delete
                   </Button>
                 </div>
               </CardContent>
@@ -251,9 +259,7 @@ export default function TrashPage() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handlePermanentDelete}>
-              Delete Permanently
-            </AlertDialogAction>
+            <AlertDialogAction onClick={handlePermanentDelete}>Delete Permanently</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

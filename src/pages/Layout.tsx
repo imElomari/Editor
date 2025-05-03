@@ -1,12 +1,13 @@
-""
+"use client"
 
 import type React from "react"
 import { useState, useEffect } from "react"
 import FooterNavbar from "../pages/parts/FooterNavbar"
 import { SidePanel } from "../pages/parts/side-panel"
 import { Button } from "../components/ui/button"
-import { Menu, Tag } from "lucide-react"
+import { Menu } from "lucide-react"
 import { useMobile } from "../hooks/use-mobile"
+import { ThemeToggle } from "../components/ThemeToggle"
 
 interface LayoutProps {
   children: React.ReactNode
@@ -42,20 +43,28 @@ const Layout = ({ children }: LayoutProps) => {
           onToggleCollapse={handleToggleCollapse}
         />
 
-        <div className="flex flex-col flex-1 overflow-auto mx-2">
+        <div className="flex flex-col flex-1 overflow-auto">
           {isMobile && (
-            <div className="flex items-center h-16 px-4 border-b">
+            <div className="sticky top-0 z-10 flex items-center h-16 px-4 border-b bg-background/95 backdrop-blur-sm">
               <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(true)} className="mr-2">
-                <Menu className="h-8 w-8" />
+                <Menu className="h-6 w-6" />
               </Button>
-              <Tag className="h-6 w-6 me-2" />
-              <h1 className="font-bold">Label Editor</h1>
+              <h1 className="font-bold text-lg">Label Editor</h1>
+              <div className="ml-auto">
+                 <ThemeToggle />
+              </div>
             </div>
           )}
 
-          <main className="flex-grow">{children}</main>
+          <main className="flex-grow px-2 sm:px-4 pb-16 pt-2">{children}</main>
 
-          <FooterNavbar />
+          {isMobile && (
+            <div className="fixed bottom-0 left-0 right-0 z-10 bg-background/95 backdrop-blur-sm border-t">
+              <FooterNavbar />
+            </div>
+          )}
+
+          {!isMobile && <FooterNavbar />}
         </div>
       </div>
     </div>
@@ -63,4 +72,3 @@ const Layout = ({ children }: LayoutProps) => {
 }
 
 export default Layout
-

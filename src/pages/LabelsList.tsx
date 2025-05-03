@@ -1,31 +1,36 @@
-import { useState, useEffect } from "react";
-import { supabase } from "../lib/supabase";
-import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
-import { Plus, Search, Loader2, ArrowUpDown, Filter } from "lucide-react";
-import { useAuth } from "../context/AuthContext";
-import { toast } from "sonner";
-import { Label, Project } from "../lib/types";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
-import LabelCard from "../components/LabelCard";
-import { LabelDialog } from "../components/LabelDialog";
+"use client"
+
+import { useState, useEffect } from "react"
+import { supabase } from "../lib/supabase"
+import { Button } from "../components/ui/button"
+import { Input } from "../components/ui/input"
+import { Plus, Search, Loader2, ArrowUpDown, Filter } from "lucide-react"
+import { useAuth } from "../context/AuthContext"
+import { toast } from "sonner"
+import type { Label, Project } from "../lib/types"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select"
+import LabelCard from "../components/LabelCard"
+import { LabelDialog } from "../components/LabelDialog"
+import { MobileFilterBar } from "../components/MobileFilterBar"
+import { useMobile } from "../hooks/use-mobile"
 
 export default function LabelsPage() {
-  const [labels, setLabels] = useState<Label[]>([]);
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState("newest");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [projectFilter, setProjectFilter] = useState("all");
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedLabel, setSelectedLabel] = useState<Label | undefined>();
-  const { user } = useAuth();
+  const [labels, setLabels] = useState<Label[]>([])
+  const [projects, setProjects] = useState<Project[]>([])
+  const [loading, setLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [sortBy, setSortBy] = useState("newest")
+  const [statusFilter, setStatusFilter] = useState("all")
+  const [projectFilter, setProjectFilter] = useState("all")
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [selectedLabel, setSelectedLabel] = useState<Label | undefined>()
+  const { user } = useAuth()
+  const isMobile = useMobile()
 
   useEffect(() => {
-    fetchLabels();
-    fetchProjects();
-  }, []);
+    fetchLabels()
+    fetchProjects()
+  }, [])
 
   async function fetchProjects() {
     try {
@@ -33,83 +38,155 @@ export default function LabelsPage() {
         .from("projects")
         .select("*")
         .eq("owner_id", user?.id)
-        .is("deleted_at", null);
+        .is("deleted_at", null)
 
-      if (error) throw error;
-      setProjects(data || []);
+      if (error) throw error
+      setProjects(data || [])
     } catch {
-      toast.error("Error fetching projects");
+      toast.error("Error fetching projects")
     }
   }
 
   async function fetchLabels() {
     try {
-      setLoading(true);
+      setLoading(true)
       const { data, error } = await supabase
         .from("labels")
         .select("*, projects(name)")
         .eq("owner_id", user?.id)
-        .is("deleted_at", null);
+        .is("deleted_at", null)
 
-      if (error) throw error;
-      setLabels(data || []);
+      if (error) throw error
+      setLabels(data || [])
     } catch (error) {
-      toast.error("Error fetching labels");
-      console.error("Error:", error);
+      toast.error("Error fetching labels")
+      console.error("Error:", error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
   const handleEdit = (label: Label) => {
-    setSelectedLabel(label);
-    setIsDialogOpen(true);
-  };
+    setSelectedLabel(label)
+    setIsDialogOpen(true)
+  }
 
   const handleCloseDialog = () => {
-    setIsDialogOpen(false);
-    setSelectedLabel(undefined);
-  };
+    setIsDialogOpen(false)
+    setSelectedLabel(undefined)
+  }
 
   const filteredLabels = labels
     .filter((label) => {
-      const matchesSearch = 
+      const matchesSearch =
         label.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        label.description?.toLowerCase().includes(searchQuery.toLowerCase());
-      
-      const matchesStatus = statusFilter === "all" || label.status === statusFilter;
-      const matchesProject = projectFilter === "all" || label.project_id === projectFilter;
-      
-      return matchesSearch && matchesStatus && matchesProject;
+        label.description?.toLowerCase().includes(searchQuery.toLowerCase())
+
+      const matchesStatus = statusFilter === "all" || label.status === statusFilter
+      const matchesProject = projectFilter === "all" || label.project_id === projectFilter
+
+      return matchesSearch && matchesStatus && matchesProject
     })
     .sort((a, b) => {
       if (sortBy === "newest") {
-        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
       }
       if (sortBy === "oldest") {
-        return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+        return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
       }
       if (sortBy === "name") {
-        return a.name.localeCompare(b.name);
+        return a.name.localeCompare(b.name)
       }
-      return 0;
-    });
+      return 0
+    })
+
+  // Calculate active filters count for mobile view
+  const activeFiltersCount = [
+    statusFilter !== "all" ? 1 : 0,
+    projectFilter !== "all" ? 1 : 0,
+    searchQuery ? 1 : 0,
+  ].reduce((a, b) => a + b, 0)
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-4 sm:py-8">
       <div className="flex flex-col gap-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">Labels</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold">Labels</h1>
             <p className="text-muted-foreground mt-1">Manage your label designs</p>
           </div>
-          <Button onClick={() => setIsDialogOpen(true)} size="lg">
+          <Button onClick={() => setIsDialogOpen(true)} size={isMobile ? "sm" : "lg"}>
             <Plus className="h-5 w-5 mr-2" />
-            New Label
+            {!isMobile && "New Label"}
           </Button>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4">
+        {/* Mobile Filters */}
+        <MobileFilterBar activeFilters={activeFiltersCount} title="Filter Labels">
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Search</label>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search labels..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Project</label>
+              <Select value={projectFilter} onValueChange={setProjectFilter}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Filter by project" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Projects</SelectItem>
+                  {projects.map((project) => (
+                    <SelectItem key={project.id} value={project.id}>
+                      {project.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Status</label>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Filter by status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="draft">Draft</SelectItem>
+                  <SelectItem value="published">Published</SelectItem>
+                  <SelectItem value="archived">Archived</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Sort By</label>
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Sort by" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="newest">Newest First</SelectItem>
+                  <SelectItem value="oldest">Oldest First</SelectItem>
+                  <SelectItem value="name">Name</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </MobileFilterBar>
+
+        {/* Desktop Filters */}
+        <div className="hidden md:flex flex-col sm:flex-row gap-4">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
@@ -119,7 +196,7 @@ export default function LabelsPage() {
               className="pl-10"
             />
           </div>
-          
+
           <Select value={projectFilter} onValueChange={setProjectFilter}>
             <SelectTrigger className="w-[180px]">
               <Filter className="h-4 w-4 mr-2" />
@@ -168,14 +245,9 @@ export default function LabelsPage() {
         ) : (
           <>
             {filteredLabels.length > 0 ? (
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 {filteredLabels.map((label) => (
-                  <LabelCard 
-                    key={label.id} 
-                    label={label}
-                    onDelete={fetchLabels}
-                    onEdit={handleEdit}
-                  />
+                  <LabelCard key={label.id} label={label} onDelete={fetchLabels} onEdit={handleEdit} />
                 ))}
               </div>
             ) : (
@@ -185,13 +257,9 @@ export default function LabelsPage() {
                     ? "No labels found matching your filters"
                     : "No labels yet"}
                 </p>
-                <Button 
-                  variant="outline" 
-                  className="mt-4"
-                  onClick={() => setIsDialogOpen(true)}
-                >
+                <Button variant="outline" className="mt-4" onClick={() => setIsDialogOpen(true)}>
                   <Plus className="h-4 w-4 mr-2" />
-                  Create your first label
+                  Create Your First Label
                 </Button>
               </div>
             )}
@@ -199,12 +267,7 @@ export default function LabelsPage() {
         )}
       </div>
 
-      <LabelDialog 
-        label={selectedLabel}
-        isOpen={isDialogOpen}
-        onClose={handleCloseDialog}
-        onSuccess={fetchLabels}
-      />
+      <LabelDialog label={selectedLabel} isOpen={isDialogOpen} onClose={handleCloseDialog} onSuccess={fetchLabels} />
     </div>
-  );
+  )
 }

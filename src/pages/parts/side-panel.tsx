@@ -4,7 +4,20 @@ import { useAuth } from "../../context/AuthContext"
 import { useTheme } from "../../context/ThemeContext"
 import { Link, useLocation } from "react-router-dom"
 import { Button } from "../../components/ui/button"
-import { ChevronLeft, ChevronRight, Home, LogOut, Moon, Tag, Sun, X, User, Tags, FolderKanban, Trash2 } from "lucide-react"
+import {
+  ChevronLeft,
+  ChevronRight,
+  Home,
+  LogOut,
+  Moon,
+  Tag,
+  Sun,
+  X,
+  User,
+  Tags,
+  FolderKanban,
+  Trash2,
+} from "lucide-react"
 import { cn } from "../../lib/utils"
 import { useMobile } from "../../hooks/use-mobile"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../components/ui/tooltip"
@@ -40,6 +53,7 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
         isCollapsed && !isMobile ? "md:w-20" : "md:w-72",
         "flex flex-col",
         "bg-gradient-to-b from-background to-background/95",
+        isMobile ? "w-[85%] max-w-[300px]" : "",
       )}
     >
       {/* Header */}
@@ -99,7 +113,7 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
             </Tooltip>
           </TooltipProvider>
         ) : (
-          <Link to="/profile" className="flex items-center space-x-4 group">
+          <Link to="/profile" className="flex items-center space-x-4 group" onClick={isMobile ? onClose : undefined}>
             <Avatar className="h-12 w-12 border-2 border-primary/20 shadow-sm transition-transform group-hover:scale-105 duration-200">
               <AvatarImage src={user?.user_metadata?.avatar_url || "/placeholder.svg"} />
               <AvatarFallback className="bg-primary/10 text-primary font-semibold">
@@ -118,8 +132,6 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
 
       {/* Navigation */}
       <nav className={cn("p-5 space-y-3 flex-grow", isCollapsed && !isMobile ? "items-center" : "")}>
-        
-
         {isCollapsed && !isMobile ? (
           <TooltipProvider>
             <div className="flex flex-col items-center space-y-4">
@@ -141,7 +153,7 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                 <TooltipContent side="right">Dashboard</TooltipContent>
               </Tooltip>
 
-<Tooltip>
+              <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
                     to="/projects"
@@ -153,12 +165,12 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                     )}
                     onClick={isMobile ? onClose : undefined}
                   >
-                    <Tags className="h-5 w-5" />
+                    <FolderKanban className="h-5 w-5" />
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent side="right">My Projects</TooltipContent>
               </Tooltip>
-            </div>
+
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
@@ -176,6 +188,7 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                 </TooltipTrigger>
                 <TooltipContent side="right">My Labels</TooltipContent>
               </Tooltip>
+
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
@@ -193,6 +206,7 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                 </TooltipTrigger>
                 <TooltipContent side="right">Trash</TooltipContent>
               </Tooltip>
+            </div>
           </TooltipProvider>
         ) : (
           <>
@@ -305,6 +319,7 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
               <Link
                 to={`/profile`}
                 className="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-accent hover:text-accent-foreground transition-all duration-200 w-full"
+                onClick={isMobile ? onClose : undefined}
               >
                 <User className="h-5 w-5 min-w-5" />
                 <span>Profile</span>

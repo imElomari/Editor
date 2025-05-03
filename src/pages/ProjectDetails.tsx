@@ -16,20 +16,8 @@ import { toast } from "sonner";
 import LabelCard from "../components/LabelCard";
 import { LabelDialog } from "../components/LabelDialog";
 import { AssetUploadDialog } from "../components/AssetUploadDialog";
+import { getAssetUrl } from "../lib/utils";
 
-export function getAssetUrl(path: string): string {
-  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-  // Return as-is if it's already a full URL
-  if (path.startsWith('http')) {
-    return path;
-  }
-  // Remove any leading double slashes
-  const cleanPath = path.replace(/^\/+/, '');
-  // Ensure supabaseUrl doesn't end with a slash
-  const baseUrl = supabaseUrl.replace(/\/$/, '');
-  // Construct the full URL
-  return `${baseUrl}/${cleanPath}`;
-}
 
 export default function ProjectDetails() {
   const { projectId } = useParams();
@@ -40,6 +28,8 @@ export default function ProjectDetails() {
   const [loading, setLoading] = useState(true);
   const [isLabelDialogOpen, setIsLabelDialogOpen] = useState(false);
   const [isAssetDialogOpen, setIsAssetDialogOpen] = useState(false);
+    const [activeTab, setActiveTab] = useState<string>("assets")
+
 
 
   useEffect(() => {
@@ -126,7 +116,7 @@ export default function ProjectDetails() {
         </div>
 
         {/* Tabs */}
-        <Tabs defaultValue="labels" className="w-full">
+        <Tabs defaultValue={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList>
             <TabsTrigger value="labels" className="flex items-center gap-2">
               <Tags className="h-4 w-4" />
@@ -186,7 +176,7 @@ export default function ProjectDetails() {
         {asset.type === 'image' ? (
           <div className="relative w-full h-32 mb-2">
             <img 
-                src={getAssetUrl(asset.url)}
+                src={getAssetUrl(asset)}
                 alt={asset.name}
                 className="absolute inset-0 w-full h-full object-contain rounded-md"
                 onError={(e) => {
@@ -226,7 +216,10 @@ export default function ProjectDetails() {
             projectId={projectId}
             isOpen={isAssetDialogOpen}
             onClose={() => setIsAssetDialogOpen(false)}
-            onSuccess={fetchProjectData}
+            onSuccess={() => {
+              fetchProjectData()
+              setActiveTab("assets") 
+            }}
             />
           </TabsContent>
         </Tabs>

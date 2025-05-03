@@ -45,58 +45,6 @@ export function SonnerProvider({ children }: SonnerProviderProps) {
             cancelButton: "bg-muted text-muted-foreground hover:bg-muted/80",
             closeButton: "opacity-0 group-hover:opacity-100 transition-opacity duration-300",
           },
-          icons: {
-            success: () => (
-              <div className="h-6 w-6 rounded-full bg-green-500/20 flex items-center justify-center text-green-600 dark:text-green-400">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M12 5L6.5 10.5L4 8"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-            ),
-            error: () => (
-              <div className="h-6 w-6 rounded-full bg-red-500/20 flex items-center justify-center text-red-600 dark:text-red-400">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M8 5V9M8 11.01L8.01 11M15 8C15 11.866 11.866 15 8 15C4.13401 15 1 11.866 1 8C1 4.13401 4.13401 1 8 1C11.866 1 15 4.13401 15 8Z"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </div>
-            ),
-            info: () => (
-              <div className="h-6 w-6 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-600 dark:text-blue-400">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M8 8V12M8 4.01L8.01 4M15 8C15 11.866 11.866 15 8 15C4.13401 15 1 11.866 1 8C1 4.13401 4.13401 1 8 1C11.866 1 15 4.13401 15 8Z"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </div>
-            ),
-            warning: () => (
-              <div className="h-6 w-6 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-400">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M8 6V9M8 12H8.01M1 13L8 1L15 13H1Z"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-            ),
-          },
         }}
       />
       {children}
