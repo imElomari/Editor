@@ -65,7 +65,7 @@ CREATE TABLE assets (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     
-    CONSTRAINT assets_name_owner_unique UNIQUE (name, owner_id)
+    CONSTRAINT assets_name_project_unique UNIQUE (name, project_id);
 );
 
 -- Enable RLS for assets table
