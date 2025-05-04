@@ -79,26 +79,44 @@ const ProfilePage = () => {
       </div>
 
       <Tabs defaultValue="info" className="w-full mx-auto">
-        <TabsList className="grid w-full grid-cols-2 mb-8 p-1 bg-muted/50 rounded-xl">
+      <TabsList className="inline-flex h-auto w-full p-1 bg-muted/50 rounded-xl">
           <TabsTrigger
             value="info"
-            className="rounded-lg py-3 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all duration-200"
-          >
+            className={cn(
+              "inline-flex items-center justify-center w-full px-3 py-2.5",
+              "rounded-lg font-medium text-sm",
+              "transition-all duration-200",
+              "data-[state=active]:bg-background",
+              "data-[state=active]:text-foreground",
+              "data-[state=active]:shadow-sm",
+              "disabled:pointer-events-none",
+              "disabled:opacity-50",
+              "hover:bg-muted/80"
+            )}          >
             <User className="h-4 w-4 mr-2" />
             Profile Information
           </TabsTrigger>
           <TabsTrigger
             value="security"
-            className="rounded-lg py-3 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all duration-200"
-          >
+            className={cn(
+              "inline-flex items-center justify-center w-full px-3 py-2.5",
+              "rounded-lg font-medium text-sm",
+              "transition-all duration-200",
+              "data-[state=active]:bg-background",
+              "data-[state=active]:text-foreground",
+              "data-[state=active]:shadow-sm",
+              "disabled:pointer-events-none",
+              "disabled:opacity-50",
+              "hover:bg-muted/80"
+            )}          >
             <Shield className="h-4 w-4 mr-2" />
             Security
           </TabsTrigger>
         </TabsList>
-
-        <TabsContent value="info" className="space-y-6">
+        <div className="mt-8">
+        <TabsContent value="info" className="space-y-6 outline-none">
           <Card className="border border-border/40 shadow-lg overflow-hidden relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-t-lg h-32 z-0"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-t-lg h-35 z-0"></div>
 
             <CardHeader className="relative z-10 pb-0">
               <div className="flex flex-col items-center">
@@ -167,7 +185,7 @@ const ProfilePage = () => {
           </Card>
         </TabsContent>
 
-        <TabsContent value="security" className="space-y-6">
+        <TabsContent value="security" className="space-y-6 outline-none">
           <Card className="border border-border/40 shadow-lg">
             <CardHeader>
               <div className="flex items-center gap-3">
@@ -247,6 +265,7 @@ const ProfilePage = () => {
             </CardFooter>
           </Card>
         </TabsContent>
+        </div>
       </Tabs>
     </div>
   )
