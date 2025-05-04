@@ -52,7 +52,32 @@ CREATE TABLE labels (
 );
 
 -- Create Assets Table
-CREATE TYPE asset_type AS ENUM ('image', 'background', 'font', 'vector', 'icon');
+
+CREATE TYPE asset_type AS ENUM (
+    -- Images
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/webp',
+    'image/svg',
+    
+    -- Fonts
+    'font/ttf',
+    'font/otf',
+    'font/woff',
+    'font/woff2',
+    
+    -- Vectors and Documents
+    'application/pdf',
+    'application/json',
+    'application/javascript',
+    'text/css',
+    
+    -- Icons and Other
+    'icon/svg',
+    'icon/webfont',
+    'other'
+);
 
 CREATE TABLE assets (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
