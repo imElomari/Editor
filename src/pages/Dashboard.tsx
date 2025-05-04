@@ -357,18 +357,6 @@ export default function Dashboard() {
             </TabsTrigger>
           </TabsList>
 
-          {!isMobile && (
-            <div className="flex items-center gap-2">
-              <Button variant="outline" onClick={handleCreateProject} className="gap-2">
-                <Plus className="h-4 w-4" />
-                New Project
-              </Button>
-              <Button onClick={handleCreateLabel} className="gap-2">
-                <Plus className="h-4 w-4" />
-                New Label
-              </Button>
-            </div>
-          )}
         </div>
 
         <TabsContent value="labels" className="m-0 space-y-4">
