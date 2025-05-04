@@ -56,13 +56,13 @@ export const MobileUserMenu = ({ user, onSignOut }: { user: User; onSignOut: () 
         sideOffset={8}
         className={cn(
             "w-56 p-2",
-            "bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/80",
-            "border border-border/90",
+            "bg-background",
+            "border border-border/30",
             "shadow-lg rounded-lg",
             "animate-in fade-in-0 zoom-in-95"
           )}
       >
-        <div className="px-2 pt-1 pb-2 border-b border-border/90">
+        <div className="px-2 pt-1 pb-2 border-b border-border/30">
         <p className="text-sm font-medium truncate">
             {user?.user_metadata?.full_name || ''}
           </p>
