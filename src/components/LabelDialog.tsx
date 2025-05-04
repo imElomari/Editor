@@ -5,7 +5,7 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { supabase } from "../lib/supabase"
 import type { Label, Project } from "../lib/types"
-import { Loader2, Tag } from "lucide-react"
+import { Check, ChevronsUpDown, Loader2, Tag } from "lucide-react"
 import { Button } from "../components/ui/button"
 import { Input } from "../components/ui/input"
 import { Textarea } from "../components/ui/textarea"
@@ -15,6 +15,9 @@ import { toast } from "sonner"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../components/ui/dialog"
 import { useNavigate } from "react-router-dom"
 import { useMobile } from "../hooks/use-mobile"
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "./ui/command"
+import { cn } from "../lib/utils"
 
 interface LabelDialogProps {
   label?: Label
@@ -38,6 +41,7 @@ export function LabelDialog({ label, isOpen, onClose, onSuccess }: LabelDialogPr
   const isMobile = useMobile()
 
   const isEditing = Boolean(label)
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
     fetchProjects()
@@ -155,23 +159,49 @@ export function LabelDialog({ label, isOpen, onClose, onSuccess }: LabelDialogPr
             <label className="text-sm font-medium">
               Project <span className="text-destructive">*</span>
             </label>
-            <Select
-              value={formData.project_id}
-              onValueChange={(value) => setFormData({ ...formData, project_id: value })}
-              required
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select a project" />
-              </SelectTrigger>
-              <SelectContent>
-                {projects.map((project) => (
-                  <SelectItem key={project.id} value={project.id}>
-                    {project.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={open}
+                  className="w-full justify-between"
+                  disabled={loading}
+                >
+                  {formData.project_id
+                    ? projects.find((project) => project.id === formData.project_id)?.name
+                    : "Select project..."}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-full p-0">
+                <Command>
+                  <CommandInput placeholder="Search project..." />
+                  <CommandEmpty>No project found.</CommandEmpty>
+                  <CommandGroup>
+                    {projects.map((project) => (
+                      <CommandItem
+                        key={project.id}
+                        value={project.name}
+                        onSelect={() => {
+                          setFormData({ ...formData, project_id: project.id })
+                          setOpen(false)
+                        }}
+                      >
+                        <Check
+                          className={cn(
+                            "mr-2 h-4 w-4",
+                            formData.project_id === project.id ? "opacity-100" : "opacity-0"
+                          )}
+                        />
+                        {project.name}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </Command>
+              </PopoverContent>
+            </Popover>
+            </div>
 
           <div className="space-y-2">
             <label className="text-sm font-medium">
