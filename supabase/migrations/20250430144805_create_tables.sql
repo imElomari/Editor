@@ -54,28 +54,20 @@ CREATE TABLE labels (
 -- Create Assets Table
 
 CREATE TYPE asset_type AS ENUM (
-    -- Images
     'image/jpeg',
+    'image/jpg',
     'image/png',
     'image/gif',
-    'image/webp',
-    'image/svg',
-    
-    -- Fonts
+    'image/svg+xml',
     'font/ttf',
     'font/otf',
     'font/woff',
     'font/woff2',
-    
-    -- Vectors and Documents
-    'application/pdf',
     'application/json',
-    'application/javascript',
     'text/css',
-    
-    -- Icons and Other
-    'icon/svg',
-    'icon/webfont',
+    'text/javascript',
+    'application/javascript',
+    'text/plain',
     'other'
 );
 

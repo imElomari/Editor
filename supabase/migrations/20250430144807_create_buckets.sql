@@ -7,27 +7,37 @@ VALUES
   ('project-assets', 'project-assets', true, 52428800, -- 50MB limit
     ARRAY[
       'image/jpeg',
-      'image/png',
-      'image/gif',
-      'image/webp',
-      'image/svg+xml',
-      'font/ttf',
-      'font/otf',
-      'font/woff',
-      'font/woff2'
+  'image/jpg',
+  'image/png',
+  'image/gif',
+  'image/svg+xml',
+  'font/ttf',
+  'font/otf',
+  'font/woff',
+  'font/woff2',
+  'application/json',
+  'text/css',
+  'text/javascript',
+  'application/javascript',
+  'text/plain'
     ]
   ),
   ('global-assets', 'global-assets', true, 52428800, -- 50MB limit
     ARRAY[
       'image/jpeg',
+      'image/jpg',
       'image/png',
       'image/gif',
-      'image/webp',
       'image/svg+xml',
       'font/ttf',
       'font/otf',
       'font/woff',
-      'font/woff2'
+      'font/woff2',
+      'application/json',
+      'text/css',
+      'text/javascript',
+      'application/javascript',
+      'text/plain'
     ]
   )
 ON CONFLICT (id) DO UPDATE SET
