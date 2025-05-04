@@ -10,14 +10,50 @@ import {
   Plus, 
   Tags, 
   Image as ImageIcon, 
-  Upload
+  Upload,
+  FileText,
+  FileJson,
+  FileCode,
+  File,
+  TypeOutline
 } from "lucide-react";
 import { toast } from "sonner";
 import LabelCard from "../components/LabelCard";
 import { LabelDialog } from "../components/LabelDialog";
 import { AssetUploadDialog } from "../components/AssetUploadDialog";
-import { getAssetUrl } from "../lib/utils";
+import { getStorageUrl } from "../lib/utils";
 
+function getAssetIcon(type: string) {
+  if (type.startsWith('image/')) return ImageIcon;
+  if (type.startsWith('font/')) return TypeOutline;
+  if (type === 'application/json') return FileJson;
+  if (type === 'text/css' || type === 'application/javascript') return FileCode;
+  if (type === 'text/plain') return FileText;
+  return File;
+}
+
+function getAssetTypeLabel(type: string) {
+  switch (type) {
+    case 'image/jpeg':
+    case 'image/png':
+    case 'image/gif':
+    case 'image/svg':
+      return 'Image';
+    case 'font/ttf':
+    case 'font/otf':
+    case 'font/woff':
+    case 'font/woff2':
+      return 'Font';
+    case 'application/json':
+      return 'JSON';
+    case 'text/css':
+      return 'CSS';
+    case 'application/javascript':
+      return 'JavaScript';
+    default:
+      return 'File';
+  }
+}
 
 export default function ProjectDetails() {
   const { projectId } = useParams();
@@ -28,7 +64,7 @@ export default function ProjectDetails() {
   const [loading, setLoading] = useState(true);
   const [isLabelDialogOpen, setIsLabelDialogOpen] = useState(false);
   const [isAssetDialogOpen, setIsAssetDialogOpen] = useState(false);
-    const [activeTab, setActiveTab] = useState<string>("assets")
+  const [activeTab, setActiveTab] = useState<string>("assets")
 
 
 
@@ -54,11 +90,14 @@ export default function ProjectDetails() {
           .eq("project_id", projectId)
           .is("deleted_at", null),
         
-        // Fetch project assets
-        supabase
+          supabase
           .from("assets")
-          .select("*")
+          .select(`
+            *,
+            metadata
+          `)
           .eq("project_id", projectId)
+          .order('created_at', { ascending: false })
       ]);
 
       if (projectData.error) throw projectData.error;
@@ -168,44 +207,70 @@ export default function ProjectDetails() {
 
             {assets.length > 0 ? (
   <div className="grid gap-6 md:grid-cols-3 lg:grid-cols-4">
-    {assets.map((asset) => (
-      <div 
-        key={asset.id} 
-        className="border rounded-lg p-4 hover:shadow-md transition-shadow"
-      >
-        {asset.type === 'image' ? (
-          <div className="relative w-full h-32 mb-2">
-            <img 
-                src={getAssetUrl(asset)}
-                alt={asset.name}
-                className="absolute inset-0 w-full h-full object-contain rounded-md"
-                onError={(e) => {
-                  console.error('Image failed to load:', asset.url);
-                  e.currentTarget.src = '/placeholder-image.png';
-                }}
-              />
+    {assets.map((asset) => {
+  const AssetIcon = getAssetIcon(asset.type);
+  const typeLabel = getAssetTypeLabel(asset.type);
+  
+  return (
+    <div 
+      key={asset.id} 
+      className="group border rounded-lg p-4 hover:shadow-md transition-all bg-card"
+    >
+      {asset.type.startsWith('image/') ? (
+        <div className="relative w-full h-32 mb-2 bg-muted/50 rounded-md overflow-hidden">
+          <img 
+            src={getStorageUrl('project-assets', asset.metadata.storagePath ?? '')}
+            alt={asset.name}
+            className="absolute inset-0 w-full h-full object-contain rounded-md"
+            onError={(e) => {
+              console.error('Image failed to load:', asset.url);
+              e.currentTarget.src = '/placeholder-image.png';
+            }}
+          />
+          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+            <Button
+              variant="secondary"
+              size="sm"
+              className="h-8"
+              onClick={() => window.open(asset.url, '_blank')}
+            >
+              View Full Size
+            </Button>
           </div>
-        ) : (
-          <div className="w-full h-32 bg-muted rounded-md mb-2 flex items-center justify-center">
-            <ImageIcon className="h-8 w-8 text-muted-foreground" />
-          </div>
-        )}
-        <div className="space-y-1">
-          <p className="font-medium truncate">{asset.name}</p>
-          <div className="flex items-center justify-between">
-            <p className="text-xs text-muted-foreground">{asset.type}</p>
+        </div>
+      ) : (
+        <div className="w-full h-32 bg-muted rounded-md mb-2 flex flex-col items-center justify-center gap-2">
+          <AssetIcon className="h-8 w-8 text-muted-foreground" />
+          <span className="text-xs text-muted-foreground">{typeLabel}</span>
+        </div>
+      )}
+      
+      <div className="space-y-1">
+        <p className="font-medium truncate" title={asset.name}>
+          {asset.name}
+        </p>
+        <div className="flex items-center justify-between">
+          <p className="text-xs text-muted-foreground">
+            {asset.metadata?.size 
+              ? `${(asset.metadata.size / 1024).toFixed(1)} KB` 
+              : typeLabel}
+          </p>
+          {/* <div className="flex items-center gap-1">
             <Button 
               variant="ghost" 
               size="sm" 
               className="h-8 w-8 p-0"
-              onClick={() => window.open(asset.url, '_blank')}
+              onClick={() => window.open(getStorageUrl('project-assets', asset.metadata.storagePath ?? ''), '_blank')}
+              title="Open in new tab"
             >
-              <ImageIcon className="h-4 w-4" />
+              <AssetIcon className="h-4 w-4" />
             </Button>
-          </div>
+          </div> */}
         </div>
       </div>
-    ))}
+    </div>
+  );
+})}
         </div>
       ) : (
         <div className="text-center py-12 bg-muted/30 rounded-lg">
@@ -232,4 +297,16 @@ export default function ProjectDetails() {
       />
     </div>
   );
+}
+export async function getSignedUrl(bucket: string, path: string): Promise<string> {
+  const { data, error } = await supabase.storage
+    .from(bucket)
+    .createSignedUrl(path, 3600) // URL expires in 1 hour
+
+  if (error) {
+    console.error('Error creating signed URL:', error)
+    return ''
+  }
+
+  return data.signedUrl
 }
