@@ -4,8 +4,9 @@ import type { AssetScope, Project } from "../../lib/types"
 import { Input } from "../ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
-import { ArrowUpDown, Filter, Globe, FolderKanban, Search } from "lucide-react"
+import { ArrowUpDown, Filter, Search, RotateCcw } from "lucide-react"
 import { ProjectSelector } from "./project-selector"
+import { Button } from "../ui/button"
 
 interface DesktopFilterBarProps {
   assetScope: AssetScope
@@ -19,38 +20,61 @@ interface DesktopFilterBarProps {
   sortBy: string
   setSortBy: (sort: string) => void
   projects: Project[]
+  onReset: () => void
 }
 
 export function DesktopFilterBar({
-  assetScope,
-  setAssetScope,
-  searchQuery,
-  setSearchQuery,
-  projectFilter,
-  setProjectFilter,
-  typeFilter,
-  setTypeFilter,
-  sortBy,
-  setSortBy,
-  projects,
-}: DesktopFilterBarProps) {
+    assetScope,
+    setAssetScope,
+    searchQuery,
+    setSearchQuery,
+    projectFilter,
+    setProjectFilter,
+    typeFilter,
+    setTypeFilter,
+    sortBy,
+    setSortBy,
+    projects,
+  }: DesktopFilterBarProps) {
+    // Add reset function
+    const handleReset = () => {
+      setAssetScope("all")
+      setSearchQuery("")
+      setProjectFilter("all")
+      setTypeFilter("all")
+      setSortBy("newest")
+    }
+  
+    // Calculate if any filters are active
+    const hasActiveFilters = 
+      assetScope !== "all" || 
+      searchQuery !== "" || 
+      projectFilter !== "all" || 
+      typeFilter !== "all" || 
+      sortBy !== "newest"
+
   return (
     <div className="hidden md:flex flex-col gap-4">
-      <Tabs value={assetScope} onValueChange={(value) => setAssetScope(value as AssetScope)} className="w-full">
-        <TabsList className="w-full max-w-md">
-          <TabsTrigger value="all" className="flex-1">
-            All Assets
-          </TabsTrigger>
-          <TabsTrigger value="global" className="flex-1 flex items-center gap-2">
-            <Globe className="h-4 w-4" />
-            <span>Global Assets</span>
-          </TabsTrigger>
-          <TabsTrigger value="project" className="flex-1 flex items-center gap-2">
-            <FolderKanban className="h-4 w-4" />
-            <span>Project Assets</span>
-          </TabsTrigger>
-        </TabsList>
-      </Tabs>
+      <div className="flex items-center justify-between">
+        <Tabs value={assetScope} onValueChange={(value) => setAssetScope(value as AssetScope)} className="w-full">
+          <TabsList className="w-full max-w-md">
+            <TabsTrigger value="all" className="flex-1">All Assets</TabsTrigger>
+            <TabsTrigger value="global" className="flex-1">Global Assets</TabsTrigger>
+            <TabsTrigger value="project" className="flex-1">Project Assets</TabsTrigger>
+          </TabsList>
+        </Tabs>
+        {hasActiveFilters && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleReset}
+            className="ml-4 text-muted-foreground hover:text-foreground"
+          >
+            <RotateCcw className="h-4 w-4 mr-2" />
+            Reset Filters
+          </Button>
+        )}
+      </div>
 
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">

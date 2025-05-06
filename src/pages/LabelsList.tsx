@@ -26,6 +26,12 @@ export default function LabelsPage() {
   const [selectedLabel, setSelectedLabel] = useState<Label | undefined>()
   const { user } = useAuth()
   const isMobile = useMobile()
+  const handleResetFilters = () => {
+    setSearchQuery("")
+    setProjectFilter("all")
+    setStatusFilter("all")
+    setSortBy("newest")
+  }
 
   useEffect(() => {
     fetchLabels()
@@ -122,7 +128,11 @@ export default function LabelsPage() {
         </div>
 
         {/* Mobile Filters */}
-        <MobileFilterBar activeFilters={activeFiltersCount} title="Filter Labels">
+        <MobileFilterBar 
+          activeFilters={activeFiltersCount} 
+          title="Filter Labels"
+          onReset={handleResetFilters}
+          >
           <div className="space-y-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">Search</label>

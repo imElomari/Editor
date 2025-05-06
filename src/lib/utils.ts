@@ -1,7 +1,7 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import type { Asset } from "./types"
-import { ImageIcon, TypeOutline, FileJson, FileCode, FileText } from "lucide-react"
+import { Shapes, TypeOutline, FileJson, FileCode, FileText } from "lucide-react"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -33,7 +33,7 @@ export function getStorageUrl(path: string): string {
 }
 
 export function getAssetIcon(type: string) {
-  if (type.startsWith("image/")) return ImageIcon
+  if (type.startsWith("image/")) return Shapes
   if (type.startsWith("font/")) return TypeOutline
   if (type === "application/json") return FileJson
   if (type === "text/css" || type === "application/javascript") return FileCode

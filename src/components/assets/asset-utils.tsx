@@ -1,5 +1,11 @@
-import { File, FileCode, FileJson, FileText, ImageIcon, TypeIcon as TypeOutline } from "lucide-react"
-import type { LucideIcon } from "lucide-react"
+import {
+  File,
+  FileCode,
+  FileJson,
+  FileText, ImageIcon,
+  TypeIcon as TypeOutline,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 export function getAssetIcon(type: string): LucideIcon {
   if (type.startsWith("image/")) return ImageIcon

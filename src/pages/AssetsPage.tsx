@@ -13,7 +13,6 @@ import { useMobile } from "../hooks/use-mobile"
 import { AssetCard } from "../components/assets/asset-card"
 import { DesktopFilterBar } from "../components/assets/desktop-filter-bar"
 import { MobileFilterSection } from "../components/assets/mobile-filter-section"
-import { EmptyState } from "../components/assets/empty-state"
 
 // Import services
 import {
@@ -27,6 +26,7 @@ import {
 import { DeleteDialog } from "../components/assets/delete-dialog"
 import { ProjectAssignmentDialog } from "../components/assets/project-assignment-dialog"
 import { RenameDialog } from "../components/assets/rename-dialog"
+import { EmptyState } from "../components/assets/empty-state"
 
 export default function AssetsPage() {
   const { user } = useAuth()
@@ -43,6 +43,14 @@ export default function AssetsPage() {
   const [typeFilter, setTypeFilter] = useState("all")
   const [projectFilter, setProjectFilter] = useState("all")
   const [assetScope, setAssetScope] = useState<AssetScope>("all")
+  
+  const handleResetFilters = () => {
+    setAssetScope("all")
+    setSearchQuery("")
+    setProjectFilter("all")
+    setTypeFilter("all")
+    setSortBy("newest")
+  }
 
   // Dialog state
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false)
@@ -270,6 +278,7 @@ export default function AssetsPage() {
         {/* Mobile Filters */}
         <MobileFilterSection
           activeFiltersCount={activeFiltersCount}
+          onReset={handleResetFilters}
           assetScope={assetScope}
           setAssetScope={setAssetScope}
           searchQuery={searchQuery}
@@ -296,6 +305,8 @@ export default function AssetsPage() {
           sortBy={sortBy}
           setSortBy={setSortBy}
           projects={projects}
+          onReset={handleResetFilters}
+
         />
 
         {/* Assets Grid */}

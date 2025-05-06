@@ -23,6 +23,10 @@ export default function ProjectsPage() {
   const [selectedProject, setSelectedProject] = useState<Project | undefined>()
   const { user } = useAuth()
   const isMobile = useMobile()
+  const handleResetFilters = () => {
+    setSearchQuery("")
+    setSortBy("newest")
+  }
 
   useEffect(() => {
     fetchProjects()
@@ -95,7 +99,11 @@ export default function ProjectsPage() {
         </div>
 
         {/* Mobile Filters */}
-        <MobileFilterBar activeFilters={activeFiltersCount} title="Filter Projects">
+        <MobileFilterBar 
+          activeFilters={activeFiltersCount} 
+          title="Filter Projects"
+          onReset={handleResetFilters}
+          >
           <div className="space-y-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">Search</label>

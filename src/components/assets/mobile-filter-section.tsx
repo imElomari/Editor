@@ -21,6 +21,8 @@ interface MobileFilterSectionProps {
   sortBy: string
   setSortBy: (sort: string) => void
   projects: Project[]
+  onReset: () => void
+
 }
 
 export function MobileFilterSection({
@@ -36,9 +38,10 @@ export function MobileFilterSection({
   sortBy,
   setSortBy,
   projects,
+  onReset,
 }: MobileFilterSectionProps) {
   return (
-    <MobileFilterBar activeFilters={activeFiltersCount} title="Filter Assets">
+    <MobileFilterBar activeFilters={activeFiltersCount} title="Filter Assets" onReset={onReset}>
       <div className="space-y-4">
         <div className="space-y-2">
           <Label>Search</Label>
