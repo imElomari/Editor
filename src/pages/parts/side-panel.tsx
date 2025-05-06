@@ -17,7 +17,7 @@ import {
   Tags,
   FolderKanban,
   Trash2,
-  ImageIcon,
+  Shapes,
 } from "lucide-react"
 import { cn } from "../../lib/utils"
 import { useMobile } from "../../hooks/use-mobile"
@@ -206,7 +206,7 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                     )}
                     onClick={isMobile ? onClose : undefined}
                   >
-                    <ImageIcon className="h-5 w-5" />
+                    <Shapes className="h-5 w-5" />
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent side="right">Assets</TooltipContent>
@@ -282,7 +282,7 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
               )}
               onClick={isMobile ? onClose : undefined}
             >
-              <ImageIcon className="h-5 w-5 min-w-5" />
+              <Shapes className="h-5 w-5 min-w-5" />
               <span>Assets</span>
             </Link>
             <Link

@@ -1,10 +1,16 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
-import { useAuth } from "../context/AuthContext"
-import { Button } from "../components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../components/ui/card"
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { Button } from "../components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "../components/ui/card";
 import {
   Clock,
   Plus,
@@ -12,10 +18,8 @@ import {
   ArrowRight,
   Tag,
   FolderKanban,
-  LayoutDashboard,
   Sparkles,
   Calendar,
-  BarChart3,
   ChevronRight,
   TrendingUp,
   Zap,
@@ -23,39 +27,56 @@ import {
   CheckCircle2,
   Archive,
   PenTool,
-} from "lucide-react"
-import { supabase } from "../lib/supabase"
-import { toast } from "sonner"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
-import { Badge } from "../components/ui/badge"
-import { Separator } from "../components/ui/separator"
-import type { Project, Label } from "../lib/types"
-import { ProjectDialog } from "../components/ProjectDialog"
-import { LabelDialog } from "../components/LabelDialog"
-import { useMobile } from "../hooks/use-mobile"
-import { cn } from "../lib/utils"
+  FileText,
+  Shapes,
+  Upload,
+  FolderPlus,
+  TagIcon,
+  LibraryIcon,
+} from "lucide-react";
+import { supabase } from "../lib/supabase";
+import { toast } from "sonner";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../components/ui/tabs";
+import { Badge } from "../components/ui/badge";
+import { Separator } from "../components/ui/separator";
+import type { Project, Label, Asset } from "../lib/types";
+import { ProjectDialog } from "../components/ProjectDialog";
+import { LabelDialog } from "../components/LabelDialog";
+import { useMobile } from "../hooks/use-mobile";
+import { cn, getAssetTypeLabel, getStorageUrl } from "../lib/utils";
+import { AssetUploadDialog } from "../components/AssetUploadDialog";
 
 export default function Dashboard() {
-  const { user } = useAuth()
-  const navigate = useNavigate()
-  const [projects, setProjects] = useState<Project[]>([])
-  const [labels, setLabels] = useState<(Label & { projects?: { name: string } })[]>([])
-  const [loading, setLoading] = useState(true)
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [labels, setLabels] = useState<
+    (Label & { projects?: { name: string } })[]
+  >([]);
+  const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
     totalProjects: 0,
     totalLabels: 0,
     recentActivity: 0,
     publishedLabels: 0,
-  })
-  const [isProjectDialogOpen, setIsProjectDialogOpen] = useState(false)
-  const [isLabelDialogOpen, setIsLabelDialogOpen] = useState(false)
-  const isMobile = useMobile()
+    totalAssets: 0,
+  });
+  const [isProjectDialogOpen, setIsProjectDialogOpen] = useState(false);
+  const [isLabelDialogOpen, setIsLabelDialogOpen] = useState(false);
+  const isMobile = useMobile();
+  const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
+  const [assets, setAssets] = useState<Asset[]>([]);
 
   // Fetch user's data
   const fetchData = async () => {
     try {
-      if (!user) return
-      setLoading(true)
+      if (!user) return;
+      setLoading(true);
 
       // Fetch projects
       const { data: projectsData, error: projectsError } = await supabase
@@ -64,10 +85,10 @@ export default function Dashboard() {
         .eq("owner_id", user.id)
         .is("deleted_at", null)
         .order("updated_at", { ascending: false })
-        .limit(5)
+        .limit(5);
 
-      if (projectsError) throw projectsError
-      setProjects(projectsData || [])
+      if (projectsError) throw projectsError;
+      setProjects(projectsData || []);
 
       // Fetch labels
       const { data: labelsData, error: labelsError } = await supabase
@@ -76,23 +97,40 @@ export default function Dashboard() {
         .eq("owner_id", user.id)
         .is("deleted_at", null)
         .order("updated_at", { ascending: false })
-        .limit(5)
+        .limit(5);
 
-      if (labelsError) throw labelsError
-      setLabels(labelsData || [])
+      if (labelsError) throw labelsError;
+      setLabels(labelsData || []);
+
+      // Add to fetchData function
+      const { data: assetsData, error: assetsError } = await supabase
+        .from("assets")
+        .select("*")
+        .eq("owner_id", user.id)
+        .order("created_at", { ascending: false })
+        .limit(5);
+
+      if (assetsError) throw assetsError;
+      setAssets(assetsData || []);
+
+      //  fetch assets count
+      const { count: assetsCount } = await supabase
+        .from("assets")
+        .select("*", { count: "exact", head: true })
+        .eq("owner_id", user.id);
 
       // Get total counts
       const { count: projectsCount } = await supabase
         .from("projects")
         .select("*", { count: "exact", head: true })
         .eq("owner_id", user.id)
-        .is("deleted_at", null)
+        .is("deleted_at", null);
 
       const { count: labelsCount } = await supabase
         .from("labels")
         .select("*", { count: "exact", head: true })
         .eq("owner_id", user.id)
-        .is("deleted_at", null)
+        .is("deleted_at", null);
 
       // Get published labels count
       const { count: publishedCount } = await supabase
@@ -100,88 +138,90 @@ export default function Dashboard() {
         .select("*", { count: "exact", head: true })
         .eq("owner_id", user.id)
         .eq("status", "published")
-        .is("deleted_at", null)
+        .is("deleted_at", null);
 
       // Get recent activity count (items updated in the last 7 days)
-      const sevenDaysAgo = new Date()
-      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
       const { count: recentLabelsCount } = await supabase
         .from("labels")
         .select("*", { count: "exact", head: true })
         .eq("owner_id", user.id)
         .is("deleted_at", null)
-        .gte("updated_at", sevenDaysAgo.toISOString())
+        .gte("updated_at", sevenDaysAgo.toISOString());
 
       setStats({
         totalProjects: projectsCount || 0,
         totalLabels: labelsCount || 0,
         recentActivity: recentLabelsCount || 0,
         publishedLabels: publishedCount || 0,
-      })
+        totalAssets: assetsCount || 0,
+      });
     } catch (error) {
-      console.error("Error fetching data:", error)
-      toast.error("Failed to load dashboard data")
+      console.error("Error fetching data:", error);
+      toast.error("Failed to load dashboard data");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchData()
-  }, [user])
+    fetchData();
+  }, [user]);
 
   const handleCreateProject = () => {
-    setIsProjectDialogOpen(true)
-  }
+    setIsProjectDialogOpen(true);
+  };
 
   const handleCreateLabel = () => {
-    setIsLabelDialogOpen(true)
-  }
+    setIsLabelDialogOpen(true);
+  };
 
   const handleDialogSuccess = () => {
-    fetchData()
-    toast.success("Created successfully!")
-  }
+    fetchData();
+    toast.success("Created successfully!");
+  };
 
   const openProject = (projectId: string) => {
-    navigate(`/projects/${projectId}`)
-  }
+    navigate(`/projects/${projectId}`);
+  };
 
   const openLabel = (labelId: string) => {
-    navigate(`/editor/${labelId}`)
-  }
+    navigate(`/editor/${labelId}`);
+  };
 
   // Get time of day for greeting
   const getGreeting = () => {
-    const hour = new Date().getHours()
-    if (hour < 12) return "Good morning"
-    if (hour < 18) return "Good afternoon"
-    return "Good evening"
-  }
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good morning";
+    if (hour < 18) return "Good afternoon";
+    return "Good evening";
+  };
 
   // Get first name from email or metadata
   const getFirstName = () => {
     if (user?.user_metadata?.name) {
-      return user.user_metadata.name.split(" ")[0]
+      return user.user_metadata.name.split(" ")[0];
     }
     if (user?.email) {
-      return user.email.split("@")[0]
+      return user.email.split("@")[0];
     }
-    return "there"
-  }
+    return "there";
+  };
 
   const formatRelativeTime = (dateString: string) => {
-    const date = new Date(dateString)
-    const now = new Date()
-    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000)
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
-    if (diffInSeconds < 60) return "Just now"
-    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`
-    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`
-    if (diffInSeconds < 172800) return "Yesterday"
-    return date.toLocaleDateString()
-  }
+    if (diffInSeconds < 60) return "Just now";
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+    if (diffInSeconds < 86400)
+      return `${Math.floor(diffInSeconds / 3600)}h ago`;
+    if (diffInSeconds < 172800) return "Yesterday";
+    return date.toLocaleDateString();
+  };
 
   const getStatusIcon = (status: Label["status"]) => {
     switch (status) {
@@ -191,23 +231,23 @@ export default function Dashboard() {
             <CheckCircle2 className="h-3 w-3" />
             <span>Published</span>
           </Badge>
-        )
+        );
       case "archived":
         return (
           <Badge className="bg-gray-500/10 text-gray-500 border-gray-500/20 flex items-center gap-1">
             <Archive className="h-3 w-3" />
             <span>Archived</span>
           </Badge>
-        )
+        );
       default:
         return (
           <Badge className="bg-amber-500/10 text-amber-500 border-amber-500/20 flex items-center gap-1">
             <PenTool className="h-3 w-3" />
             <span>Draft</span>
           </Badge>
-        )
+        );
     }
-  }
+  };
 
   if (loading) {
     return (
@@ -220,7 +260,7 @@ export default function Dashboard() {
           <p className="text-lg font-medium">Loading your dashboard...</p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -231,35 +271,50 @@ export default function Dashboard() {
           <div className="flex items-center gap-2">
             <div className="h-10 w-1 bg-gradient-to-b from-primary to-primary/20 rounded-full hidden sm:block"></div>
             <h1 className="text-2xl sm:text-4xl font-bold tracking-tight">
-              {getGreeting()}, <span className="text-primary">{getFirstName()}</span>
+              {getGreeting()},{" "}
+              <span className="text-primary">{getFirstName()}</span>
             </h1>
           </div>
-          <p className="text-muted-foreground ml-0 sm:ml-3">Here's what's happening with your labels today</p>
+          <p className="text-muted-foreground ml-0 sm:ml-3">
+            Here's what's happening with your labels today
+          </p>
         </div>
-
-
       </div>
 
       {/* Stats Cards - Enhanced with better gradients and animations */}
-      <div className={cn("grid gap-4 mb-8", isMobile ? "grid-cols-2" : "sm:grid-cols-2 lg:grid-cols-4")}>
+      <div
+        className={cn(
+          "grid gap-4 mb-8",
+          isMobile ? "grid-cols-2" : "sm:grid-cols-2 lg:grid-cols-4"
+        )}
+      >
         <Card className={cn("overflow-hidden relative group")}>
           <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-primary/5 opacity-80"></div>
           <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700"></div>
           <CardHeader className="pb-2 relative">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium">Total Labels</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Total Labels
+              </CardTitle>
               <div className="p-2 bg-primary/10 rounded-full group-hover:scale-110 transition-transform duration-300">
                 <Tag className="h-4 w-4 text-primary" />
               </div>
             </div>
           </CardHeader>
           <CardContent className="relative">
-            <div className="text-3xl sm:text-4xl font-bold tracking-tight">{stats.totalLabels}</div>
+            <div className="text-3xl sm:text-4xl font-bold tracking-tight">
+              {stats.totalLabels}
+            </div>
             <div className="flex items-center gap-2 mt-2">
-              <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/20">
+              <Badge
+                variant="outline"
+                className="bg-green-500/10 text-green-500 border-green-500/20"
+              >
                 {stats.publishedLabels} published
               </Badge>
-              {stats.publishedLabels > 0 && <TrendingUp className="h-4 w-4 text-green-500" />}
+              {stats.publishedLabels > 0 && (
+                <TrendingUp className="h-4 w-4 text-green-500" />
+              )}
             </div>
           </CardContent>
         </Card>
@@ -276,10 +331,34 @@ export default function Dashboard() {
             </div>
           </CardHeader>
           <CardContent className="relative">
-            <div className="text-3xl sm:text-4xl font-bold tracking-tight">{stats.totalProjects}</div>
+            <div className="text-3xl sm:text-4xl font-bold tracking-tight">
+              {stats.totalProjects}
+            </div>
             <p className="text-sm text-muted-foreground mt-2 flex items-center gap-1">
               <Bookmark className="h-4 w-4" />
               <span>Organize your work</span>
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="overflow-hidden relative group">
+          <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-green-500/5 opacity-80"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-green-500/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700"></div>
+          <CardHeader className="pb-2 relative">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-sm font-medium">Assets</CardTitle>
+              <div className="p-2 bg-green-500/10 rounded-full group-hover:scale-110 transition-transform duration-300">
+                <Shapes className="h-4 w-4 text-green-500" />
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="relative">
+            <div className="text-3xl sm:text-4xl font-bold tracking-tight">
+              {stats.totalAssets}
+            </div>
+            <p className="text-sm text-muted-foreground mt-2 flex items-center gap-1">
+              <FileText className="h-4 w-4" />
+              <span>Total uploaded assets</span>
             </p>
           </CardContent>
         </Card>
@@ -289,14 +368,18 @@ export default function Dashboard() {
           <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-amber-500/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700"></div>
           <CardHeader className="pb-2 relative">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium">Recent Activity</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Recent Activity
+              </CardTitle>
               <div className="p-2 bg-amber-500/10 rounded-full group-hover:scale-110 transition-transform duration-300">
                 <Calendar className="h-4 w-4 text-amber-500" />
               </div>
             </div>
           </CardHeader>
           <CardContent className="relative">
-            <div className="text-3xl sm:text-4xl font-bold tracking-tight">{stats.recentActivity}</div>
+            <div className="text-3xl sm:text-4xl font-bold tracking-tight">
+              {stats.recentActivity}
+            </div>
             <p className="text-sm text-muted-foreground mt-2 flex items-center gap-1">
               <Clock className="h-4 w-4" />
               <span>In the last 7 days</span>
@@ -312,7 +395,9 @@ export default function Dashboard() {
           <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-purple-500/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700"></div>
           <CardHeader className="pb-2 relative">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium">Quick Create</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Quick Create
+              </CardTitle>
               <div className="p-2 bg-purple-500/10 rounded-full group-hover:scale-110 transition-transform duration-300">
                 <Sparkles className="h-4 w-4 text-purple-500" />
               </div>
@@ -355,13 +440,24 @@ export default function Dashboard() {
               <FolderKanban className="h-4 w-4" />
               <span>Projects</span>
             </TabsTrigger>
+            <TabsTrigger
+              value="assets"
+              className="flex items-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"
+            >
+              <Shapes className="h-4 w-4" />
+              <span>Assets</span>
+            </TabsTrigger>
           </TabsList>
-
         </div>
 
         <TabsContent value="labels" className="m-0 space-y-4">
           <Card className="overflow-hidden border-t-4 border-t-primary/50">
-            <CardHeader className={cn("flex flex-row items-center justify-between pb-3", isMobile && "px-4 py-3")}>
+            <CardHeader
+              className={cn(
+                "flex flex-row items-center justify-between pb-3",
+                isMobile && "px-4 py-3"
+              )}
+            >
               <div>
                 <CardTitle className="text-xl flex items-center gap-2">
                   <Tag className="h-5 w-5 text-primary" />
@@ -383,9 +479,12 @@ export default function Dashboard() {
                     <div className="absolute inset-0 bg-primary/10 rounded-full animate-pulse"></div>
                     <Tag className="h-10 w-10 sm:h-12 sm:w-12 mx-auto text-primary/70 relative z-10" />
                   </div>
-                  <h3 className="text-base sm:text-lg font-medium mb-1">No labels created yet</h3>
+                  <h3 className="text-base sm:text-lg font-medium mb-1">
+                    No labels created yet
+                  </h3>
                   <p className="text-sm text-muted-foreground mb-4 max-w-md mx-auto px-4">
-                    Create your first label to get started with your design process.
+                    Create your first label to get started with your design
+                    process.
                   </p>
                   <Button onClick={handleCreateLabel} className="shadow-sm">
                     <Plus className="h-4 w-4 mr-2" />
@@ -424,9 +523,13 @@ export default function Dashboard() {
                               </span>
                               {label.projects && (
                                 <span className="inline-flex items-center">
-                                  <span className="mx-1 hidden sm:inline">•</span>
+                                  <span className="mx-1 hidden sm:inline">
+                                    •
+                                  </span>
                                   <FolderKanban className="h-3 w-3 mr-1 flex-shrink-0" />
-                                  <span className="truncate">{label.projects.name}</span>
+                                  <span className="truncate">
+                                    {label.projects.name}
+                                  </span>
                                 </span>
                               )}
                             </div>
@@ -445,7 +548,9 @@ export default function Dashboard() {
                           </div>
                         </div>
                       </div>
-                      {index < labels.length - 1 && <Separator className="my-1 opacity-50" />}
+                      {index < labels.length - 1 && (
+                        <Separator className="my-1 opacity-50" />
+                      )}
                     </div>
                   ))}
 
@@ -468,16 +573,27 @@ export default function Dashboard() {
 
         <TabsContent value="projects" className="m-0 space-y-4">
           <Card className="overflow-hidden border-t-4 border-t-blue-500/50">
-            <CardHeader className={cn("flex flex-row items-center justify-between pb-3", isMobile && "px-4 py-3")}>
+            <CardHeader
+              className={cn(
+                "flex flex-row items-center justify-between pb-3",
+                isMobile && "px-4 py-3"
+              )}
+            >
               <div>
                 <CardTitle className="text-xl flex items-center gap-2">
                   <FolderKanban className="h-5 w-5 text-blue-500" />
                   Recent Projects
                 </CardTitle>
-                <CardDescription>Your recently updated projects</CardDescription>
+                <CardDescription>
+                  Your recently updated projects
+                </CardDescription>
               </div>
               {!isMobile && (
-                <Button onClick={handleCreateProject} variant="outline" size="sm">
+                <Button
+                  onClick={handleCreateProject}
+                  variant="outline"
+                  size="sm"
+                >
                   <Plus className="h-4 w-4 mr-2" />
                   New Project
                 </Button>
@@ -490,7 +606,9 @@ export default function Dashboard() {
                     <div className="absolute inset-0 bg-blue-500/10 rounded-full animate-pulse"></div>
                     <FolderKanban className="h-10 w-10 sm:h-12 sm:w-12 mx-auto text-blue-500/70 relative z-10" />
                   </div>
-                  <h3 className="text-base sm:text-lg font-medium mb-1">No projects created yet</h3>
+                  <h3 className="text-base sm:text-lg font-medium mb-1">
+                    No projects created yet
+                  </h3>
                   <p className="text-sm text-muted-foreground mb-4 max-w-md mx-auto px-4">
                     Projects help you organize your labels into collections.
                   </p>
@@ -512,7 +630,9 @@ export default function Dashboard() {
                             <FolderKanban className="h-5 w-5 text-blue-500" />
                           </div>
                           <div className="min-w-0">
-                            <div className="font-medium truncate">{project.name}</div>
+                            <div className="font-medium truncate">
+                              {project.name}
+                            </div>
                             <div className="text-sm text-muted-foreground flex items-center gap-2 flex-wrap">
                               <span className="flex items-center">
                                 <Clock className="h-3 w-3 mr-1 flex-shrink-0" />
@@ -520,10 +640,14 @@ export default function Dashboard() {
                               </span>
                               {project.description && (
                                 <span className="inline-flex items-center">
-                                  <span className="mx-1 hidden sm:inline">•</span>
+                                  <span className="mx-1 hidden sm:inline">
+                                    •
+                                  </span>
                                   <span className="truncate">
                                     {project.description.substring(0, 30)}
-                                    {project.description.length > 30 ? "..." : ""}
+                                    {project.description.length > 30
+                                      ? "..."
+                                      : ""}
                                   </span>
                                 </span>
                               )}
@@ -543,7 +667,9 @@ export default function Dashboard() {
                           </div>
                         </div>
                       </div>
-                      {index < projects.length - 1 && <Separator className="my-1 opacity-50" />}
+                      {index < projects.length - 1 && (
+                        <Separator className="my-1 opacity-50" />
+                      )}
                     </div>
                   ))}
 
@@ -563,100 +689,270 @@ export default function Dashboard() {
             </CardContent>
           </Card>
         </TabsContent>
+        <TabsContent value="assets" className="m-0 space-y-4">
+          <Card className="overflow-hidden border-t-4 border-t-green-500/50">
+            <CardHeader
+              className={cn(
+                "flex flex-row items-center justify-between pb-3",
+                isMobile && "px-4 py-3"
+              )}
+            >
+              <div>
+                <CardTitle className="text-xl flex items-center gap-2">
+                  <Shapes className="h-5 w-5 text-green-500" />
+                  Recent Assets
+                </CardTitle>
+                <CardDescription>Your recently uploaded assets</CardDescription>
+              </div>
+              {!isMobile && (
+                <Button
+                  onClick={() => setIsUploadDialogOpen(true)}
+                  variant="outline"
+                  size="sm"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Upload Asset
+                </Button>
+              )}
+            </CardHeader>
+            <CardContent className={isMobile ? "px-4 py-2" : undefined}>
+              {assets.length === 0 ? (
+                <div className="text-center py-8 sm:py-12 border-2 border-dashed rounded-lg bg-muted/20">
+                  <div className="relative w-16 h-16 mx-auto mb-4">
+                    <div className="absolute inset-0 bg-green-500/10 rounded-full animate-pulse"></div>
+                    <Shapes className="h-10 w-10 sm:h-12 sm:w-12 mx-auto text-green-500/70 relative z-10" />
+                  </div>
+                  <h3 className="text-base sm:text-lg font-medium mb-1">
+                    No assets uploaded yet
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-4 max-w-md mx-auto px-4">
+                    Upload your first asset to get started with your asset
+                    library.
+                  </p>
+                  <Button
+                    onClick={() => setIsUploadDialogOpen(true)}
+                    className="shadow-sm"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Upload Your First Asset
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {assets.map((asset, index) => (
+                    <div key={asset.id}>
+                      <div className="flex items-center justify-between p-3 hover:bg-muted/50 rounded-lg transition-all duration-200 hover:shadow-sm">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="h-10 w-10 rounded-md bg-muted flex items-center justify-center flex-shrink-0 overflow-hidden">
+                            {asset.type.startsWith("image/") ? (
+                              <img
+                                src={getStorageUrl(
+                                  asset.metadata?.storagePath || ""
+                                )}
+                                alt={asset.name}
+                                className="h-full w-full object-cover"
+                                onError={(e) => {
+                                  e.currentTarget.src =
+                                    "/placeholder-image.png";
+                                }}
+                              />
+                            ) : (
+                              <FileText className="h-5 w-5 text-muted-foreground" />
+                            )}
+                          </div>
+                          <div className="min-w-0">
+                            <div className="font-medium truncate">
+                              {asset.name}
+                            </div>
+                            <div className="text-sm text-muted-foreground flex items-center gap-2">
+                              <span className="flex items-center">
+                                <Clock className="h-3 w-3 mr-1" />
+                                {formatRelativeTime(asset.created_at)}
+                              </span>
+                              <span className="flex items-center">
+                                <span className="mx-1">•</span>
+                                {getAssetTypeLabel(asset.type)}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {index < assets.length - 1 && (
+                        <Separator className="my-1 opacity-50" />
+                      )}
+                    </div>
+                  ))}
+
+                  {assets.length > 0 && (
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-between mt-4 text-muted-foreground hover:text-foreground group"
+                      onClick={() => navigate("/assets")}
+                    >
+                      <span>View all assets</span>
+                      <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  )}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
       </Tabs>
 
       {/* Quick Actions - Enhanced with better styling */}
-      <div className="mt-8 sm:mt-10">
-        <div className="flex items-center gap-3 mb-4 sm:mb-6">
-          <h2 className="text-xl font-semibold">Quick Actions</h2>
-          <div className="h-px bg-border flex-1"></div>
+<div className="mt-8 sm:mt-10">
+  <div className="flex items-center gap-3 mb-6">
+    <h2 className="text-lg sm:text-xl font-semibold tracking-tight">Quick Actions</h2>
+    <div className="h-px flex-1 bg-border/60" />
+  </div>
+
+  <div className={cn(
+    "grid gap-4",
+    "grid-cols-2 sm:grid-cols-3 lg:grid-cols-6"
+  )}>
+    {/* Create Project Card */}
+    <Card
+      className="group cursor-pointer transition-all duration-300 hover:shadow-lg border-primary/20 hover:border-primary/40 relative overflow-hidden"
+      onClick={handleCreateProject}
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+      <CardContent className="p-4 sm:p-6">
+        <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
+          <div className="relative">
+            <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <FolderPlus className="h-6 w-6 text-primary" />
+            </div>
+            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-primary/10 rounded-full flex items-center justify-center">
+              <Plus className="h-3 w-3 text-primary" />
+            </div>
+          </div>
+          <div>
+            <h3 className="font-medium group-hover:text-primary transition-colors">New Project</h3>
+            <p className="text-xs text-muted-foreground mt-1">Start organizing your labels</p>
+          </div>
         </div>
-        <div className={cn("grid gap-4", isMobile ? "grid-cols-2" : "md:grid-cols-4")}>
-          <Card
-            className="group cursor-pointer hover:bg-muted/30 transition-all duration-300 hover:shadow-md border-primary/20 hover:border-primary/40"
-            onClick={handleCreateLabel}
-          >
-            <CardContent
-              className={cn(
-                "flex flex-col items-center text-center relative overflow-hidden",
-                isMobile ? "p-4" : "p-6",
-              )}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 relative">
-                <Tag className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
-                <div className="absolute inset-0 rounded-full border border-primary/20 group-hover:border-primary/40 transition-colors"></div>
-              </div>
-              <h3 className="font-medium text-lg mb-2 group-hover:text-primary transition-colors">New Label</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground">Create a new label design</p>
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700"></div>
-            </CardContent>
-          </Card>
+      </CardContent>
+      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+    </Card>
 
-          <Card
-            className="group cursor-pointer hover:bg-muted/30 transition-all duration-300 hover:shadow-md border-blue-500/20 hover:border-blue-500/40"
-            onClick={handleCreateProject}
-          >
-            <CardContent
-              className={cn(
-                "flex flex-col items-center text-center relative overflow-hidden",
-                isMobile ? "p-4" : "p-6",
-              )}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-full bg-blue-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 relative">
-                <FolderKanban className="h-6 w-6 sm:h-7 sm:w-7 text-blue-500" />
-                <div className="absolute inset-0 rounded-full border border-blue-500/20 group-hover:border-blue-500/40 transition-colors"></div>
-              </div>
-              <h3 className="font-medium text-lg mb-2 group-hover:text-blue-500 transition-colors">New Project</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground">Create a project collection</p>
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-blue-500/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700"></div>
-            </CardContent>
-          </Card>
-
-          <Card
-            className="group cursor-pointer hover:bg-muted/30 transition-all duration-300 hover:shadow-md border-amber-500/20 hover:border-amber-500/40"
-            onClick={() => navigate("/labels")}
-          >
-            <CardContent
-              className={cn(
-                "flex flex-col items-center text-center relative overflow-hidden",
-                isMobile ? "p-4" : "p-6",
-              )}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-full bg-amber-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 relative">
-                <LayoutDashboard className="h-6 w-6 sm:h-7 sm:w-7 text-amber-500" />
-                <div className="absolute inset-0 rounded-full border border-amber-500/20 group-hover:border-amber-500/40 transition-colors"></div>
-              </div>
-              <h3 className="font-medium text-lg mb-2 group-hover:text-amber-500 transition-colors">All Labels</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground">View all your labels</p>
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-amber-500/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700"></div>
-            </CardContent>
-          </Card>
-
-          <Card
-            className="group cursor-pointer hover:bg-muted/30 transition-all duration-300 hover:shadow-md border-purple-500/20 hover:border-purple-500/40"
-            onClick={() => navigate("/projects")}
-          >
-            <CardContent
-              className={cn(
-                "flex flex-col items-center text-center relative overflow-hidden",
-                isMobile ? "p-4" : "p-6",
-              )}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-full bg-purple-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 relative">
-                <BarChart3 className="h-6 w-6 sm:h-7 sm:w-7 text-purple-500" />
-                <div className="absolute inset-0 rounded-full border border-purple-500/20 group-hover:border-purple-500/40 transition-colors"></div>
-              </div>
-              <h3 className="font-medium text-lg mb-2 group-hover:text-purple-500 transition-colors">All Projects</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground">Manage your projects</p>
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-purple-500/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700"></div>
-            </CardContent>
-          </Card>
+    {/* Create Label Card */}
+    <Card
+      className="group cursor-pointer transition-all duration-300 hover:shadow-lg border-blue-500/20 hover:border-blue-500/40 relative overflow-hidden"
+      onClick={handleCreateLabel}
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+      <CardContent className="p-4 sm:p-6">
+        <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
+          <div className="relative">
+            <div className="h-12 w-12 rounded-xl bg-blue-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <TagIcon className="h-6 w-6 text-blue-500" />
+            </div>
+            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-blue-500/10 rounded-full flex items-center justify-center">
+              <Plus className="h-3 w-3 text-blue-500" />
+            </div>
+          </div>
+          <div>
+            <h3 className="font-medium group-hover:text-blue-500 transition-colors">New Label</h3>
+            <p className="text-xs text-muted-foreground mt-1">Create a new label</p>
+          </div>
         </div>
-      </div>
+      </CardContent>
+      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-blue-500/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+    </Card>
+
+    {/* Upload Asset Card */}
+    <Card
+      className="group cursor-pointer transition-all duration-300 hover:shadow-lg border-green-500/20 hover:border-green-500/40 relative overflow-hidden"
+      onClick={() => setIsUploadDialogOpen(true)}
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+      <CardContent className="p-4 sm:p-6">
+        <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
+          <div className="relative">
+            <div className="h-12 w-12 rounded-xl bg-green-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <Upload className="h-6 w-6 text-green-500" />
+            </div>
+            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500/10 rounded-full flex items-center justify-center">
+              <Plus className="h-3 w-3 text-green-500" />
+            </div>
+          </div>
+          <div>
+            <h3 className="font-medium group-hover:text-green-500 transition-colors">Upload Asset</h3>
+            <p className="text-xs text-muted-foreground mt-1">Add new assets</p>
+          </div>
+        </div>
+      </CardContent>
+      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-green-500/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+    </Card>
+
+    {/* View Assets Card */}
+    <Card
+      className="group cursor-pointer transition-all duration-300 hover:shadow-lg border-teal-500/20 hover:border-teal-500/40 relative overflow-hidden"
+      onClick={() => navigate("/assets")}
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 via-teal-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+      <CardContent className="p-4 sm:p-6">
+        <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
+          <div className="relative">
+            <div className="h-12 w-12 rounded-xl bg-teal-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <LibraryIcon className="h-6 w-6 text-teal-500" />
+            </div>
+          </div>
+          <div>
+            <h3 className="font-medium group-hover:text-teal-500 transition-colors">Assets Library</h3>
+            <p className="text-xs text-muted-foreground mt-1">Browse all assets</p>
+          </div>
+        </div>
+      </CardContent>
+      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-teal-500/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+    </Card>
+
+    {/* View Labels Card */}
+    <Card
+      className="group cursor-pointer transition-all duration-300 hover:shadow-lg border-violet-500/20 hover:border-violet-500/40 relative overflow-hidden"
+      onClick={() => navigate("/labels")}
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 via-violet-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+      <CardContent className="p-4 sm:p-6">
+        <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
+          <div className="relative">
+            <div className="h-12 w-12 rounded-xl bg-violet-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <TagIcon className="h-6 w-6 text-violet-500" />
+            </div>
+          </div>
+          <div>
+            <h3 className="font-medium group-hover:text-violet-500 transition-colors">Labels</h3>
+            <p className="text-xs text-muted-foreground mt-1">View all labels</p>
+          </div>
+        </div>
+      </CardContent>
+      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-violet-500/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+    </Card>
+
+    {/* View Projects Card */}
+    <Card
+      className="group cursor-pointer transition-all duration-300 hover:shadow-lg border-amber-500/20 hover:border-amber-500/40 relative overflow-hidden"
+      onClick={() => navigate("/projects")}
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+      <CardContent className="p-4 sm:p-6">
+        <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
+          <div className="relative">
+            <div className="h-12 w-12 rounded-xl bg-amber-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <FolderKanban className="h-6 w-6 text-amber-500" />
+            </div>
+          </div>
+          <div>
+            <h3 className="font-medium group-hover:text-amber-500 transition-colors">Projects</h3>
+            <p className="text-xs text-muted-foreground mt-1">View all projects</p>
+          </div>
+        </div>
+      </CardContent>
+      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-amber-500/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+    </Card>
+  </div>
+</div>
 
       <ProjectDialog
         isOpen={isProjectDialogOpen}
@@ -669,6 +965,15 @@ export default function Dashboard() {
         onClose={() => setIsLabelDialogOpen(false)}
         onSuccess={handleDialogSuccess}
       />
+
+      <AssetUploadDialog
+        isOpen={isUploadDialogOpen}
+        onClose={() => setIsUploadDialogOpen(false)}
+        onSuccess={() => {
+          setIsUploadDialogOpen(false);
+          fetchData();
+        }}
+      />
     </div>
-  )
+  );
 }
