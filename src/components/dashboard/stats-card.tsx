@@ -1,22 +1,28 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card"
-import { Button } from "../ui/button"
-import { ArrowRight } from "lucide-react"
-import { cn } from "../../lib/utils"
-import { QuickAssetButton } from "./quick-action-button"
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import { Button } from "../ui/button";
+import { cn } from "../../lib/utils";
+import { QuickAssetButton } from "./quick-action-button";
+import { Icons } from "../../lib/constances";
 
 interface StatsCardProps {
-  title: string
-  value: number
-  description: string
-  icon: React.ReactNode
-  className?: string
-  actionLabel?: string
-  actionHref?: string
-  showQuickUpload?: boolean
+  title: string;
+  value: number;
+  description: string;
+  icon: React.ReactNode;
+  className?: string;
+  actionLabel?: string;
+  actionHref?: string;
+  showQuickUpload?: boolean;
 }
 
 export function StatsCard({
@@ -43,11 +49,13 @@ export function StatsCard({
         <Button variant="ghost" size="sm" asChild>
           <a href={actionHref}>
             {actionLabel}
-            <ArrowRight className="ml-2 h-4 w-4" />
+            <Icons.arrowRight className="ml-2 h-4 w-4" />
           </a>
         </Button>
-        {showQuickUpload && <QuickAssetButton variant="outline" size="sm" showLabel={false} />}
+        {showQuickUpload && (
+          <QuickAssetButton variant="outline" size="sm" showLabel={false} />
+        )}
       </CardFooter>
     </Card>
-  )
+  );
 }

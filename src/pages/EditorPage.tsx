@@ -1,30 +1,30 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "../components/ui/button"
-import { Separator } from "../components/ui/separator"
-import { ArrowLeft, Minus, Plus, Save, Download, Undo, Redo, MoreVertical } from "lucide-react"
+import { useState } from "react";
+import { Button } from "../components/ui/button";
+import { Separator } from "../components/ui/separator";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../components/ui/dropdown-menu"
-import { toast } from "sonner"
+} from "../components/ui/dropdown-menu";
+import { toast } from "sonner";
+import { Icons } from "../lib/constances";
 
 export default function EditorPage() {
-  const [zoom, setZoom] = useState(100)
+  const [zoom, setZoom] = useState(100);
 
-  const handleZoomIn = () => setZoom(Math.min(200, zoom + 10))
-  const handleZoomOut = () => setZoom(Math.max(50, zoom - 10))
+  const handleZoomIn = () => setZoom(Math.min(200, zoom + 10));
+  const handleZoomOut = () => setZoom(Math.max(50, zoom - 10));
 
   const handleSave = () => {
     toast.success("Label saved successfully", {
       description: "Your changes have been saved.",
       position: "top-right",
       icon: true,
-    })
-  }
+    });
+  };
 
   return (
     <div className="flex flex-col h-screen bg-background">
@@ -34,27 +34,27 @@ export default function EditorPage() {
         <div className="hidden sm:flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Button variant="ghost" size="icon">
-              <ArrowLeft className="h-5 w-5" />
+              <Icons.arrowLeft className="h-5 w-5" />
             </Button>
             <h1 className="text-lg font-semibold">Label Editor</h1>
           </div>
 
           <div className="flex items-center space-x-2">
             <Button variant="ghost" size="sm">
-              <Undo className="h-4 w-4 mr-1" />
+              <Icons.undo className="h-4 w-4 mr-1" />
               <span className="hidden sm:inline">Undo</span>
             </Button>
             <Button variant="ghost" size="sm">
-              <Redo className="h-4 w-4 mr-1" />
+              <Icons.redo className="h-4 w-4 mr-1" />
               <span className="hidden sm:inline">Redo</span>
             </Button>
             <Separator orientation="vertical" className="h-6 mx-1" />
             <Button variant="ghost" size="sm" onClick={handleSave}>
-              <Save className="h-4 w-4 mr-1" />
+              <Icons.save className="h-4 w-4 mr-1" />
               <span className="hidden sm:inline">Save</span>
             </Button>
             <Button variant="ghost" size="sm">
-              <Download className="h-4 w-4 mr-1" />
+              <Icons.download className="h-4 w-4 mr-1" />
               <span className="hidden sm:inline">Export</span>
             </Button>
           </div>
@@ -64,31 +64,31 @@ export default function EditorPage() {
         <div className="sm:hidden flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Button variant="ghost" size="icon">
-              <ArrowLeft className="h-5 w-5" />
+              <Icons.arrowLeft className="h-5 w-5" />
             </Button>
             <h1 className="text-base font-semibold">Label Editor</h1>
           </div>
 
           <div className="flex items-center space-x-1">
             <Button variant="ghost" size="icon">
-              <Undo className="h-4 w-4" />
+              <Icons.undo className="h-4 w-4" />
             </Button>
             <Button variant="ghost" size="icon">
-              <Redo className="h-4 w-4" />
+              <Icons.redo className="h-4 w-4" />
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon">
-                  <MoreVertical className="h-4 w-4" />
+                  <Icons.moreVertical className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={handleSave}>
-                  <Save className="h-4 w-4 mr-2" />
+                  <Icons.save className="h-4 w-4 mr-2" />
                   Save
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <Download className="h-4 w-4 mr-2" />
+                  <Icons.download className="h-4 w-4 mr-2" />
                   Export
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -138,9 +138,11 @@ export default function EditorPage() {
               onClick={handleZoomOut}
               disabled={zoom <= 50}
             >
-              <Minus className="h-4 w-4" />
+              <Icons.minus className="h-4 w-4" />
             </Button>
-            <span className="text-xs min-w-[3rem] text-center tabular-nums">{zoom}%</span>
+            <span className="text-xs min-w-[3rem] text-center tabular-nums">
+              {zoom}%
+            </span>
             <Button
               variant="ghost"
               size="icon"
@@ -148,11 +150,11 @@ export default function EditorPage() {
               onClick={handleZoomIn}
               disabled={zoom >= 200}
             >
-              <Plus className="h-4 w-4" />
+              <Icons.plus className="h-4 w-4" />
             </Button>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

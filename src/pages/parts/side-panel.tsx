@@ -1,49 +1,49 @@
-"use client"
+"use client";
 
-import { useAuth } from "../../context/AuthContext"
-import { useTheme } from "../../context/ThemeContext"
-import { Link, useLocation } from "react-router-dom"
-import { Button } from "../../components/ui/button"
+import { useAuth } from "../../context/AuthContext";
+import { useTheme } from "../../context/ThemeContext";
+import { Link, useLocation } from "react-router-dom";
+import { Button } from "../../components/ui/button";
+import { Icons } from "../../lib/constances";
+import { cn } from "../../lib/utils";
+import { useMobile } from "../../hooks/use-mobile";
 import {
-  ChevronLeft,
-  ChevronRight,
-  Home,
-  LogOut,
-  Moon,
-  Tag,
-  Sun,
-  X,
-  User,
-  Tags,
-  FolderKanban,
-  Trash2,
-  Shapes,
-} from "lucide-react"
-import { cn } from "../../lib/utils"
-import { useMobile } from "../../hooks/use-mobile"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../components/ui/tooltip"
-import { Avatar, AvatarFallback, AvatarImage } from "../../components/ui/avatar"
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../../components/ui/tooltip";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../../components/ui/avatar";
 
 type SidePanelProps = {
-  isOpen: boolean
-  onClose: () => void
-  isCollapsed?: boolean
-  onToggleCollapse?: () => void
-}
+  isOpen: boolean;
+  onClose: () => void;
+  isCollapsed?: boolean;
+  onToggleCollapse?: () => void;
+};
 
-export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollapse = () => {} }: SidePanelProps) {
-  const { user, signOut } = useAuth()
-  const { theme, toggleTheme } = useTheme()
-  const location = useLocation()
-  const isMobile = useMobile()
+export function SidePanel({
+  isOpen,
+  onClose,
+  isCollapsed = false,
+  onToggleCollapse = () => {},
+}: SidePanelProps) {
+  const { user, signOut } = useAuth();
+  const { theme, toggleTheme } = useTheme();
+  const location = useLocation();
+  const isMobile = useMobile();
 
   const getInitials = (email: string) => {
-    return email?.substring(0, 2).toUpperCase() || "U"
-  }
+    return email?.substring(0, 2).toUpperCase() || "U";
+  };
 
   const isActive = (path: string) => {
-    return location.pathname === path
-  }
+    return location.pathname === path;
+  };
 
   return (
     <div
@@ -54,28 +54,50 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
         isCollapsed && !isMobile ? "md:w-20" : "md:w-72",
         "flex flex-col",
         "bg-gradient-to-b from-background to-background/95",
-        isMobile ? "w-[85%] max-w-[300px]" : "",
+        isMobile ? "w-[85%] max-w-[300px]" : ""
       )}
     >
       {/* Header */}
       <div className="flex items-center justify-between p-5 border-b bg-background/50 backdrop-blur-sm">
-        <div className={cn("flex items-center", isCollapsed && !isMobile ? "justify-center w-full" : "space-x-3")}>
-          <Tag className={cn("h-6 w-6 text-primary transition-all", isCollapsed && !isMobile ? "h-7 w-7" : "")} />
-          {(!isCollapsed || isMobile) && <span className="font-bold text-lg tracking-tight">Label Editor</span>}
+        <div
+          className={cn(
+            "flex items-center",
+            isCollapsed && !isMobile ? "justify-center w-full" : "space-x-3"
+          )}
+        >
+          <Icons.label
+            className={cn(
+              "h-6 w-6 text-primary transition-all",
+              isCollapsed && !isMobile ? "h-7 w-7" : ""
+            )}
+          />
+          {(!isCollapsed || isMobile) && (
+            <span className="font-bold text-lg tracking-tight">
+              Label Editor
+            </span>
+          )}
         </div>
         {isMobile ? (
-          <Button variant="ghost" size="icon" onClick={onClose} className="hover:bg-background/80">
-            <X className="h-5 w-5" />
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onClose}
+            className="hover:bg-background/80"
+          >
+            <Icons.close className="h-5 w-5" />
           </Button>
         ) : (
           <Button
             variant="ghost"
             size="icon"
             onClick={onToggleCollapse}
-            className={cn("hover:bg-background/80 transition-opacity", isCollapsed ? "hidden" : "")}
+            className={cn(
+              "hover:bg-background/80 transition-opacity",
+              isCollapsed ? "hidden" : ""
+            )}
             aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
-            <ChevronLeft className="h-5 w-5" />
+            <Icons.chevronLeft className="h-5 w-5" />
           </Button>
         )}
       </div>
@@ -89,12 +111,17 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
           className="absolute -right-3 top-20 h-7 w-7 rounded-full border bg-background shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
           aria-label="Expand sidebar"
         >
-          <ChevronRight className="h-4 w-4 text-primary" />
+          <Icons.chevronRight className="h-4 w-4 text-primary" />
         </Button>
       )}
 
       {/* Profile Section */}
-      <div className={cn("p-5 border-b bg-muted/20", isCollapsed && !isMobile ? "flex justify-center py-6" : "")}>
+      <div
+        className={cn(
+          "p-5 border-b bg-muted/20",
+          isCollapsed && !isMobile ? "flex justify-center py-6" : ""
+        )}
+      >
         {isCollapsed && !isMobile ? (
           <TooltipProvider>
             <Tooltip>
@@ -105,7 +132,11 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                   onClick={isMobile ? onClose : undefined}
                 >
                   <Avatar className="h-12 w-12 border-2 border-primary/20 shadow-sm">
-                    <AvatarImage src={user?.user_metadata?.avatar_url || "/placeholder.svg"} />
+                    <AvatarImage
+                      src={
+                        user?.user_metadata?.avatar_url || "/placeholder.svg"
+                      }
+                    />
                     <AvatarFallback className="bg-primary/10 text-primary font-semibold">
                       {getInitials(user?.email || "")}
                     </AvatarFallback>
@@ -118,9 +149,15 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
             </Tooltip>
           </TooltipProvider>
         ) : (
-          <Link to="/profile" className="flex items-center space-x-4 group" onClick={isMobile ? onClose : undefined}>
+          <Link
+            to="/profile"
+            className="flex items-center space-x-4 group"
+            onClick={isMobile ? onClose : undefined}
+          >
             <Avatar className="h-12 w-12 border-2 border-primary/20 shadow-sm transition-transform group-hover:scale-105 duration-200">
-              <AvatarImage src={user?.user_metadata?.avatar_url || "/placeholder.svg"} />
+              <AvatarImage
+                src={user?.user_metadata?.avatar_url || "/placeholder.svg"}
+              />
               <AvatarFallback className="bg-primary/10 text-primary font-semibold">
                 {getInitials(user?.email || "")}
               </AvatarFallback>
@@ -129,14 +166,21 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
               <p className="font-medium truncate group-hover:text-primary transition-colors">
                 {user?.user_metadata?.name || user?.email}
               </p>
-              <p className="text-sm text-muted-foreground truncate">{user?.email}</p>
+              <p className="text-sm text-muted-foreground truncate">
+                {user?.email}
+              </p>
             </div>
           </Link>
         )}
       </div>
 
       {/* Navigation */}
-      <nav className={cn("p-5 space-y-3 flex-grow", isCollapsed && !isMobile ? "items-center" : "")}>
+      <nav
+        className={cn(
+          "p-5 space-y-3 flex-grow",
+          isCollapsed && !isMobile ? "items-center" : ""
+        )}
+      >
         {isCollapsed && !isMobile ? (
           <TooltipProvider>
             <div className="flex flex-col items-center space-y-4">
@@ -148,11 +192,11 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                       "flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200",
                       isActive("/")
                         ? "bg-primary/10 text-primary shadow-sm"
-                        : "hover:bg-accent hover:text-accent-foreground hover:scale-105",
+                        : "hover:bg-accent hover:text-accent-foreground hover:scale-105"
                     )}
                     onClick={isMobile ? onClose : undefined}
                   >
-                    <Home className="h-5 w-5" />
+                    <Icons.home className="h-5 w-5" />
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent side="right">Dashboard</TooltipContent>
@@ -166,11 +210,11 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                       "flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200",
                       isActive("/projects")
                         ? "bg-primary/10 text-primary shadow-sm"
-                        : "hover:bg-accent hover:text-accent-foreground hover:scale-105",
+                        : "hover:bg-accent hover:text-accent-foreground hover:scale-105"
                     )}
                     onClick={isMobile ? onClose : undefined}
                   >
-                    <FolderKanban className="h-5 w-5" />
+                    <Icons.project className="h-5 w-5" />
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent side="right">My Projects</TooltipContent>
@@ -184,11 +228,11 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                       "flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200",
                       isActive("/labels")
                         ? "bg-primary/10 text-primary shadow-sm"
-                        : "hover:bg-accent hover:text-accent-foreground hover:scale-105",
+                        : "hover:bg-accent hover:text-accent-foreground hover:scale-105"
                     )}
                     onClick={isMobile ? onClose : undefined}
                   >
-                    <Tags className="h-5 w-5" />
+                    <Icons.labels className="h-5 w-5" />
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent side="right">My Labels</TooltipContent>
@@ -202,11 +246,11 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                       "flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200",
                       isActive("/assets")
                         ? "bg-primary/10 text-primary shadow-sm"
-                        : "hover:bg-accent hover:text-accent-foreground hover:scale-105",
+                        : "hover:bg-accent hover:text-accent-foreground hover:scale-105"
                     )}
                     onClick={isMobile ? onClose : undefined}
                   >
-                    <Shapes className="h-5 w-5" />
+                    <Icons.asset className="h-5 w-5" />
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent side="right">Assets</TooltipContent>
@@ -220,11 +264,11 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                       "flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200",
                       isActive("/trash")
                         ? "bg-primary/10 text-primary shadow-sm"
-                        : "hover:bg-accent hover:text-accent-foreground hover:scale-105",
+                        : "hover:bg-accent hover:text-accent-foreground hover:scale-105"
                     )}
                     onClick={isMobile ? onClose : undefined}
                   >
-                    <Trash2 className="h-5 w-5" />
+                    <Icons.delete className="h-5 w-5" />
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent side="right">Trash</TooltipContent>
@@ -239,11 +283,11 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                 "flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200",
                 isActive("/")
                   ? "bg-primary/10 text-primary font-medium shadow-sm"
-                  : "hover:bg-accent hover:text-accent-foreground",
+                  : "hover:bg-accent hover:text-accent-foreground"
               )}
               onClick={isMobile ? onClose : undefined}
             >
-              <Home className="h-5 w-5 min-w-5" />
+              <Icons.home className="h-5 w-5 min-w-5" />
               <span>Dashboard</span>
             </Link>
             <Link
@@ -252,11 +296,11 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                 "flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200",
                 isActive("/projects")
                   ? "bg-primary/10 text-primary font-medium shadow-sm"
-                  : "hover:bg-accent hover:text-accent-foreground",
+                  : "hover:bg-accent hover:text-accent-foreground"
               )}
               onClick={isMobile ? onClose : undefined}
             >
-              <FolderKanban className="h-5 w-5 min-w-5" />
+              <Icons.project className="h-5 w-5 min-w-5" />
               <span>My Projects</span>
             </Link>
             <Link
@@ -265,11 +309,11 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                 "flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200",
                 isActive("/labels")
                   ? "bg-primary/10 text-primary font-medium shadow-sm"
-                  : "hover:bg-accent hover:text-accent-foreground",
+                  : "hover:bg-accent hover:text-accent-foreground"
               )}
               onClick={isMobile ? onClose : undefined}
             >
-              <Tags className="h-5 w-5 min-w-5" />
+              <Icons.labels className="h-5 w-5 min-w-5" />
               <span>My Labels</span>
             </Link>
             <Link
@@ -278,11 +322,11 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                 "flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200",
                 isActive("/assets")
                   ? "bg-primary/10 text-primary font-medium shadow-sm"
-                  : "hover:bg-accent hover:text-accent-foreground",
+                  : "hover:bg-accent hover:text-accent-foreground"
               )}
               onClick={isMobile ? onClose : undefined}
             >
-              <Shapes className="h-5 w-5 min-w-5" />
+              <Icons.asset className="h-5 w-5 min-w-5" />
               <span>Assets</span>
             </Link>
             <Link
@@ -291,11 +335,11 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                 "flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200",
                 isActive("/trash")
                   ? "bg-primary/10 text-primary font-medium shadow-sm"
-                  : "hover:bg-accent hover:text-accent-foreground",
+                  : "hover:bg-accent hover:text-accent-foreground"
               )}
               onClick={isMobile ? onClose : undefined}
             >
-              <Trash2 className="h-5 w-5 min-w-5" />
+              <Icons.delete className="h-5 w-5 min-w-5" />
               <span>Trash</span>
             </Link>
           </>
@@ -306,7 +350,9 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
       <div
         className={cn(
           "p-5 border-t mt-auto bg-muted/20 backdrop-blur-sm",
-          isCollapsed && !isMobile ? "flex flex-col items-center space-y-4 py-6" : "",
+          isCollapsed && !isMobile
+            ? "flex flex-col items-center space-y-4 py-6"
+            : ""
         )}
       >
         {isCollapsed && !isMobile ? (
@@ -319,9 +365,15 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                     size="icon"
                     onClick={toggleTheme}
                     className="rounded-xl h-12 w-12 border border-border/50 hover:bg-accent hover:text-accent-foreground transition-all duration-200 hover:scale-105"
-                    aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+                    aria-label={`Switch to ${
+                      theme === "light" ? "dark" : "light"
+                    } mode`}
                   >
-                    {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+                    {theme === "light" ? (
+                      <Icons.moon className="h-5 w-5" />
+                    ) : (
+                      <Icons.sun className="h-5 w-5" />
+                    )}
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent side="right">Toggle theme</TooltipContent>
@@ -333,13 +385,13 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                     variant="outline"
                     size="icon"
                     onClick={() => {
-                      signOut()
-                      if (isMobile) onClose()
+                      signOut();
+                      if (isMobile) onClose();
                     }}
                     className="rounded-xl h-12 w-12 border border-destructive/30 text-destructive hover:bg-destructive/10 hover:border-destructive transition-all duration-200 hover:scale-105"
                     aria-label="Sign out"
                   >
-                    <LogOut className="h-5 w-5" />
+                    <Icons.logout className="h-5 w-5" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent side="right">Sign out</TooltipContent>
@@ -357,7 +409,7 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                 className="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-accent hover:text-accent-foreground transition-all duration-200 w-full"
                 onClick={isMobile ? onClose : undefined}
               >
-                <User className="h-5 w-5 min-w-5" />
+                <Icons.user className="h-5 w-5 min-w-5" />
                 <span>Profile</span>
               </Link>
               <Button
@@ -365,25 +417,31 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
                 size="icon"
                 onClick={toggleTheme}
                 className="rounded-xl border border-border/50 hover:bg-accent hover:text-accent-foreground transition-all duration-200"
-                aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+                aria-label={`Switch to ${
+                  theme === "light" ? "dark" : "light"
+                } mode`}
               >
-                {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+                {theme === "light" ? (
+                  <Icons.moon className="h-5 w-5" />
+                ) : (
+                  <Icons.sun className="h-5 w-5" />
+                )}
               </Button>
             </div>
             <Button
               variant="outline"
               className="w-full flex items-center justify-center space-x-2 py-6 rounded-xl border-destructive/30 text-destructive hover:bg-destructive/10 hover:border-destructive transition-all duration-200"
               onClick={() => {
-                signOut()
-                if (isMobile) onClose()
+                signOut();
+                if (isMobile) onClose();
               }}
             >
-              <LogOut className="h-5 w-5" />
+              <Icons.logout className="h-5 w-5" />
               <span>Sign Out</span>
             </Button>
           </>
         )}
       </div>
     </div>
-  )
+  );
 }

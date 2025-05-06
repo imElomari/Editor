@@ -10,13 +10,13 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Button } from "../ui/button";
-import { Shapes, Plus, ArrowRight, Loader2 } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { supabase } from "../../lib/supabase";
 import { useAuth } from "../../context/AuthContext";
 import { AssetUploadDialog } from "../AssetUploadDialog";
 import { getAssetIcon } from "../assets/asset-utils";
 import { getStorageUrl } from "../../lib/utils";
+import { Icons } from "../../lib/constances";
 
 interface RecentAssetsProps {
   className?: string;
@@ -63,14 +63,14 @@ export function RecentAssets({ className, limit = 5 }: RecentAssetsProps) {
             <CardDescription>Your recently uploaded assets</CardDescription>
           </div>
           <Button size="sm" onClick={() => setIsUploadDialogOpen(true)}>
-            <Plus className="h-4 w-4 mr-2" />
+            <Icons.plus className="h-4 w-4 mr-2" />
             Add Asset
           </Button>
         </CardHeader>
         <CardContent className="pb-2">
           {loading ? (
             <div className="flex items-center justify-center h-48">
-              <Loader2 className="h-6 w-6 animate-spin text-primary" />
+              <Icons.loading className="h-6 w-6 animate-spin text-primary" />
             </div>
           ) : assets.length > 0 ? (
             <div className="space-y-4">
@@ -113,7 +113,7 @@ export function RecentAssets({ className, limit = 5 }: RecentAssetsProps) {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <ArrowRight className="h-4 w-4" />
+                        <Icons.arrowRight className="h-4 w-4" />
                       </a>
                     </Button>
                   </div>
@@ -122,14 +122,14 @@ export function RecentAssets({ className, limit = 5 }: RecentAssetsProps) {
             </div>
           ) : (
             <div className="text-center py-8">
-              <Shapes className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
+              <Icons.asset className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
               <p className="text-muted-foreground">No assets yet</p>
               <Button
                 variant="outline"
                 className="mt-4"
                 onClick={() => setIsUploadDialogOpen(true)}
               >
-                <Plus className="h-4 w-4 mr-2" />
+                <Icons.plus className="h-4 w-4 mr-2" />
                 Upload Your First Asset
               </Button>
             </div>
@@ -139,7 +139,7 @@ export function RecentAssets({ className, limit = 5 }: RecentAssetsProps) {
           <Button variant="ghost" size="sm" className="w-full" asChild>
             <a href="/assets">
               View All Assets
-              <ArrowRight className="ml-2 h-4 w-4" />
+              <Icons.arrowRight className="ml-2 h-4 w-4" />
             </a>
           </Button>
         </CardFooter>

@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { useAuth } from "../context/AuthContext"
-import { supabase } from "../lib/supabase"
-import { toast } from "sonner"
-import { Button } from "../components/ui/button"
-import { Card, CardContent } from "../components/ui/card"
-import { Badge } from "../components/ui/badge"
-import { Loader2, Trash2, RotateCcw, Tag, FolderKanban, AlertTriangle } from "lucide-react"
+import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
+import { supabase } from "../lib/supabase";
+import { toast } from "sonner";
+import { Button } from "../components/ui/button";
+import { Card, CardContent } from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,31 +17,33 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "../components/ui/alert-dialog"
+} from "../components/ui/alert-dialog";
+import { Icons } from "../lib/constances";
 
 interface TrashItem {
-  id: string
-  name: string
-  deleted_at: string
-  type: "project" | "label"
-  description?: string
+  id: string;
+  name: string;
+  deleted_at: string;
+  type: "project" | "label";
+  description?: string;
 }
 
 export default function TrashPage() {
-  const { user } = useAuth()
-  const [loading, setLoading] = useState(true)
-  const [items, setItems] = useState<TrashItem[]>([])
-  const [selectedItem, setSelectedItem] = useState<TrashItem | null>(null)
-  const [isRestoreDialogOpen, setIsRestoreDialogOpen] = useState(false)
-  const [isPermanentDeleteDialogOpen, setIsPermanentDeleteDialogOpen] = useState(false)
+  const { user } = useAuth();
+  const [loading, setLoading] = useState(true);
+  const [items, setItems] = useState<TrashItem[]>([]);
+  const [selectedItem, setSelectedItem] = useState<TrashItem | null>(null);
+  const [isRestoreDialogOpen, setIsRestoreDialogOpen] = useState(false);
+  const [isPermanentDeleteDialogOpen, setIsPermanentDeleteDialogOpen] =
+    useState(false);
 
   const fetchTrashItems = async () => {
     try {
-      if (!user) return
-      setLoading(true)
+      if (!user) return;
+      setLoading(true);
 
-      const thirtyDaysAgo = new Date()
-      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
       // Fetch deleted projects
       const { data: projectsData, error: projectsError } = await supabase
@@ -49,7 +51,7 @@ export default function TrashPage() {
         .select("id, name, deleted_at, description")
         .not("deleted_at", "is", null)
         .gte("deleted_at", thirtyDaysAgo.toISOString())
-        .eq("owner_id", user.id)
+        .eq("owner_id", user.id);
 
       // Fetch deleted labels
       const { data: labelsData, error: labelsError } = await supabase
@@ -57,100 +59,117 @@ export default function TrashPage() {
         .select("id, name, deleted_at, description")
         .not("deleted_at", "is", null)
         .gte("deleted_at", thirtyDaysAgo.toISOString())
-        .eq("owner_id", user.id)
+        .eq("owner_id", user.id);
 
-      if (projectsError) throw projectsError
-      if (labelsError) throw labelsError
+      if (projectsError) throw projectsError;
+      if (labelsError) throw labelsError;
 
-      const projectItems = (projectsData || []).map((p) => ({ ...p, type: "project" as const }))
-      const labelItems = (labelsData || []).map((l) => ({ ...l, type: "label" as const }))
+      const projectItems = (projectsData || []).map((p) => ({
+        ...p,
+        type: "project" as const,
+      }));
+      const labelItems = (labelsData || []).map((l) => ({
+        ...l,
+        type: "label" as const,
+      }));
 
       setItems(
         [...projectItems, ...labelItems].sort(
-          (a, b) => new Date(b.deleted_at).getTime() - new Date(a.deleted_at).getTime(),
-        ),
-      )
+          (a, b) =>
+            new Date(b.deleted_at).getTime() - new Date(a.deleted_at).getTime()
+        )
+      );
     } catch (error) {
-      console.error("Error:", error)
-      toast.error("Failed to load trash items")
+      console.error("Error:", error);
+      toast.error("Failed to load trash items");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchTrashItems()
-  }, [user])
+    fetchTrashItems();
+  }, [user]);
 
   async function handleRestore() {
     try {
       const { error } = await supabase
         .from(selectedItem?.type === "project" ? "projects" : "labels")
         .update({ deleted_at: null })
-        .eq("id", selectedItem?.id)
+        .eq("id", selectedItem?.id);
 
-      if (error) throw error
+      if (error) throw error;
 
-      toast.success(`${selectedItem?.type === "project" ? "Project" : "Label"} restored`, {
-        description: `"${selectedItem?.name}" has been restored successfully.`,
-        icon: true,
-      })
-      fetchTrashItems()
+      toast.success(
+        `${selectedItem?.type === "project" ? "Project" : "Label"} restored`,
+        {
+          description: `"${selectedItem?.name}" has been restored successfully.`,
+          icon: true,
+        }
+      );
+      fetchTrashItems();
     } catch (error) {
-      console.error("Error:", error)
+      console.error("Error:", error);
       toast.error("Error restoring item", {
         description: "Failed to restore the item. Please try again.",
         icon: true,
-      })
+      });
     } finally {
-      setIsRestoreDialogOpen(false)
-      setSelectedItem(null)
+      setIsRestoreDialogOpen(false);
+      setSelectedItem(null);
     }
   }
 
   async function handlePermanentDelete() {
-    if (!selectedItem) return
+    if (!selectedItem) return;
 
     try {
       const { error } = await supabase
         .from(selectedItem.type === "project" ? "projects" : "labels")
         .delete()
-        .eq("id", selectedItem.id)
+        .eq("id", selectedItem.id);
 
-      if (error) throw error
+      if (error) throw error;
 
-      toast.success(`${selectedItem.type === "project" ? "Project" : "Label"} deleted permanently`, {
-        description: `"${selectedItem.name}" has been permanently deleted.`,
-        icon: true,
-      })
-      fetchTrashItems()
+      toast.success(
+        `${
+          selectedItem.type === "project" ? "Project" : "Label"
+        } deleted permanently`,
+        {
+          description: `"${selectedItem.name}" has been permanently deleted.`,
+          icon: true,
+        }
+      );
+      fetchTrashItems();
     } catch (error) {
-      console.error("Error:", error)
+      console.error("Error:", error);
       toast.error("Failed to delete item", {
         description: "An unexpected error occurred. Please try again.",
         icon: true,
-      })
+      });
     } finally {
-      setIsPermanentDeleteDialogOpen(false)
-      setSelectedItem(null)
+      setIsPermanentDeleteDialogOpen(false);
+      setSelectedItem(null);
     }
   }
 
   const getDaysRemaining = (deletedAt: string) => {
-    const deleteDate = new Date(deletedAt)
-    const expiryDate = new Date(deleteDate)
-    expiryDate.setDate(expiryDate.getDate() + 30)
-    const now = new Date()
-    const daysRemaining = Math.ceil((expiryDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
-    return daysRemaining
-  }
+    const deleteDate = new Date(deletedAt);
+    const expiryDate = new Date(deleteDate);
+    expiryDate.setDate(expiryDate.getDate() + 30);
+    const now = new Date();
+    const daysRemaining = Math.ceil(
+      (expiryDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
+    );
+    return daysRemaining;
+  };
 
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-8 flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin" />
+        <Icons.loading className="h-8 w-8 animate-spin" />
       </div>
-    )
+    );
   }
 
   return (
@@ -159,8 +178,11 @@ export default function TrashPage() {
         <div className="space-y-4 w-full sm:w-auto">
           <h1 className="text-2xl sm:text-3xl font-bold">My Trash</h1>
           <div className="flex items-center gap-2 text-amber-500 bg-amber-500/10 px-3 py-2 rounded-md">
-            <AlertTriangle className="h-4 w-4 flex-shrink-0" />
-            <p className="text-xs sm:text-sm">Deleted items are kept for 30 days before being permanently removed</p>
+            <Icons.alert className="h-4 w-4 flex-shrink-0" />
+            <p className="text-xs sm:text-sm">
+              Deleted items are kept for 30 days before being permanently
+              removed
+            </p>
           </div>
         </div>
       </div>
@@ -168,9 +190,11 @@ export default function TrashPage() {
       {items.length === 0 ? (
         <Card>
           <CardContent className="py-12 sm:py-16 flex flex-col items-center justify-center text-center px-4">
-            <Trash2 className="h-12 w-12 text-muted-foreground mb-4" />
+            <Icons.delete className="h-12 w-12 text-muted-foreground mb-4" />
             <h3 className="text-lg font-medium">Trash is empty</h3>
-            <p className="text-sm text-muted-foreground mt-1 max-w-md">Items that you delete will appear here</p>
+            <p className="text-sm text-muted-foreground mt-1 max-w-md">
+              Items that you delete will appear here
+            </p>
           </CardContent>
         </Card>
       ) : (
@@ -181,9 +205,9 @@ export default function TrashPage() {
                 <div className="flex items-start sm:items-center gap-3">
                   <div className="h-10 w-10 rounded-md bg-muted flex items-center justify-center flex-shrink-0">
                     {item.type === "project" ? (
-                      <FolderKanban className="h-5 w-5 text-blue-500" />
+                      <Icons.project className="h-5 w-5 text-blue-500" />
                     ) : (
-                      <Tag className="h-5 w-5 text-primary" />
+                      <Icons.label className="h-5 w-5 text-primary" />
                     )}
                   </div>
                   <div className="min-w-0 flex-1">
@@ -194,7 +218,9 @@ export default function TrashPage() {
                       </Badge>
                     </div>
                     <div className="text-xs sm:text-sm text-muted-foreground">
-                      <span className="whitespace-nowrap">{getDaysRemaining(item.deleted_at)} days remaining</span>
+                      <span className="whitespace-nowrap">
+                        {getDaysRemaining(item.deleted_at)} days remaining
+                      </span>
                       <span className="mx-2">•</span>
                       <span className="whitespace-nowrap">
                         Deleted {new Date(item.deleted_at).toLocaleDateString()}
@@ -208,11 +234,11 @@ export default function TrashPage() {
                     size="sm"
                     className="flex-1 sm:flex-initial"
                     onClick={() => {
-                      setSelectedItem(item)
-                      setIsRestoreDialogOpen(true)
+                      setSelectedItem(item);
+                      setIsRestoreDialogOpen(true);
                     }}
                   >
-                    <RotateCcw className="h-4 w-4 mr-2" />
+                    <Icons.reset className="h-4 w-4 mr-2" />
                     Restore
                   </Button>
                   <Button
@@ -220,11 +246,11 @@ export default function TrashPage() {
                     size="sm"
                     className="flex-1 sm:flex-initial"
                     onClick={() => {
-                      setSelectedItem(item)
-                      setIsPermanentDeleteDialogOpen(true)
+                      setSelectedItem(item);
+                      setIsPermanentDeleteDialogOpen(true);
                     }}
                   >
-                    <Trash2 className="h-4 w-4 mr-2" />
+                    <Icons.delete className="h-4 w-4 mr-2" />
                     Delete
                   </Button>
                 </div>
@@ -234,35 +260,47 @@ export default function TrashPage() {
         </div>
       )}
 
-      <AlertDialog open={isRestoreDialogOpen} onOpenChange={setIsRestoreDialogOpen}>
+      <AlertDialog
+        open={isRestoreDialogOpen}
+        onOpenChange={setIsRestoreDialogOpen}
+      >
         <AlertDialogContent className="sm:max-w-[425px]">
           <AlertDialogHeader>
             <AlertDialogTitle>Restore Item</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to restore this {selectedItem?.type}? It will be moved back to your active items.
+              Are you sure you want to restore this {selectedItem?.type}? It
+              will be moved back to your active items.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleRestore}>Restore</AlertDialogAction>
+            <AlertDialogAction onClick={handleRestore}>
+              Restore
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
 
-      <AlertDialog open={isPermanentDeleteDialogOpen} onOpenChange={setIsPermanentDeleteDialogOpen}>
+      <AlertDialog
+        open={isPermanentDeleteDialogOpen}
+        onOpenChange={setIsPermanentDeleteDialogOpen}
+      >
         <AlertDialogContent className="sm:max-w-[425px]">
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Permanently</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to permanently delete this {selectedItem?.type}?
+              Are you sure you want to permanently delete this{" "}
+              {selectedItem?.type}?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handlePermanentDelete}>Delete Permanently</AlertDialogAction>
+            <AlertDialogAction onClick={handlePermanentDelete}>
+              Delete Permanently
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
     </div>
-  )
+  );
 }

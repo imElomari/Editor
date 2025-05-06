@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Dialog,
@@ -7,40 +7,57 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "../components/ui/dialog"
-import { useSupabaseUpload } from "../hooks/use-supabase-upload"
-import { Button } from "../components/ui/button"
-import { toast } from "sonner"
-import { useAuth } from "../context/AuthContext"
-import { Dropzone, DropzoneContent, DropzoneEmptyState } from "./dropzone"
-import { supabase } from "../lib/supabase"
-import { AlertCircle, CheckCircle, Loader2, Upload, XCircle, FolderKanban, User } from "lucide-react"
-import { useState, useEffect } from "react"
-import { Label } from "./ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "./ui/command"
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
-import { Check, ChevronsUpDown } from "lucide-react"
-import { cn } from "../lib/utils"
+} from "../components/ui/dialog";
+import { useSupabaseUpload } from "../hooks/use-supabase-upload";
+import { Button } from "../components/ui/button";
+import { toast } from "sonner";
+import { useAuth } from "../context/AuthContext";
+import { Dropzone, DropzoneContent, DropzoneEmptyState } from "./dropzone";
+import { supabase } from "../lib/supabase";
+import { CheckCircle, XCircle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Label } from "./ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "./ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "../lib/utils";
+import { Icons } from "../lib/constances";
 
 // Add this type if it doesn't exist in your types file
-type AssetScope = "admin-global" | "user" | "project"
+type AssetScope = "admin-global" | "user" | "project";
 
 interface AssetUploadDialogProps {
-  projectId?: string
-  isOpen: boolean
-  onClose: () => void
-  onSuccess: () => void
+  projectId?: string;
+  isOpen: boolean;
+  onClose: () => void;
+  onSuccess: () => void;
 }
 
-export function AssetUploadDialog({ projectId, isOpen, onClose, onSuccess }: AssetUploadDialogProps) {
-  const { user } = useAuth()
-  const [assetScope, setAssetScope] = useState<AssetScope>(projectId ? "project" : "user")
-  const [selectedProjectId, setSelectedProjectId] = useState<string>(projectId || "")
-  const [loading, setLoading] = useState(false)
-  const [projectsLoading, setProjectsLoading] = useState(false)
-  const [projects, setProjects] = useState<any[]>([])
-  const [open, setOpen] = useState(false)
+export function AssetUploadDialog({
+  projectId,
+  isOpen,
+  onClose,
+  onSuccess,
+}: AssetUploadDialogProps) {
+  const { user } = useAuth();
+  const [assetScope, setAssetScope] = useState<AssetScope>(
+    projectId ? "project" : "user"
+  );
+  const [selectedProjectId, setSelectedProjectId] = useState<string>(
+    projectId || ""
+  );
+  const [loading, setLoading] = useState(false);
+  const [projectsLoading, setProjectsLoading] = useState(false);
+  const [projects, setProjects] = useState<any[]>([]);
+  const [open, setOpen] = useState(false);
 
   // Initialize dropzone props
   const dropzoneProps = useSupabaseUpload({
@@ -64,122 +81,125 @@ export function AssetUploadDialog({ projectId, isOpen, onClose, onSuccess }: Ass
       "text/plain",
     ],
     upsert: true,
-  })
+  });
 
-  const { loading: uploadLoading, isSuccess, files } = dropzoneProps
+  const { loading: uploadLoading, isSuccess, files } = dropzoneProps;
 
   // Fetch projects for the dropdown
   useEffect(() => {
     if (isOpen && user) {
-      fetchProjects()
+      fetchProjects();
     }
 
     // Initialize with the provided projectId if available
     if (projectId) {
-      setSelectedProjectId(projectId)
-      setAssetScope("project")
+      setSelectedProjectId(projectId);
+      setAssetScope("project");
     }
-  }, [isOpen, user, projectId])
+  }, [isOpen, user, projectId]);
 
   const fetchProjects = async () => {
     try {
-      setProjectsLoading(true)
+      setProjectsLoading(true);
       const { data, error } = await supabase
         .from("projects")
         .select("*")
         .eq("owner_id", user?.id)
         .is("deleted_at", null)
-        .order("name", { ascending: true })
+        .order("name", { ascending: true });
 
-      if (error) throw error
-      setProjects(data || [])
+      if (error) throw error;
+      setProjects(data || []);
     } catch (error) {
-      console.error("Error fetching projects:", error)
-      toast.error("Failed to load projects")
+      console.error("Error fetching projects:", error);
+      toast.error("Failed to load projects");
     } finally {
-      setProjectsLoading(false)
+      setProjectsLoading(false);
     }
-  }
+  };
 
   // getStoragePath function
   const getStoragePath = (fileName: string) => {
-    const timestamp = new Date().getTime()
-    const sanitizedName = fileName.replace(/[^a-zA-Z0-9.-]/g, "_")
+    const timestamp = new Date().getTime();
+    const sanitizedName = fileName.replace(/[^a-zA-Z0-9.-]/g, "_");
 
     switch (assetScope) {
       case "admin-global":
-        return `global/${timestamp}-${sanitizedName}`
+        return `global/${timestamp}-${sanitizedName}`;
       case "user":
-        return `user/${timestamp}-${sanitizedName}`
+        return `user/${timestamp}-${sanitizedName}`;
       case "project":
-        return `user/${timestamp}-${sanitizedName}`
+        return `user/${timestamp}-${sanitizedName}`;
       default:
-        return `user/${timestamp}-${sanitizedName}`
+        return `user/${timestamp}-${sanitizedName}`;
     }
-  }
+  };
 
   const handleUpload = async () => {
     if (!files[0] || !user) {
       toast.error("Please select a file to upload", {
         description: "You need to select a file before uploading.",
-        icon: <AlertCircle className="h-5 w-5 text-destructive" />,
-      })
-      return
+        icon: <Icons.warning className="h-5 w-5 text-destructive" />,
+      });
+      return;
     }
 
     if (assetScope === "project" && !selectedProjectId) {
       toast.error("Please select a project", {
-        description: "You need to select a project for project-specific assets.",
-        icon: <AlertCircle className="h-5 w-5 text-destructive" />,
-      })
-      return
+        description:
+          "You need to select a project for project-specific assets.",
+        icon: <Icons.warning className="h-5 w-5 text-destructive" />,
+      });
+      return;
     }
 
     try {
-      setLoading(true)
-      const file = files[0]
-      const storagePath = getStoragePath(file.name)
+      setLoading(true);
+      const file = files[0];
+      const storagePath = getStoragePath(file.name);
 
       // Check if file already exists in the database
-      const query = supabase.from("assets").select().eq("name", file.name)
+      const query = supabase.from("assets").select().eq("name", file.name);
 
       // Add conditions based on asset scope
       switch (assetScope) {
         case "admin-global":
-          query.is("owner_id", null)
-          break
+          query.is("owner_id", null);
+          break;
         case "user":
-          query.eq("owner_id", user.id).is("project_id", null)
-          break
+          query.eq("owner_id", user.id).is("project_id", null);
+          break;
         case "project":
-          query.eq("owner_id", user.id).eq("project_id", selectedProjectId)
-          break
+          query.eq("owner_id", user.id).eq("project_id", selectedProjectId);
+          break;
       }
 
-      const { data: existingAsset } = await query.single()
+      const { data: existingAsset } = await query.single();
 
       if (existingAsset) {
         toast.error("File already exists", {
           description: `A file with the name "${file.name}" already exists.`,
-          icon: <AlertCircle className="h-5 w-5 text-destructive" />,
-        })
-        return
+          icon: <Icons.warning className="h-5 w-5 text-destructive" />,
+        });
+        return;
       }
 
       // Upload file to storage bucket first
-      const { error: uploadError } = await supabase.storage.from("assets").upload(storagePath, file, {
-        cacheControl: "3600",
-        upsert: false,
-      })
+      const { error: uploadError } = await supabase.storage
+        .from("assets")
+        .upload(storagePath, file, {
+          cacheControl: "3600",
+          upsert: false,
+        });
 
       if (uploadError) {
-        throw new Error(`Upload failed: ${uploadError.message}`)
+        throw new Error(`Upload failed: ${uploadError.message}`);
       }
 
       // Get the public URL for the uploaded file
       const {
         data: { publicUrl },
-      } = supabase.storage.from("assets").getPublicUrl(storagePath)
+      } = supabase.storage.from("assets").getPublicUrl(storagePath);
 
       // Create asset record with the correct public URL
       const { error: dbError } = await supabase.from("assets").insert({
@@ -197,51 +217,54 @@ export function AssetUploadDialog({ projectId, isOpen, onClose, onSuccess }: Ass
           lastModified: file.lastModified,
           uploadedAt: new Date().toISOString(),
         },
-      })
+      });
 
       if (dbError) {
         // Cleanup on database error
-        await supabase.storage.from("assets").remove([storagePath])
-        throw new Error(`Database error: ${dbError.message}`)
+        await supabase.storage.from("assets").remove([storagePath]);
+        throw new Error(`Database error: ${dbError.message}`);
       }
 
       toast.success("Asset uploaded successfully", {
-        description: `${file.name} has been uploaded as a ${getScopeLabel(assetScope)} asset.`,
+        description: `${file.name} has been uploaded as a ${getScopeLabel(
+          assetScope
+        )} asset.`,
         icon: <CheckCircle className="h-5 w-5 text-green-500" />,
-      })
-      onSuccess()
-      onClose()
+      });
+      onSuccess();
+      onClose();
     } catch (error) {
-      console.error("Upload error:", error)
+      console.error("Upload error:", error);
       toast.error("Upload failed", {
-        description: error instanceof Error ? error.message : "Failed to upload asset",
+        description:
+          error instanceof Error ? error.message : "Failed to upload asset",
         icon: <XCircle className="h-5 w-5 text-destructive" />,
-      })
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   // Helper function to get a user-friendly label for the asset scope
   const getScopeLabel = (scope: AssetScope): string => {
     switch (scope) {
       case "admin-global":
-        return "Global"
+        return "Global";
       case "user":
-        return "Personal"
+        return "Personal";
       case "project":
-        return "Project"
+        return "Project";
       default:
-        return scope
+        return scope;
     }
-  }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[525px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Upload className="h-5 w-5 text-primary" />
+            <Icons.upload className="h-5 w-5 text-primary" />
             Upload Asset
           </DialogTitle>
           <DialogDescription>Upload an asset to your library</DialogDescription>
@@ -251,21 +274,28 @@ export function AssetUploadDialog({ projectId, isOpen, onClose, onSuccess }: Ass
           {/* Asset Type Selection */}
           <div className="space-y-2">
             <Label>Asset Type</Label>
-            <Tabs value={assetScope} onValueChange={(value) => setAssetScope(value as AssetScope)} className="w-full">
+            <Tabs
+              value={assetScope}
+              onValueChange={(value) => setAssetScope(value as AssetScope)}
+              className="w-full"
+            >
               <TabsList className="grid w-full grid-cols-2">
                 {/* Uncomment if admin functionality is needed
                 {user?.isAdmin && (
                   <TabsTrigger value="admin-global" className="flex items-center gap-2">
-                    <Globe className="h-4 w-4" />
+                    <Icons.globalclassName="h-4 w-4" />
                     <span>Global Assets</span>
                   </TabsTrigger>
                 )} */}
                 <TabsTrigger value="user" className="flex items-center gap-2">
-                  <User className="h-4 w-4" />
+                  <Icons.user className="h-4 w-4" />
                   <span>My Assets</span>
                 </TabsTrigger>
-                <TabsTrigger value="project" className="flex items-center gap-2">
-                  <FolderKanban className="h-4 w-4" />
+                <TabsTrigger
+                  value="project"
+                  className="flex items-center gap-2"
+                >
+                  <Icons.project className="h-4 w-4" />
                   <span>Project Assets</span>
                 </TabsTrigger>
               </TabsList>
@@ -278,14 +308,15 @@ export function AssetUploadDialog({ projectId, isOpen, onClose, onSuccess }: Ass
 
               <TabsContent value="user" className="pt-2">
                 <p className="text-sm text-muted-foreground mb-4">
-                  Personal assets are available across all your projects and can be accessed from anywhere in your
-                  workspace.
+                  Personal assets are available across all your projects and can
+                  be accessed from anywhere in your workspace.
                 </p>
               </TabsContent>
 
               <TabsContent value="project" className="space-y-2 pt-2">
                 <p className="text-sm text-muted-foreground mb-4">
-                  Project assets are specific to a single project and will only be available within that project.
+                  Project assets are specific to a single project and will only
+                  be available within that project.
                 </p>
 
                 <div className="space-y-1">
@@ -302,19 +333,24 @@ export function AssetUploadDialog({ projectId, isOpen, onClose, onSuccess }: Ass
                         disabled={projectsLoading}
                       >
                         {selectedProjectId
-                          ? projects.find((project) => project.id === selectedProjectId)?.name || "Select a project"
+                          ? projects.find(
+                              (project) => project.id === selectedProjectId
+                            )?.name || "Select a project"
                           : "Select a project"}
                         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-full p-0">
                       <Command>
-                        <CommandInput placeholder="Search projects..." className="h-9" />
+                        <CommandInput
+                          placeholder="Search projects..."
+                          className="h-9"
+                        />
                         <CommandList>
                           <CommandEmpty>
                             {projectsLoading ? (
                               <div className="flex items-center justify-center py-2">
-                                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                                <Icons.loading className="h-4 w-4 animate-spin mr-2" />
                                 <span>Loading projects...</span>
                               </div>
                             ) : (
@@ -327,14 +363,16 @@ export function AssetUploadDialog({ projectId, isOpen, onClose, onSuccess }: Ass
                                 key={project.id}
                                 value={project.id}
                                 onSelect={(value) => {
-                                  setSelectedProjectId(value)
-                                  setOpen(false)
+                                  setSelectedProjectId(value);
+                                  setOpen(false);
                                 }}
                               >
                                 <Check
                                   className={cn(
                                     "mr-2 h-4 w-4",
-                                    selectedProjectId === project.id ? "opacity-100" : "opacity-0",
+                                    selectedProjectId === project.id
+                                      ? "opacity-100"
+                                      : "opacity-0"
                                   )}
                                 />
                                 {project.name}
@@ -347,7 +385,7 @@ export function AssetUploadDialog({ projectId, isOpen, onClose, onSuccess }: Ass
                   </Popover>
                   {assetScope === "project" && !selectedProjectId && (
                     <p className="text-xs text-amber-500 mt-1 flex items-center gap-1">
-                      <AlertCircle className="h-3 w-3" />
+                      <Icons.warning className="h-3 w-3" />
                       Please select a project to continue
                     </p>
                   )}
@@ -356,14 +394,22 @@ export function AssetUploadDialog({ projectId, isOpen, onClose, onSuccess }: Ass
             </Tabs>
           </div>
 
-          <Dropzone {...dropzoneProps} className="min-h-[200px] flex items-center justify-center">
+          <Dropzone
+            {...dropzoneProps}
+            className="min-h-[200px] flex items-center justify-center"
+          >
             <DropzoneContent />
             <DropzoneEmptyState />
           </Dropzone>
         </div>
 
         <DialogFooter className="sm:justify-start">
-          <Button type="button" variant="outline" onClick={onClose} disabled={loading || uploadLoading}>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onClose}
+            disabled={loading || uploadLoading}
+          >
             Cancel
           </Button>
           <Button
@@ -379,7 +425,7 @@ export function AssetUploadDialog({ projectId, isOpen, onClose, onSuccess }: Ass
           >
             {loading || uploadLoading ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Icons.loading className="mr-2 h-4 w-4 animate-spin" />
                 Uploading...
                 <span className="absolute bottom-0 left-0 h-[2px] bg-primary/50 animate-progress"></span>
               </>
@@ -390,7 +436,7 @@ export function AssetUploadDialog({ projectId, isOpen, onClose, onSuccess }: Ass
               </>
             ) : (
               <>
-                <Upload className="mr-2 h-4 w-4" />
+                <Icons.upload className="mr-2 h-4 w-4" />
                 Upload as {getScopeLabel(assetScope)} Asset
               </>
             )}
@@ -398,7 +444,7 @@ export function AssetUploadDialog({ projectId, isOpen, onClose, onSuccess }: Ass
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
 
 function getMimeTypeCategory(mimeType: string) {
@@ -406,32 +452,32 @@ function getMimeTypeCategory(mimeType: string) {
   switch (mimeType) {
     case "image/jpeg":
     case "image/jpg":
-      return "image/jpeg"
+      return "image/jpeg";
     case "image/png":
-      return "image/png"
+      return "image/png";
     case "image/gif":
-      return "image/gif"
+      return "image/gif";
     case "image/svg+xml":
-      return "image/svg+xml"
+      return "image/svg+xml";
     case "font/ttf":
-      return "font/ttf"
+      return "font/ttf";
     case "font/otf":
-      return "font/otf"
+      return "font/otf";
     case "font/woff":
-      return "font/woff"
+      return "font/woff";
     case "font/woff2":
-      return "font/woff2"
+      return "font/woff2";
     case "application/json":
-      return "application/json"
+      return "application/json";
     case "text/css":
-      return "text/css"
+      return "text/css";
     case "text/javascript":
     case "application/javascript":
-      return "application/javascript"
+      return "application/javascript";
     case "text/plain":
-      return "text/plain"
+      return "text/plain";
     default:
-      return "other"
+      return "other";
   }
 }
 export const FILE_EXTENSIONS = {
@@ -451,14 +497,14 @@ export const FILE_EXTENSIONS = {
   "text/javascript": [".js"],
   "application/javascript": [".js"],
   "text/plain": [".txt", ".md"],
-} as const
+} as const;
 
 export function getMimeTypeFromExtension(filename: string): string | undefined {
-  const ext = `.${filename.split(".").pop()?.toLowerCase()}`
+  const ext = `.${filename.split(".").pop()?.toLowerCase()}`;
   for (const [mimeType, extensions] of Object.entries(FILE_EXTENSIONS)) {
     if ((extensions as readonly string[]).includes(ext)) {
-      return mimeType
+      return mimeType;
     }
   }
-  return undefined
+  return undefined;
 }

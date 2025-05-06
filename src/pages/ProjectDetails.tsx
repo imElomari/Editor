@@ -9,19 +9,8 @@ import {
   TabsList,
   TabsTrigger,
 } from "../components/ui/tabs";
-import {
-  ArrowLeft,
-  Loader2,
-  Plus,
-  Tags,
-  Image as Shapes,
-  Upload,
-  FileText,
-  FileJson,
-  FileCode,
-  File,
-  TypeOutline,
-} from "lucide-react";
+import { Icons } from "../lib/constances";
+
 import { toast } from "sonner";
 import LabelCard from "../components/LabelCard";
 import { LabelDialog } from "../components/LabelDialog";
@@ -29,12 +18,12 @@ import { AssetUploadDialog } from "../components/AssetUploadDialog";
 import { getStorageUrl } from "../lib/utils";
 
 function getAssetIcon(type: string) {
-  if (type.startsWith("image/")) return Shapes;
-  if (type.startsWith("font/")) return TypeOutline;
-  if (type === "application/json") return FileJson;
-  if (type === "text/css" || type === "application/javascript") return FileCode;
-  if (type === "text/plain") return FileText;
-  return File;
+  if (type.startsWith("image/")) return Icons.image;
+  if (type.startsWith("font/")) return Icons.font;
+  if (type === "application/json") return Icons.json;
+  if (type === "text/css" || type === "application/javascript") return Icons.css;
+  if (type === "text/plain") return Icons.text;
+  return Icons.file; // Ensure this returns a valid React component
 }
 
 function getAssetTypeLabel(type: string) {
@@ -119,7 +108,7 @@ export default function ProjectDetails() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <Loader2 className="h-8 w-8 animate-spin" />
+        <Icons.loading className="h-8 w-8 animate-spin" />
       </div>
     );
   }
@@ -143,7 +132,7 @@ export default function ProjectDetails() {
               size="icon"
               onClick={() => navigate("/projects")}
             >
-              <ArrowLeft className="h-5 w-5" />
+              <Icons.arrowLeft className="h-5 w-5" />
             </Button>
             <div>
               <h1 className="text-3xl font-bold">{project.name}</h1>
@@ -162,11 +151,11 @@ export default function ProjectDetails() {
         >
           <TabsList>
             <TabsTrigger value="labels" className="flex items-center gap-2">
-              <Tags className="h-4 w-4" />
+              <Icons.labels className="h-4 w-4" />
               Labels ({labels.length})
             </TabsTrigger>
             <TabsTrigger value="assets" className="flex items-center gap-2">
-              <Shapes className="h-4 w-4" />
+              <Icons.asset className="h-4 w-4" />
               Assets ({assets.length})
             </TabsTrigger>
           </TabsList>
@@ -192,7 +181,7 @@ export default function ProjectDetails() {
                   className="mt-4"
                   onClick={() => setIsLabelDialogOpen(true)}
                 >
-                  <Plus className="h-4 w-4 mr-2" />
+                  <Icons.plus className="h-4 w-4 mr-2" />
                   Create your first label
                 </Button>
               </div>
@@ -203,7 +192,7 @@ export default function ProjectDetails() {
           <TabsContent value="assets" className="mt-6">
             <div className="flex justify-end mb-6">
               <Button onClick={() => setIsAssetDialogOpen(true)}>
-                <Upload className="h-4 w-4 mr-2" />
+                <Icons.upload className="h-4 w-4 mr-2" />
                 Upload Asset
               </Button>
             </div>
@@ -245,7 +234,7 @@ export default function ProjectDetails() {
                         </div>
                       ) : (
                         <div className="w-full h-32 bg-muted rounded-md mb-2 flex flex-col items-center justify-center gap-2">
-                          <AssetIcon className="h-8 w-8 text-muted-foreground" />
+                          {AssetIcon && <AssetIcon className="h-8 w-8 text-muted-foreground" />}
                           <span className="text-xs text-muted-foreground">
                             {typeLabel}
                           </span>

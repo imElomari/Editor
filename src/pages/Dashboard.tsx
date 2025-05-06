@@ -11,29 +11,7 @@ import {
   CardTitle,
   CardDescription,
 } from "../components/ui/card";
-import {
-  Clock,
-  Plus,
-  Loader2,
-  ArrowRight,
-  Tag,
-  FolderKanban,
-  Sparkles,
-  Calendar,
-  ChevronRight,
-  TrendingUp,
-  Zap,
-  Bookmark,
-  CheckCircle2,
-  Archive,
-  PenTool,
-  FileText,
-  Shapes,
-  Upload,
-  FolderPlus,
-  TagIcon,
-  LibraryIcon,
-} from "lucide-react";
+import { CheckCircle2, PenTool } from "lucide-react";
 import { supabase } from "../lib/supabase";
 import { toast } from "sonner";
 import {
@@ -50,6 +28,7 @@ import { LabelDialog } from "../components/LabelDialog";
 import { useMobile } from "../hooks/use-mobile";
 import { cn, getAssetTypeLabel, getStorageUrl } from "../lib/utils";
 import { AssetUploadDialog } from "../components/AssetUploadDialog";
+import { Icons } from "../lib/constances";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -235,7 +214,7 @@ export default function Dashboard() {
       case "archived":
         return (
           <Badge className="bg-gray-500/10 text-gray-500 border-gray-500/20 flex items-center gap-1">
-            <Archive className="h-3 w-3" />
+            <Icons.archive className="h-3 w-3" />
             <span>Archived</span>
           </Badge>
         );
@@ -255,7 +234,7 @@ export default function Dashboard() {
         <div className="flex flex-col items-center gap-4">
           <div className="relative">
             <div className="absolute inset-0 rounded-full bg-primary/20 blur-xl animate-pulse"></div>
-            <Loader2 className="h-12 w-12 text-primary animate-spin relative z-10" />
+            <Icons.loading className="h-12 w-12 text-primary animate-spin relative z-10" />
           </div>
           <p className="text-lg font-medium">Loading your dashboard...</p>
         </div>
@@ -297,7 +276,7 @@ export default function Dashboard() {
                 Total Labels
               </CardTitle>
               <div className="p-2 bg-primary/10 rounded-full group-hover:scale-110 transition-transform duration-300">
-                <Tag className="h-4 w-4 text-primary" />
+                <Icons.label className="h-4 w-4 text-primary" />
               </div>
             </div>
           </CardHeader>
@@ -313,7 +292,7 @@ export default function Dashboard() {
                 {stats.publishedLabels} published
               </Badge>
               {stats.publishedLabels > 0 && (
-                <TrendingUp className="h-4 w-4 text-green-500" />
+                <Icons.trend className="h-4 w-4 text-green-500" />
               )}
             </div>
           </CardContent>
@@ -326,7 +305,7 @@ export default function Dashboard() {
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm font-medium">Projects</CardTitle>
               <div className="p-2 bg-blue-500/10 rounded-full group-hover:scale-110 transition-transform duration-300">
-                <FolderKanban className="h-4 w-4 text-blue-500" />
+                <Icons.project className="h-4 w-4 text-blue-500" />
               </div>
             </div>
           </CardHeader>
@@ -335,7 +314,7 @@ export default function Dashboard() {
               {stats.totalProjects}
             </div>
             <p className="text-sm text-muted-foreground mt-2 flex items-center gap-1">
-              <Bookmark className="h-4 w-4" />
+              <Icons.mark className="h-4 w-4" />
               <span>Organize your work</span>
             </p>
           </CardContent>
@@ -348,7 +327,7 @@ export default function Dashboard() {
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm font-medium">Assets</CardTitle>
               <div className="p-2 bg-green-500/10 rounded-full group-hover:scale-110 transition-transform duration-300">
-                <Shapes className="h-4 w-4 text-green-500" />
+                <Icons.asset className="h-4 w-4 text-green-500" />
               </div>
             </div>
           </CardHeader>
@@ -357,7 +336,7 @@ export default function Dashboard() {
               {stats.totalAssets}
             </div>
             <p className="text-sm text-muted-foreground mt-2 flex items-center gap-1">
-              <FileText className="h-4 w-4" />
+              <Icons.file className="h-4 w-4" />
               <span>Total uploaded assets</span>
             </p>
           </CardContent>
@@ -372,7 +351,7 @@ export default function Dashboard() {
                 Recent Activity
               </CardTitle>
               <div className="p-2 bg-amber-500/10 rounded-full group-hover:scale-110 transition-transform duration-300">
-                <Calendar className="h-4 w-4 text-amber-500" />
+                <Icons.calendar className="h-4 w-4 text-amber-500" />
               </div>
             </div>
           </CardHeader>
@@ -381,7 +360,7 @@ export default function Dashboard() {
               {stats.recentActivity}
             </div>
             <p className="text-sm text-muted-foreground mt-2 flex items-center gap-1">
-              <Clock className="h-4 w-4" />
+              <Icons.clock className="h-4 w-4" />
               <span>In the last 7 days</span>
             </p>
           </CardContent>
@@ -399,7 +378,7 @@ export default function Dashboard() {
                 Quick Create
               </CardTitle>
               <div className="p-2 bg-purple-500/10 rounded-full group-hover:scale-110 transition-transform duration-300">
-                <Sparkles className="h-4 w-4 text-purple-500" />
+                <Icons.sparkle className="h-4 w-4 text-purple-500" />
               </div>
             </div>
           </CardHeader>
@@ -410,12 +389,12 @@ export default function Dashboard() {
             >
               <div className="relative">
                 <div className="absolute inset-0 bg-purple-500/20 rounded-full animate-ping opacity-75 group-hover:opacity-100"></div>
-                <Plus className="h-4 w-4 relative z-10" />
+                <Icons.plus className="h-4 w-4 relative z-10" />
               </div>
               <span className="font-medium">New Label</span>
             </Button>
             <p className="text-sm text-muted-foreground mt-2 flex items-center gap-1">
-              <Zap className="h-4 w-4" />
+              <Icons.zap className="h-4 w-4" />
               <span>Start creating now</span>
             </p>
           </CardContent>
@@ -430,21 +409,21 @@ export default function Dashboard() {
               value="labels"
               className="flex items-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"
             >
-              <Tag className="h-4 w-4" />
+              <Icons.label className="h-4 w-4" />
               <span>Labels</span>
             </TabsTrigger>
             <TabsTrigger
               value="projects"
               className="flex items-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"
             >
-              <FolderKanban className="h-4 w-4" />
+              <Icons.project className="h-4 w-4" />
               <span>Projects</span>
             </TabsTrigger>
             <TabsTrigger
               value="assets"
               className="flex items-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"
             >
-              <Shapes className="h-4 w-4" />
+              <Icons.asset className="h-4 w-4" />
               <span>Assets</span>
             </TabsTrigger>
           </TabsList>
@@ -460,14 +439,14 @@ export default function Dashboard() {
             >
               <div>
                 <CardTitle className="text-xl flex items-center gap-2">
-                  <Tag className="h-5 w-5 text-primary" />
+                  <Icons.label className="h-5 w-5 text-primary" />
                   Recent Labels
                 </CardTitle>
                 <CardDescription>Your recently updated labels</CardDescription>
               </div>
               {!isMobile && (
                 <Button onClick={handleCreateLabel} variant="outline" size="sm">
-                  <Plus className="h-4 w-4 mr-2" />
+                  <Icons.plus className="h-4 w-4 mr-2" />
                   New Label
                 </Button>
               )}
@@ -477,7 +456,7 @@ export default function Dashboard() {
                 <div className="text-center py-8 sm:py-12 border-2 border-dashed rounded-lg bg-muted/20">
                   <div className="relative w-16 h-16 mx-auto mb-4">
                     <div className="absolute inset-0 bg-primary/10 rounded-full animate-pulse"></div>
-                    <Tag className="h-10 w-10 sm:h-12 sm:w-12 mx-auto text-primary/70 relative z-10" />
+                    <Icons.label className="h-10 w-10 sm:h-12 sm:w-12 mx-auto text-primary/70 relative z-10" />
                   </div>
                   <h3 className="text-base sm:text-lg font-medium mb-1">
                     No labels created yet
@@ -487,7 +466,7 @@ export default function Dashboard() {
                     process.
                   </p>
                   <Button onClick={handleCreateLabel} className="shadow-sm">
-                    <Plus className="h-4 w-4 mr-2" />
+                    <Icons.plus className="h-4 w-4 mr-2" />
                     Create Your First Label
                   </Button>
                 </div>
@@ -508,7 +487,7 @@ export default function Dashboard() {
                                 className="h-full w-full object-cover rounded-md"
                               />
                             ) : (
-                              <Tag className="h-5 w-5 text-primary" />
+                              <Icons.label className="h-5 w-5 text-primary" />
                             )}
                           </div>
                           <div className="min-w-0">
@@ -518,7 +497,7 @@ export default function Dashboard() {
                             </div>
                             <div className="text-sm text-muted-foreground flex items-center gap-2 flex-wrap">
                               <span className="flex items-center">
-                                <Clock className="h-3 w-3 mr-1 flex-shrink-0" />
+                                <Icons.clock className="h-3 w-3 mr-1 flex-shrink-0" />
                                 {formatRelativeTime(label.updated_at)}
                               </span>
                               {label.projects && (
@@ -526,7 +505,7 @@ export default function Dashboard() {
                                   <span className="mx-1 hidden sm:inline">
                                     •
                                   </span>
-                                  <FolderKanban className="h-3 w-3 mr-1 flex-shrink-0" />
+                                  <Icons.project className="h-3 w-3 mr-1 flex-shrink-0" />
                                   <span className="truncate">
                                     {label.projects.name}
                                   </span>
@@ -544,7 +523,7 @@ export default function Dashboard() {
                             <PenTool className="h-4 w-4" />
                           </Button>
                           <div className="h-8 w-8 rounded-full bg-muted/50 flex items-center justify-center">
-                            <ChevronRight className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                            <Icons.chevronRight className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                           </div>
                         </div>
                       </div>
@@ -562,7 +541,7 @@ export default function Dashboard() {
                       onClick={() => navigate("/labels")}
                     >
                       <span>View all labels</span>
-                      <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      <Icons.arrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   )}
                 </div>
@@ -581,7 +560,7 @@ export default function Dashboard() {
             >
               <div>
                 <CardTitle className="text-xl flex items-center gap-2">
-                  <FolderKanban className="h-5 w-5 text-blue-500" />
+                  <Icons.project className="h-5 w-5 text-blue-500" />
                   Recent Projects
                 </CardTitle>
                 <CardDescription>
@@ -594,7 +573,7 @@ export default function Dashboard() {
                   variant="outline"
                   size="sm"
                 >
-                  <Plus className="h-4 w-4 mr-2" />
+                  <Icons.plus className="h-4 w-4 mr-2" />
                   New Project
                 </Button>
               )}
@@ -604,7 +583,7 @@ export default function Dashboard() {
                 <div className="text-center py-8 sm:py-12 border-2 border-dashed rounded-lg bg-muted/20">
                   <div className="relative w-16 h-16 mx-auto mb-4">
                     <div className="absolute inset-0 bg-blue-500/10 rounded-full animate-pulse"></div>
-                    <FolderKanban className="h-10 w-10 sm:h-12 sm:w-12 mx-auto text-blue-500/70 relative z-10" />
+                    <Icons.project className="h-10 w-10 sm:h-12 sm:w-12 mx-auto text-blue-500/70 relative z-10" />
                   </div>
                   <h3 className="text-base sm:text-lg font-medium mb-1">
                     No projects created yet
@@ -613,7 +592,7 @@ export default function Dashboard() {
                     Projects help you organize your labels into collections.
                   </p>
                   <Button onClick={handleCreateProject} className="shadow-sm">
-                    <Plus className="h-4 w-4 mr-2" />
+                    <Icons.plus className="h-4 w-4 mr-2" />
                     Create Your First Project
                   </Button>
                 </div>
@@ -627,7 +606,7 @@ export default function Dashboard() {
                       >
                         <div className="flex items-center gap-3 min-w-0">
                           <div className="h-10 w-10 rounded-md bg-gradient-to-br from-blue-500/10 to-blue-500/5 flex items-center justify-center flex-shrink-0 border border-border/50 shadow-sm">
-                            <FolderKanban className="h-5 w-5 text-blue-500" />
+                            <Icons.project className="h-5 w-5 text-blue-500" />
                           </div>
                           <div className="min-w-0">
                             <div className="font-medium truncate">
@@ -635,7 +614,7 @@ export default function Dashboard() {
                             </div>
                             <div className="text-sm text-muted-foreground flex items-center gap-2 flex-wrap">
                               <span className="flex items-center">
-                                <Clock className="h-3 w-3 mr-1 flex-shrink-0" />
+                                <Icons.clock className="h-3 w-3 mr-1 flex-shrink-0" />
                                 {formatRelativeTime(project.updated_at)}
                               </span>
                               {project.description && (
@@ -663,7 +642,7 @@ export default function Dashboard() {
                             <PenTool className="h-4 w-4" />
                           </Button>
                           <div className="h-8 w-8 rounded-full bg-muted/50 flex items-center justify-center">
-                            <ChevronRight className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                            <Icons.chevronRight className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                           </div>
                         </div>
                       </div>
@@ -681,7 +660,7 @@ export default function Dashboard() {
                       onClick={() => navigate("/projects")}
                     >
                       <span>View all projects</span>
-                      <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      <Icons.arrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   )}
                 </div>
@@ -699,7 +678,7 @@ export default function Dashboard() {
             >
               <div>
                 <CardTitle className="text-xl flex items-center gap-2">
-                  <Shapes className="h-5 w-5 text-green-500" />
+                  <Icons.asset className="h-5 w-5 text-green-500" />
                   Recent Assets
                 </CardTitle>
                 <CardDescription>Your recently uploaded assets</CardDescription>
@@ -710,7 +689,7 @@ export default function Dashboard() {
                   variant="outline"
                   size="sm"
                 >
-                  <Plus className="h-4 w-4 mr-2" />
+                  <Icons.plus className="h-4 w-4 mr-2" />
                   Upload Asset
                 </Button>
               )}
@@ -720,7 +699,7 @@ export default function Dashboard() {
                 <div className="text-center py-8 sm:py-12 border-2 border-dashed rounded-lg bg-muted/20">
                   <div className="relative w-16 h-16 mx-auto mb-4">
                     <div className="absolute inset-0 bg-green-500/10 rounded-full animate-pulse"></div>
-                    <Shapes className="h-10 w-10 sm:h-12 sm:w-12 mx-auto text-green-500/70 relative z-10" />
+                    <Icons.asset className="h-10 w-10 sm:h-12 sm:w-12 mx-auto text-green-500/70 relative z-10" />
                   </div>
                   <h3 className="text-base sm:text-lg font-medium mb-1">
                     No assets uploaded yet
@@ -733,7 +712,7 @@ export default function Dashboard() {
                     onClick={() => setIsUploadDialogOpen(true)}
                     className="shadow-sm"
                   >
-                    <Plus className="h-4 w-4 mr-2" />
+                    <Icons.plus className="h-4 w-4 mr-2" />
                     Upload Your First Asset
                   </Button>
                 </div>
@@ -757,7 +736,7 @@ export default function Dashboard() {
                                 }}
                               />
                             ) : (
-                              <FileText className="h-5 w-5 text-muted-foreground" />
+                              <Icons.file className="h-5 w-5 text-muted-foreground" />
                             )}
                           </div>
                           <div className="min-w-0">
@@ -766,7 +745,7 @@ export default function Dashboard() {
                             </div>
                             <div className="text-sm text-muted-foreground flex items-center gap-2">
                               <span className="flex items-center">
-                                <Clock className="h-3 w-3 mr-1" />
+                                <Icons.clock className="h-3 w-3 mr-1" />
                                 {formatRelativeTime(asset.created_at)}
                               </span>
                               <span className="flex items-center">
@@ -790,7 +769,7 @@ export default function Dashboard() {
                       onClick={() => navigate("/assets")}
                     >
                       <span>View all assets</span>
-                      <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      <Icons.arrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   )}
                 </div>
@@ -801,158 +780,186 @@ export default function Dashboard() {
       </Tabs>
 
       {/* Quick Actions - Enhanced with better styling */}
-<div className="mt-8 sm:mt-10">
-  <div className="flex items-center gap-3 mb-6">
-    <h2 className="text-lg sm:text-xl font-semibold tracking-tight">Quick Actions</h2>
-    <div className="h-px flex-1 bg-border/60" />
-  </div>
-
-  <div className={cn(
-    "grid gap-4",
-    "grid-cols-2 sm:grid-cols-3 lg:grid-cols-6"
-  )}>
-    {/* Create Project Card */}
-    <Card
-      className="group cursor-pointer transition-all duration-300 hover:shadow-lg border-primary/20 hover:border-primary/40 relative overflow-hidden"
-      onClick={handleCreateProject}
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-      <CardContent className="p-4 sm:p-6">
-        <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
-          <div className="relative">
-            <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <FolderPlus className="h-6 w-6 text-primary" />
-            </div>
-            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-primary/10 rounded-full flex items-center justify-center">
-              <Plus className="h-3 w-3 text-primary" />
-            </div>
-          </div>
-          <div>
-            <h3 className="font-medium group-hover:text-primary transition-colors">New Project</h3>
-            <p className="text-xs text-muted-foreground mt-1">Start organizing your labels</p>
-          </div>
+      <div className="mt-8 sm:mt-10">
+        <div className="flex items-center gap-3 mb-6">
+          <h2 className="text-lg sm:text-xl font-semibold tracking-tight">
+            Quick Actions
+          </h2>
+          <div className="h-px flex-1 bg-border/60" />
         </div>
-      </CardContent>
-      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-    </Card>
 
-    {/* Create Label Card */}
-    <Card
-      className="group cursor-pointer transition-all duration-300 hover:shadow-lg border-blue-500/20 hover:border-blue-500/40 relative overflow-hidden"
-      onClick={handleCreateLabel}
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-      <CardContent className="p-4 sm:p-6">
-        <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
-          <div className="relative">
-            <div className="h-12 w-12 rounded-xl bg-blue-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <TagIcon className="h-6 w-6 text-blue-500" />
-            </div>
-            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-blue-500/10 rounded-full flex items-center justify-center">
-              <Plus className="h-3 w-3 text-blue-500" />
-            </div>
-          </div>
-          <div>
-            <h3 className="font-medium group-hover:text-blue-500 transition-colors">New Label</h3>
-            <p className="text-xs text-muted-foreground mt-1">Create a new label</p>
-          </div>
-        </div>
-      </CardContent>
-      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-blue-500/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-    </Card>
+        <div
+          className={cn(
+            "grid gap-4",
+            "grid-cols-2 sm:grid-cols-3 lg:grid-cols-6"
+          )}
+        >
+          {/* Create Project Card */}
+          <Card
+            className="group cursor-pointer transition-all duration-300 hover:shadow-lg border-primary/20 hover:border-primary/40 relative overflow-hidden"
+            onClick={handleCreateProject}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
+                <div className="relative">
+                  <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <Icons.newProject className="h-6 w-6 text-primary" />
+                  </div>
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-primary/10 rounded-full flex items-center justify-center">
+                    <Icons.plus className="h-3 w-3 text-primary" />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-medium group-hover:text-primary transition-colors">
+                    New Project
+                  </h3>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Start organizing your labels
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+          </Card>
 
-    {/* Upload Asset Card */}
-    <Card
-      className="group cursor-pointer transition-all duration-300 hover:shadow-lg border-green-500/20 hover:border-green-500/40 relative overflow-hidden"
-      onClick={() => setIsUploadDialogOpen(true)}
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-      <CardContent className="p-4 sm:p-6">
-        <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
-          <div className="relative">
-            <div className="h-12 w-12 rounded-xl bg-green-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <Upload className="h-6 w-6 text-green-500" />
-            </div>
-            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500/10 rounded-full flex items-center justify-center">
-              <Plus className="h-3 w-3 text-green-500" />
-            </div>
-          </div>
-          <div>
-            <h3 className="font-medium group-hover:text-green-500 transition-colors">Upload Asset</h3>
-            <p className="text-xs text-muted-foreground mt-1">Add new assets</p>
-          </div>
-        </div>
-      </CardContent>
-      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-green-500/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-    </Card>
+          {/* Create Label Card */}
+          <Card
+            className="group cursor-pointer transition-all duration-300 hover:shadow-lg border-blue-500/20 hover:border-blue-500/40 relative overflow-hidden"
+            onClick={handleCreateLabel}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
+                <div className="relative">
+                  <div className="h-12 w-12 rounded-xl bg-blue-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <Icons.label className="h-6 w-6 text-blue-500" />
+                  </div>
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-blue-500/10 rounded-full flex items-center justify-center">
+                    <Icons.plus className="h-3 w-3 text-blue-500" />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-medium group-hover:text-blue-500 transition-colors">
+                    New Label
+                  </h3>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Create a new label
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-blue-500/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+          </Card>
 
-    {/* View Assets Card */}
-    <Card
-      className="group cursor-pointer transition-all duration-300 hover:shadow-lg border-teal-500/20 hover:border-teal-500/40 relative overflow-hidden"
-      onClick={() => navigate("/assets")}
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 via-teal-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-      <CardContent className="p-4 sm:p-6">
-        <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
-          <div className="relative">
-            <div className="h-12 w-12 rounded-xl bg-teal-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <LibraryIcon className="h-6 w-6 text-teal-500" />
-            </div>
-          </div>
-          <div>
-            <h3 className="font-medium group-hover:text-teal-500 transition-colors">Assets Library</h3>
-            <p className="text-xs text-muted-foreground mt-1">Browse all assets</p>
-          </div>
-        </div>
-      </CardContent>
-      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-teal-500/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-    </Card>
+          {/* Upload Asset Card */}
+          <Card
+            className="group cursor-pointer transition-all duration-300 hover:shadow-lg border-green-500/20 hover:border-green-500/40 relative overflow-hidden"
+            onClick={() => setIsUploadDialogOpen(true)}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
+                <div className="relative">
+                  <div className="h-12 w-12 rounded-xl bg-green-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <Icons.upload className="h-6 w-6 text-green-500" />
+                  </div>
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500/10 rounded-full flex items-center justify-center">
+                    <Icons.plus className="h-3 w-3 text-green-500" />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-medium group-hover:text-green-500 transition-colors">
+                    Upload Asset
+                  </h3>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Add new assets
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-green-500/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+          </Card>
 
-    {/* View Labels Card */}
-    <Card
-      className="group cursor-pointer transition-all duration-300 hover:shadow-lg border-violet-500/20 hover:border-violet-500/40 relative overflow-hidden"
-      onClick={() => navigate("/labels")}
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 via-violet-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-      <CardContent className="p-4 sm:p-6">
-        <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
-          <div className="relative">
-            <div className="h-12 w-12 rounded-xl bg-violet-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <TagIcon className="h-6 w-6 text-violet-500" />
-            </div>
-          </div>
-          <div>
-            <h3 className="font-medium group-hover:text-violet-500 transition-colors">Labels</h3>
-            <p className="text-xs text-muted-foreground mt-1">View all labels</p>
-          </div>
-        </div>
-      </CardContent>
-      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-violet-500/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-    </Card>
+          {/* View Assets Card */}
+          <Card
+            className="group cursor-pointer transition-all duration-300 hover:shadow-lg border-teal-500/20 hover:border-teal-500/40 relative overflow-hidden"
+            onClick={() => navigate("/assets")}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 via-teal-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
+                <div className="relative">
+                  <div className="h-12 w-12 rounded-xl bg-teal-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <Icons.library className="h-6 w-6 text-teal-500" />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-medium group-hover:text-teal-500 transition-colors">
+                    Assets Library
+                  </h3>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Browse all assets
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-teal-500/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+          </Card>
 
-    {/* View Projects Card */}
-    <Card
-      className="group cursor-pointer transition-all duration-300 hover:shadow-lg border-amber-500/20 hover:border-amber-500/40 relative overflow-hidden"
-      onClick={() => navigate("/projects")}
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-      <CardContent className="p-4 sm:p-6">
-        <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
-          <div className="relative">
-            <div className="h-12 w-12 rounded-xl bg-amber-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <FolderKanban className="h-6 w-6 text-amber-500" />
-            </div>
-          </div>
-          <div>
-            <h3 className="font-medium group-hover:text-amber-500 transition-colors">Projects</h3>
-            <p className="text-xs text-muted-foreground mt-1">View all projects</p>
-          </div>
+          {/* View Labels Card */}
+          <Card
+            className="group cursor-pointer transition-all duration-300 hover:shadow-lg border-violet-500/20 hover:border-violet-500/40 relative overflow-hidden"
+            onClick={() => navigate("/labels")}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 via-violet-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
+                <div className="relative">
+                  <div className="h-12 w-12 rounded-xl bg-violet-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <Icons.label className="h-6 w-6 text-violet-500" />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-medium group-hover:text-violet-500 transition-colors">
+                    Labels
+                  </h3>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    View all labels
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-violet-500/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+          </Card>
+
+          {/* View Projects Card */}
+          <Card
+            className="group cursor-pointer transition-all duration-300 hover:shadow-lg border-amber-500/20 hover:border-amber-500/40 relative overflow-hidden"
+            onClick={() => navigate("/projects")}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
+                <div className="relative">
+                  <div className="h-12 w-12 rounded-xl bg-amber-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <Icons.project className="h-6 w-6 text-amber-500" />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-medium group-hover:text-amber-500 transition-colors">
+                    Projects
+                  </h3>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    View all projects
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-amber-500/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+          </Card>
         </div>
-      </CardContent>
-      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-amber-500/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-    </Card>
-  </div>
-</div>
+      </div>
 
       <ProjectDialog
         isOpen={isProjectDialogOpen}

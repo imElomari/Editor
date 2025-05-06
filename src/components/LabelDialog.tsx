@@ -1,50 +1,73 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useEffect } from "react"
-import { supabase } from "../lib/supabase"
-import type { Label, Project } from "../lib/types"
-import { Check, ChevronsUpDown, Loader2, Tags } from "lucide-react"
-import { Button } from "../components/ui/button"
-import { Input } from "../components/ui/input"
-import { Textarea } from "../components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select"
-import { useAuth } from "../context/AuthContext"
-import { toast } from "sonner"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../components/ui/dialog"
-import { useNavigate } from "react-router-dom"
-import { useMobile } from "../hooks/use-mobile"
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "./ui/command"
-import { cn } from "../lib/utils"
+import { useState, useEffect } from "react";
+import { supabase } from "../lib/supabase";
+import type { Label, Project } from "../lib/types";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Textarea } from "../components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../components/ui/select";
+import { useAuth } from "../context/AuthContext";
+import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "../components/ui/dialog";
+import { useNavigate } from "react-router-dom";
+import { useMobile } from "../hooks/use-mobile";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "./ui/command";
+import { cn } from "../lib/utils";
+import { Icons } from "../lib/constances";
 
 interface LabelDialogProps {
-  label?: Label
-  isOpen: boolean
-  onClose: () => void
-  onSuccess: () => void
+  label?: Label;
+  isOpen: boolean;
+  onClose: () => void;
+  onSuccess: () => void;
 }
 
-export function LabelDialog({ label, isOpen, onClose, onSuccess }: LabelDialogProps) {
-  const navigate = useNavigate()
-  const { user } = useAuth()
-  const [loading, setLoading] = useState(false)
-  const [projects, setProjects] = useState<Project[]>([])
+export function LabelDialog({
+  label,
+  isOpen,
+  onClose,
+  onSuccess,
+}: LabelDialogProps) {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [formData, setFormData] = useState({
     name: label?.name || "",
     description: label?.description || "",
     project_id: label?.project_id || "",
     label_json: label?.label_json || {},
     status: label?.status || "draft",
-  })
-  const isMobile = useMobile()
+  });
+  const isMobile = useMobile();
 
-  const isEditing = Boolean(label)
-  const [open, setOpen] = useState(false)
+  const isEditing = Boolean(label);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    fetchProjects()
+    fetchProjects();
     if (label) {
       setFormData({
         name: label.name,
@@ -52,7 +75,7 @@ export function LabelDialog({ label, isOpen, onClose, onSuccess }: LabelDialogPr
         project_id: label.project_id,
         label_json: label.label_json as object,
         status: label.status,
-      })
+      });
     } else {
       setFormData({
         name: "",
@@ -60,9 +83,9 @@ export function LabelDialog({ label, isOpen, onClose, onSuccess }: LabelDialogPr
         project_id: "",
         label_json: {},
         status: "draft",
-      })
+      });
     }
-  }, [label])
+  }, [label]);
 
   async function fetchProjects() {
     try {
@@ -70,18 +93,18 @@ export function LabelDialog({ label, isOpen, onClose, onSuccess }: LabelDialogPr
         .from("projects")
         .select("*")
         .eq("owner_id", user?.id)
-        .is("deleted_at", null)
+        .is("deleted_at", null);
 
-      if (error) throw error
-      setProjects(data || [])
+      if (error) throw error;
+      setProjects(data || []);
     } catch {
-      toast.error("Error fetching projects")
+      toast.error("Error fetching projects");
     }
   }
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
 
     try {
       if (isEditing) {
@@ -95,15 +118,15 @@ export function LabelDialog({ label, isOpen, onClose, onSuccess }: LabelDialogPr
             status: formData.status,
             updated_at: new Date().toISOString(),
           })
-          .eq("id", label?.id)
+          .eq("id", label?.id);
 
-        if (error) throw error
+        if (error) throw error;
         toast.success("Label updated", {
           description: `"${formData.name}" has been updated successfully.`,
           icon: true,
-        })
-        onSuccess()
-        onClose()
+        });
+        onSuccess();
+        onClose();
       } else {
         // Creating new label
         const { data, error } = await supabase
@@ -119,42 +142,49 @@ export function LabelDialog({ label, isOpen, onClose, onSuccess }: LabelDialogPr
             },
           ])
           .select()
-          .single()
+          .single();
 
-        if (error) throw error
+        if (error) throw error;
         toast.success("Label created", {
           description: `"${formData.name}" has been created successfully.`,
           icon: true,
-        })
+        });
 
         // Redirect to editor instead of closing
-        navigate(`/editor/${data.id}`)
+        navigate(`/editor/${data.id}`);
       }
     } catch (error) {
-      console.error("Error:", error)
+      console.error("Error:", error);
       toast.error(`Error ${isEditing ? "updating" : "creating"} label`, {
         description: "An unexpected error occurred. Please try again.",
         icon: true,
-      })
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={isMobile ? "w-[calc(100%-32px)] p-4" : "sm:max-w-[500px]"}>
+      <DialogContent
+        className={isMobile ? "w-[calc(100%-32px)] p-4" : "sm:max-w-[500px]"}
+      >
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Tags className="h-5 w-5" />
+            <Icons.labels className="h-5 w-5" />
             {isEditing ? "Edit Label" : "Create New Label"}
           </DialogTitle>
           <DialogDescription>
-            {isEditing ? "Update your label details below" : "Add a new label to your project"}
+            {isEditing
+              ? "Update your label details below"
+              : "Add a new label to your project"}
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6 pt-2 sm:pt-4">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-4 sm:space-y-6 pt-2 sm:pt-4"
+        >
           <div className="space-y-2">
             <label className="text-sm font-medium">
               Project <span className="text-destructive">*</span>
@@ -169,9 +199,11 @@ export function LabelDialog({ label, isOpen, onClose, onSuccess }: LabelDialogPr
                   disabled={loading}
                 >
                   {formData.project_id
-                    ? projects.find((project) => project.id === formData.project_id)?.name
+                    ? projects.find(
+                        (project) => project.id === formData.project_id
+                      )?.name
                     : "Select project..."}
-                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  <Icons.chevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-full p-0">
@@ -184,14 +216,16 @@ export function LabelDialog({ label, isOpen, onClose, onSuccess }: LabelDialogPr
                         key={project.id}
                         value={project.name}
                         onSelect={() => {
-                          setFormData({ ...formData, project_id: project.id })
-                          setOpen(false)
+                          setFormData({ ...formData, project_id: project.id });
+                          setOpen(false);
                         }}
                       >
-                        <Check
+                        <Icons.checkmark
                           className={cn(
                             "mr-2 h-4 w-4",
-                            formData.project_id === project.id ? "opacity-100" : "opacity-0"
+                            formData.project_id === project.id
+                              ? "opacity-100"
+                              : "opacity-0"
                           )}
                         />
                         {project.name}
@@ -201,7 +235,7 @@ export function LabelDialog({ label, isOpen, onClose, onSuccess }: LabelDialogPr
                 </Command>
               </PopoverContent>
             </Popover>
-            </div>
+          </div>
 
           <div className="space-y-2">
             <label className="text-sm font-medium">
@@ -210,7 +244,9 @@ export function LabelDialog({ label, isOpen, onClose, onSuccess }: LabelDialogPr
             <Input
               required
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
               placeholder="Enter label name"
               className="w-full"
               disabled={loading}
@@ -221,7 +257,9 @@ export function LabelDialog({ label, isOpen, onClose, onSuccess }: LabelDialogPr
             <label className="text-sm font-medium">Description</label>
             <Textarea
               value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
               placeholder="Enter label description"
               className="w-full min-h-[80px] sm:min-h-[100px]"
               disabled={loading}
@@ -233,7 +271,10 @@ export function LabelDialog({ label, isOpen, onClose, onSuccess }: LabelDialogPr
             <Select
               value={formData.status}
               onValueChange={(value) =>
-                setFormData({ ...formData, status: value as "draft" | "published" | "archived" })
+                setFormData({
+                  ...formData,
+                  status: value as "draft" | "published" | "archived",
+                })
               }
             >
               <SelectTrigger>
@@ -248,13 +289,18 @@ export function LabelDialog({ label, isOpen, onClose, onSuccess }: LabelDialogPr
           </div>
 
           <div className="flex justify-end gap-3 pt-2 sm:pt-4">
-            <Button type="button" variant="outline" onClick={onClose} disabled={loading}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onClose}
+              disabled={loading}
+            >
               Cancel
             </Button>
             <Button type="submit" disabled={loading}>
               {loading ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Icons.loading className="mr-2 h-4 w-4 animate-spin" />
                   {isEditing ? "Updating..." : "Creating..."}
                 </>
               ) : isEditing ? (
@@ -267,5 +313,5 @@ export function LabelDialog({ label, isOpen, onClose, onSuccess }: LabelDialogPr
         </form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

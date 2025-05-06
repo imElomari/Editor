@@ -1,21 +1,28 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import type { Project } from "../../lib/types"
-import { Button } from "../ui/button"
-import { Check, ChevronsUpDown, FolderKanban } from "lucide-react"
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command"
-import { cn } from "../../lib/utils"
+import { useState, useEffect } from "react";
+import type { Project } from "../../lib/types";
+import { Button } from "../ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "../ui/command";
+import { cn } from "../../lib/utils";
+import { Icons } from "../../lib/constances";
 
 interface ProjectSelectorProps {
-  projects: Project[]
-  selectedProjectId: string
-  onSelect: (projectId: string) => void
-  placeholder?: string
-  disabled?: boolean
-  triggerClassName?: string
-  includeAllOption?: boolean
+  projects: Project[];
+  selectedProjectId: string;
+  onSelect: (projectId: string) => void;
+  placeholder?: string;
+  disabled?: boolean;
+  triggerClassName?: string;
+  includeAllOption?: boolean;
 }
 
 export function ProjectSelector({
@@ -27,17 +34,17 @@ export function ProjectSelector({
   triggerClassName = "",
   includeAllOption = false,
 }: ProjectSelectorProps) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
-  const selectedProject = projects.find((p) => p.id === selectedProjectId)
-  const displayValue = selectedProject?.name || placeholder
+  const selectedProject = projects.find((p) => p.id === selectedProjectId);
+  const displayValue = selectedProject?.name || placeholder;
 
   // Close popover when selectedProjectId changes
   useEffect(() => {
     if (selectedProjectId) {
-      setOpen(false)
+      setOpen(false);
     }
-  }, [selectedProjectId])
+  }, [selectedProjectId]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -51,10 +58,10 @@ export function ProjectSelector({
           onClick={() => setOpen(!open)}
         >
           <div className="flex items-center gap-2 truncate">
-            <FolderKanban className="h-4 w-4 shrink-0" />
+            <Icons.project className="h-4 w-4 shrink-0" />
             <span className="truncate">{displayValue}</span>
           </div>
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <Icons.chevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[250px] p-0" align="start">
@@ -67,11 +74,16 @@ export function ProjectSelector({
                 <CommandItem
                   value="all"
                   onSelect={() => {
-                    onSelect("all")
-                    setOpen(false)
+                    onSelect("all");
+                    setOpen(false);
                   }}
                 >
-                  <Check className={cn("mr-2 h-4 w-4", selectedProjectId === "all" ? "opacity-100" : "opacity-0")} />
+                  <Icons.checkmark
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      selectedProjectId === "all" ? "opacity-100" : "opacity-0"
+                    )}
+                  />
                   All Projects
                 </CommandItem>
               )}
@@ -80,12 +92,17 @@ export function ProjectSelector({
                   key={project.id}
                   value={project.id}
                   onSelect={(value) => {
-                    onSelect(value)
-                    setOpen(false)
+                    onSelect(value);
+                    setOpen(false);
                   }}
                 >
-                  <Check
-                    className={cn("mr-2 h-4 w-4", selectedProjectId === project.id ? "opacity-100" : "opacity-0")}
+                  <Icons.checkmark
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      selectedProjectId === project.id
+                        ? "opacity-100"
+                        : "opacity-0"
+                    )}
                   />
                   {project.name}
                 </CommandItem>
@@ -95,5 +112,5 @@ export function ProjectSelector({
         </Command>
       </PopoverContent>
     </Popover>
-  )
+  );
 }

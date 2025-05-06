@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { Button, ButtonProps } from "../ui/button";
-import { Shapes } from "lucide-react";
 import { AssetUploadDialog } from "../AssetUploadDialog";
 import { cn } from "../../lib/utils";
+import { Icons } from "../../lib/constances";
 
 interface QuickActionButtonProps extends ButtonProps {
   variant?: "default" | "outline" | "secondary" | "ghost";
@@ -31,7 +31,7 @@ export function QuickAssetButton({
         className={cn("gap-2", className)}
         {...props}
       >
-        <Shapes className="h-4 w-4" />
+        <Icons.asset className="h-4 w-4" />
         {showLabel && "Upload Asset"}
       </Button>
 
