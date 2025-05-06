@@ -29,6 +29,7 @@ export type Project = {
     name: string;
     type: AssetType;
     url: string;
+    is_used?: boolean;
     metadata: {
       size: number;
       mimeType: string;
@@ -41,4 +42,5 @@ export type Project = {
     created_at: string;
   }
 
-  
+export type AssetScope = "all" | "global" | "project"
+

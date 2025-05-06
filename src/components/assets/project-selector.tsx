@@ -1,0 +1,99 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import type { Project } from "../../lib/types"
+import { Button } from "../ui/button"
+import { Check, ChevronsUpDown, FolderKanban } from "lucide-react"
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command"
+import { cn } from "../../lib/utils"
+
+interface ProjectSelectorProps {
+  projects: Project[]
+  selectedProjectId: string
+  onSelect: (projectId: string) => void
+  placeholder?: string
+  disabled?: boolean
+  triggerClassName?: string
+  includeAllOption?: boolean
+}
+
+export function ProjectSelector({
+  projects,
+  selectedProjectId,
+  onSelect,
+  placeholder = "Select a project",
+  disabled = false,
+  triggerClassName = "",
+  includeAllOption = false,
+}: ProjectSelectorProps) {
+  const [open, setOpen] = useState(false)
+
+  const selectedProject = projects.find((p) => p.id === selectedProjectId)
+  const displayValue = selectedProject?.name || placeholder
+
+  // Close popover when selectedProjectId changes
+  useEffect(() => {
+    if (selectedProjectId) {
+      setOpen(false)
+    }
+  }, [selectedProjectId])
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className={cn("justify-between", triggerClassName)}
+          disabled={disabled}
+          onClick={() => setOpen(!open)}
+        >
+          <div className="flex items-center gap-2 truncate">
+            <FolderKanban className="h-4 w-4 shrink-0" />
+            <span className="truncate">{displayValue}</span>
+          </div>
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[250px] p-0" align="start">
+        <Command>
+          <CommandInput placeholder="Search projects..." autoFocus />
+          <CommandList>
+            <CommandEmpty>No projects found</CommandEmpty>
+            <CommandGroup>
+              {includeAllOption && (
+                <CommandItem
+                  value="all"
+                  onSelect={() => {
+                    onSelect("all")
+                    setOpen(false)
+                  }}
+                >
+                  <Check className={cn("mr-2 h-4 w-4", selectedProjectId === "all" ? "opacity-100" : "opacity-0")} />
+                  All Projects
+                </CommandItem>
+              )}
+              {projects.map((project) => (
+                <CommandItem
+                  key={project.id}
+                  value={project.id}
+                  onSelect={(value) => {
+                    onSelect(value)
+                    setOpen(false)
+                  }}
+                >
+                  <Check
+                    className={cn("mr-2 h-4 w-4", selectedProjectId === project.id ? "opacity-100" : "opacity-0")}
+                  />
+                  {project.name}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  )
+}

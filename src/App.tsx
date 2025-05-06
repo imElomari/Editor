@@ -11,6 +11,7 @@ import LabelsPage from "./pages/LabelsList"
 import EditorPage from "./pages/EditorPage"
 import ProjectDetails from "./pages/ProjectDetails"
 import TrashPage from "./pages/TrashPage"
+import AssetsPage from "./pages/AssetsPage"
 // Replace the Toaster import and usage with our enhanced SonnerProvider
 import { SonnerProvider } from "./components/ui/sonner-provider"
 
@@ -58,6 +59,16 @@ function App() {
                   <ProtectedRoute>
                     <Layout>
                       <LabelsPage />
+                    </Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/assets"
+                element={
+                  <ProtectedRoute>
+                    <Layout>
+                      <AssetsPage />
                     </Layout>
                   </ProtectedRoute>
                 }

@@ -17,6 +17,7 @@ import {
   Tags,
   FolderKanban,
   Trash2,
+  ImageIcon,
 } from "lucide-react"
 import { cn } from "../../lib/utils"
 import { useMobile } from "../../hooks/use-mobile"
@@ -98,9 +99,11 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Link to="/profile" 
-                className="transition-transform hover:scale-105 duration-200"
-                onClick={isMobile ? onClose : undefined}>
+                <Link
+                  to="/profile"
+                  className="transition-transform hover:scale-105 duration-200"
+                  onClick={isMobile ? onClose : undefined}
+                >
                   <Avatar className="h-12 w-12 border-2 border-primary/20 shadow-sm">
                     <AvatarImage src={user?.user_metadata?.avatar_url || "/placeholder.svg"} />
                     <AvatarFallback className="bg-primary/10 text-primary font-semibold">
@@ -194,10 +197,28 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
-                    to="/Trash"
+                    to="/assets"
                     className={cn(
                       "flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200",
-                      isActive("/Trash")
+                      isActive("/assets")
+                        ? "bg-primary/10 text-primary shadow-sm"
+                        : "hover:bg-accent hover:text-accent-foreground hover:scale-105",
+                    )}
+                    onClick={isMobile ? onClose : undefined}
+                  >
+                    <ImageIcon className="h-5 w-5" />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent side="right">Assets</TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link
+                    to="/trash"
+                    className={cn(
+                      "flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200",
+                      isActive("/trash")
                         ? "bg-primary/10 text-primary shadow-sm"
                         : "hover:bg-accent hover:text-accent-foreground hover:scale-105",
                     )}
@@ -252,10 +273,23 @@ export function SidePanel({ isOpen, onClose, isCollapsed = false, onToggleCollap
               <span>My Labels</span>
             </Link>
             <Link
-              to="/Trash"
+              to="/assets"
               className={cn(
                 "flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200",
-                isActive("/Trash")
+                isActive("/assets")
+                  ? "bg-primary/10 text-primary font-medium shadow-sm"
+                  : "hover:bg-accent hover:text-accent-foreground",
+              )}
+              onClick={isMobile ? onClose : undefined}
+            >
+              <ImageIcon className="h-5 w-5 min-w-5" />
+              <span>Assets</span>
+            </Link>
+            <Link
+              to="/trash"
+              className={cn(
+                "flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200",
+                isActive("/trash")
                   ? "bg-primary/10 text-primary font-medium shadow-sm"
                   : "hover:bg-accent hover:text-accent-foreground",
               )}
