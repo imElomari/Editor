@@ -74,14 +74,6 @@ export default function AssetsPage() {
       const data = await fetchAssets(user.id, assetScope, projectFilter, typeFilter)
       setAssets(data)
 
-      // Debug log to check what's being returned
-      console.log(`Loaded ${data.length} assets with type filter: ${typeFilter}`)
-      if (data.length > 0) {
-        console.log(
-          "Sample asset types:",
-          data.slice(0, 3).map((a) => a.type),
-        )
-      }
     } catch (error) {
       console.error("Error loading assets:", error)
       toast.error("Failed to load assets")
