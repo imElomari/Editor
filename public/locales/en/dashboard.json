@@ -1,0 +1,11 @@
+{
+    "greeting": {
+      "morning": "Good morning",
+      "afternoon": "Good afternoon",
+      "evening": "Good evening",
+      "summary": "Here's what's happening with your labels today"
+    },
+    "loading": {
+    "state": "Loading your dashboard...",
+    "title": "Loading"
+}

@@ -18,6 +18,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "../../components/ui/avatar";
+import { useTranslation } from "react-i18next";
 
 type SidePanelProps = {
   isOpen: boolean;
@@ -36,6 +37,7 @@ export function SidePanel({
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const isMobile = useMobile();
+  const { t } = useTranslation('common')
 
   const getInitials = (email: string) => {
     return email?.substring(0, 2).toUpperCase() || "U";
@@ -199,7 +201,7 @@ export function SidePanel({
                     <Icons.home className="h-5 w-5" />
                   </Link>
                 </TooltipTrigger>
-                <TooltipContent side="right">Dashboard</TooltipContent>
+                <TooltipContent side="right">{t('navigation.dashboard')}</TooltipContent>
               </Tooltip>
 
               <Tooltip>
@@ -217,7 +219,7 @@ export function SidePanel({
                     <Icons.project className="h-5 w-5" />
                   </Link>
                 </TooltipTrigger>
-                <TooltipContent side="right">My Projects</TooltipContent>
+                <TooltipContent side="right">{t('navigation.projects')}</TooltipContent>
               </Tooltip>
 
               <Tooltip>
@@ -235,7 +237,7 @@ export function SidePanel({
                     <Icons.labels className="h-5 w-5" />
                   </Link>
                 </TooltipTrigger>
-                <TooltipContent side="right">My Labels</TooltipContent>
+                <TooltipContent side="right">{t('navigation.labels')}</TooltipContent>
               </Tooltip>
 
               <Tooltip>
@@ -253,7 +255,7 @@ export function SidePanel({
                     <Icons.asset className="h-5 w-5" />
                   </Link>
                 </TooltipTrigger>
-                <TooltipContent side="right">Assets</TooltipContent>
+                <TooltipContent side="right">{t('navigation.assets')}</TooltipContent>
               </Tooltip>
 
               <Tooltip>
@@ -271,7 +273,7 @@ export function SidePanel({
                     <Icons.delete className="h-5 w-5" />
                   </Link>
                 </TooltipTrigger>
-                <TooltipContent side="right">Trash</TooltipContent>
+                <TooltipContent side="right">{t('navigation.trash')}</TooltipContent>
               </Tooltip>
             </div>
           </TooltipProvider>
@@ -288,7 +290,7 @@ export function SidePanel({
               onClick={isMobile ? onClose : undefined}
             >
               <Icons.home className="h-5 w-5 min-w-5" />
-              <span>Dashboard</span>
+              <span>{t('navigation.dashboard')}</span>
             </Link>
             <Link
               to="/projects"
@@ -301,7 +303,7 @@ export function SidePanel({
               onClick={isMobile ? onClose : undefined}
             >
               <Icons.project className="h-5 w-5 min-w-5" />
-              <span>My Projects</span>
+              <span>{t('navigation.projects')}</span>
             </Link>
             <Link
               to="/labels"
@@ -314,7 +316,7 @@ export function SidePanel({
               onClick={isMobile ? onClose : undefined}
             >
               <Icons.labels className="h-5 w-5 min-w-5" />
-              <span>My Labels</span>
+              <span>{t('navigation.labels')}</span>
             </Link>
             <Link
               to="/assets"
@@ -327,7 +329,7 @@ export function SidePanel({
               onClick={isMobile ? onClose : undefined}
             >
               <Icons.asset className="h-5 w-5 min-w-5" />
-              <span>Assets</span>
+              <span>{t('navigation.assets')}</span>
             </Link>
             <Link
               to="/trash"
@@ -340,7 +342,7 @@ export function SidePanel({
               onClick={isMobile ? onClose : undefined}
             >
               <Icons.delete className="h-5 w-5 min-w-5" />
-              <span>Trash</span>
+              <span>{t('navigation.trash')}</span>
             </Link>
           </>
         )}
@@ -394,14 +396,14 @@ export function SidePanel({
                     <Icons.logout className="h-5 w-5" />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent side="right">Sign out</TooltipContent>
+                <TooltipContent side="right">{t('account.logout')}</TooltipContent>
               </Tooltip>
             </div>
           </TooltipProvider>
         ) : (
           <>
             <div className="text-xs uppercase text-muted-foreground font-semibold tracking-wider px-2 mb-3">
-              Settings
+            {t('account.settings')}
             </div>
             <div className="flex items-center justify-between mb-5">
               <Link
@@ -410,7 +412,7 @@ export function SidePanel({
                 onClick={isMobile ? onClose : undefined}
               >
                 <Icons.user className="h-5 w-5 min-w-5" />
-                <span>Profile</span>
+                <span>{t('account.profile')}</span>
               </Link>
               <Button
                 variant="outline"
@@ -437,7 +439,7 @@ export function SidePanel({
               }}
             >
               <Icons.logout className="h-5 w-5" />
-              <span>Sign Out</span>
+              <span>{t('account.logout')}</span>
             </Button>
           </>
         )}

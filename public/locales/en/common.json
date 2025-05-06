@@ -1,0 +1,16 @@
+{
+  "navigation": {
+      "dashboard": "Dashboard",
+      "home": "Home",
+      "projects": "Projects",
+      "labels": "Labels",
+      "assets": "Assets",
+      "settings": "Settings",
+      "trash": "Trash"
+    },
+    "account": {
+      "profile": "Profile",
+      "settings": "Settings",
+      "logout": "Log out"
+    }
+  }

@@ -14,9 +14,11 @@ import TrashPage from "./pages/TrashPage"
 import AssetsPage from "./pages/AssetsPage"
 // Replace the Toaster import and usage with our enhanced SonnerProvider
 import { SonnerProvider } from "./components/ui/sonner-provider"
+import { LoadingTranslations } from "./components/LoadingTranslations"
 
 function App() {
   return (
+    <LoadingTranslations>
     <ThemeProvider>
       <AuthProvider>
         <SonnerProvider>
@@ -108,6 +110,7 @@ function App() {
         </SonnerProvider>
       </AuthProvider>
     </ThemeProvider>
+    </LoadingTranslations>
   )
 }
 

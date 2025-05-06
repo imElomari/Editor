@@ -8,6 +8,7 @@ import { useMobile } from "../hooks/use-mobile"
 import { ThemeToggle } from "../components/ThemeToggle"
 import { MobileUserMenu } from "../components/MobileUserMenu"
 import { useAuth } from "../context/AuthContext"
+import { LanguageSwitcher } from "../components/LanguageSwitcher"
 
 interface LayoutProps {
   children: React.ReactNode
@@ -57,6 +58,10 @@ const Layout = ({ children }: LayoutProps) => {
                 <ThemeToggle />
                 {user && <MobileUserMenu user={user} onSignOut={signOut} />}
               </div>
+              <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <LanguageSwitcher />
+        </div>
             </div>
           )}
 

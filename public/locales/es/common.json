@@ -1,0 +1,16 @@
+{
+  "navigation": {
+      "dashboard": "Panel",
+      "home": "Inicio",
+      "projects": "Proyectos",
+      "labels": "Etiquetas",
+      "assets": "Recursos",
+      "settings": "Ajustes",
+      "trash": "Papelera"
+    },
+    "account": {
+      "profile": "Perfil",
+      "settings": "Ajustes",
+      "logout": "Cerrar sesión"
+    }
+  }

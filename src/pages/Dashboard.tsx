@@ -29,6 +29,7 @@ import { useMobile } from "../hooks/use-mobile";
 import { cn, getAssetTypeLabel, getStorageUrl } from "../lib/utils";
 import { AssetUploadDialog } from "../components/AssetUploadDialog";
 import { Icons } from "../lib/constances";
+import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -50,6 +51,7 @@ export default function Dashboard() {
   const isMobile = useMobile();
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
   const [assets, setAssets] = useState<Asset[]>([]);
+  const { t } = useTranslation('dashboard')
 
   // Fetch user's data
   const fetchData = async () => {
@@ -172,11 +174,11 @@ export default function Dashboard() {
 
   // Get time of day for greeting
   const getGreeting = () => {
-    const hour = new Date().getHours();
-    if (hour < 12) return "Good morning";
-    if (hour < 18) return "Good afternoon";
-    return "Good evening";
-  };
+    const hour = new Date().getHours()
+    if (hour < 12) return t('greeting.morning')
+    if (hour < 18) return t('greeting.afternoon')
+    return t('greeting.evening')
+  }
 
   // Get first name from email or metadata
   const getFirstName = () => {
@@ -255,7 +257,7 @@ export default function Dashboard() {
             </h1>
           </div>
           <p className="text-muted-foreground ml-0 sm:ml-3">
-            Here's what's happening with your labels today
+          {t('greeting.summary')}
           </p>
         </div>
       </div>
@@ -276,7 +278,7 @@ export default function Dashboard() {
                 Total Labels
               </CardTitle>
               <div className="p-2 bg-primary/10 rounded-full group-hover:scale-110 transition-transform duration-300">
-                <Icons.label className="h-4 w-4 text-primary" />
+                <Icons.labels className="h-4 w-4 text-primary" />
               </div>
             </div>
           </CardHeader>
@@ -409,7 +411,7 @@ export default function Dashboard() {
               value="labels"
               className="flex items-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"
             >
-              <Icons.label className="h-4 w-4" />
+              <Icons.labels className="h-4 w-4" />
               <span>Labels</span>
             </TabsTrigger>
             <TabsTrigger
@@ -439,7 +441,7 @@ export default function Dashboard() {
             >
               <div>
                 <CardTitle className="text-xl flex items-center gap-2">
-                  <Icons.label className="h-5 w-5 text-primary" />
+                  <Icons.labels className="h-5 w-5 text-primary" />
                   Recent Labels
                 </CardTitle>
                 <CardDescription>Your recently updated labels</CardDescription>
@@ -456,7 +458,7 @@ export default function Dashboard() {
                 <div className="text-center py-8 sm:py-12 border-2 border-dashed rounded-lg bg-muted/20">
                   <div className="relative w-16 h-16 mx-auto mb-4">
                     <div className="absolute inset-0 bg-primary/10 rounded-full animate-pulse"></div>
-                    <Icons.label className="h-10 w-10 sm:h-12 sm:w-12 mx-auto text-primary/70 relative z-10" />
+                    <Icons.labels className="h-10 w-10 sm:h-12 sm:w-12 mx-auto text-primary/70 relative z-10" />
                   </div>
                   <h3 className="text-base sm:text-lg font-medium mb-1">
                     No labels created yet
@@ -487,7 +489,7 @@ export default function Dashboard() {
                                 className="h-full w-full object-cover rounded-md"
                               />
                             ) : (
-                              <Icons.label className="h-5 w-5 text-primary" />
+                              <Icons.labels className="h-5 w-5 text-primary" />
                             )}
                           </div>
                           <div className="min-w-0">
@@ -833,7 +835,7 @@ export default function Dashboard() {
               <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
                 <div className="relative">
                   <div className="h-12 w-12 rounded-xl bg-blue-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <Icons.label className="h-6 w-6 text-blue-500" />
+                    <Icons.labels className="h-6 w-6 text-blue-500" />
                   </div>
                   <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-blue-500/10 rounded-full flex items-center justify-center">
                     <Icons.plus className="h-3 w-3 text-blue-500" />
@@ -917,7 +919,7 @@ export default function Dashboard() {
               <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
                 <div className="relative">
                   <div className="h-12 w-12 rounded-xl bg-violet-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <Icons.label className="h-6 w-6 text-violet-500" />
+                    <Icons.labels className="h-6 w-6 text-violet-500" />
                   </div>
                 </div>
                 <div>

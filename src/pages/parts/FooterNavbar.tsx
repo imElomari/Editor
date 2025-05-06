@@ -4,11 +4,13 @@ import { Link, useLocation } from "react-router-dom";
 import { cn } from "../../lib/utils";
 import { useMobile } from "../../hooks/use-mobile";
 import { Icons } from "../../lib/constances";
+import { useTranslation } from "react-i18next";
 
 const FooterNavbar = () => {
   const currentYear = new Date().getFullYear();
   const location = useLocation();
   const isMobile = useMobile();
+  const { t } = useTranslation('common')
 
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -25,7 +27,7 @@ const FooterNavbar = () => {
           )}
         >
           <Icons.home className="h-5 w-5" />
-          <span className="text-xs mt-1">Home</span>
+          <span className="text-xs mt-1">{t('navigation.home')}</span>
         </Link>
         <Link
           to="/projects"
@@ -35,7 +37,7 @@ const FooterNavbar = () => {
           )}
         >
           <Icons.project className="h-5 w-5" />
-          <span className="text-xs mt-1">Projects</span>
+          <span className="text-xs mt-1">{t('navigation.projects')}</span>
         </Link>
         <Link
           to="/labels"
@@ -45,7 +47,7 @@ const FooterNavbar = () => {
           )}
         >
           <Icons.labels className="h-5 w-5" />
-          <span className="text-xs mt-1">Labels</span>
+          <span className="text-xs mt-1">{t('navigation.labels')}</span>
         </Link>
         <Link
           to="/assets"
@@ -55,7 +57,7 @@ const FooterNavbar = () => {
           )}
         >
           <Icons.asset className="h-5 w-5" />
-          <span className="text-xs mt-1">Assets</span>
+          <span className="text-xs mt-1">{t('navigation.assets')}</span>
         </Link>
         <Link
           to="/trash"
@@ -65,7 +67,7 @@ const FooterNavbar = () => {
           )}
         >
           <Icons.delete className="h-5 w-5" />
-          <span className="text-xs mt-1">Trash</span>
+          <span className="text-xs mt-1">{t('navigation.trash')}</span>
         </Link>
       </div>
     );
