@@ -169,7 +169,7 @@ export default function LabelCard({ label, onDelete, onEdit }: LabelCardProps) {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will delete the label "{label.name}". This action cannot be undone.
+              This will delete the label "{label.name}".
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

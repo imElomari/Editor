@@ -5,7 +5,7 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { supabase } from "../lib/supabase"
 import type { Project } from "../lib/types"
-import { Loader2, Tag } from "lucide-react"
+import { Loader2, FolderKanban } from "lucide-react"
 import { Button } from "../components/ui/button"
 import { Input } from "../components/ui/input"
 import { Textarea } from "../components/ui/textarea"
@@ -97,7 +97,7 @@ export function ProjectDialog({ project, isOpen, onClose, onSuccess }: ProjectDi
       <DialogContent className={isMobile ? "w-[calc(100%-32px)] p-4" : "sm:max-w-[500px]"}>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Tag className="h-5 w-5" />
+            <FolderKanban className="h-5 w-5" />
             {isEditing ? "Edit Project" : "Create New Project"}
           </DialogTitle>
           <DialogDescription>

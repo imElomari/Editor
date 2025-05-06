@@ -2,7 +2,7 @@
 
 import { Link, useLocation } from "react-router-dom"
 import { cn } from "../../lib/utils"
-import { Home, FolderKanban, Tags, Trash2 } from "lucide-react"
+import { Home, FolderKanban, Tags, Trash2, ImageIcon } from "lucide-react"
 import { useMobile } from "../../hooks/use-mobile"
 
 const FooterNavbar = () => {
@@ -46,6 +46,16 @@ const FooterNavbar = () => {
         >
           <Tags className="h-5 w-5" />
           <span className="text-xs mt-1">Labels</span>
+        </Link>
+        <Link
+          to="/assets"
+          className={cn(
+            "flex flex-col items-center justify-center p-2 rounded-lg transition-colors",
+            isActive("/assets") ? "text-primary" : "text-muted-foreground",
+          )}
+        >
+          <ImageIcon className="h-5 w-5" />
+          <span className="text-xs mt-1">Assets</span>
         </Link>
         <Link
           to="/trash"

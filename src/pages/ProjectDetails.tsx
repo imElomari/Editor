@@ -219,7 +219,7 @@ export default function ProjectDetails() {
       {asset.type.startsWith('image/') ? (
         <div className="relative w-full h-32 mb-2 bg-muted/50 rounded-md overflow-hidden">
           <img 
-            src={getStorageUrl('project-assets', asset.metadata.storagePath ?? '')}
+            src={getStorageUrl(asset.metadata.storagePath ?? '')}
             alt={asset.name}
             className="absolute inset-0 w-full h-full object-contain rounded-md"
             onError={(e) => {

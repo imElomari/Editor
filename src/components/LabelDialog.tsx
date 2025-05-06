@@ -5,7 +5,7 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { supabase } from "../lib/supabase"
 import type { Label, Project } from "../lib/types"
-import { Check, ChevronsUpDown, Loader2, Tag } from "lucide-react"
+import { Check, ChevronsUpDown, Loader2, Tags } from "lucide-react"
 import { Button } from "../components/ui/button"
 import { Input } from "../components/ui/input"
 import { Textarea } from "../components/ui/textarea"
@@ -146,7 +146,7 @@ export function LabelDialog({ label, isOpen, onClose, onSuccess }: LabelDialogPr
       <DialogContent className={isMobile ? "w-[calc(100%-32px)] p-4" : "sm:max-w-[500px]"}>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Tag className="h-5 w-5" />
+            <Tags className="h-5 w-5" />
             {isEditing ? "Edit Label" : "Create New Label"}
           </DialogTitle>
           <DialogDescription>

@@ -4,7 +4,6 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import FooterNavbar from "../pages/parts/FooterNavbar"
 import { SidePanel } from "../pages/parts/side-panel"
-import { Tag } from "lucide-react"
 import { useMobile } from "../hooks/use-mobile"
 import { ThemeToggle } from "../components/ThemeToggle"
 import { MobileUserMenu } from "../components/MobileUserMenu"
@@ -51,7 +50,6 @@ const Layout = ({ children }: LayoutProps) => {
           {isMobile && (
             <div className="sticky top-0 z-10 flex items-center h-16 px-4 border-b bg-background/95 backdrop-blur-sm">
               <div className="flex items-center gap-2">
-                <Tag className="h-6 w-6 text-primary" />
                 <h1 className="font-bold text-lg">Label Editor</h1>
               </div>
               

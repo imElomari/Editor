@@ -254,7 +254,7 @@ export default function TrashPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Permanently</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to permanently delete this {selectedItem?.type}? This action cannot be undone.
+              Are you sure you want to permanently delete this {selectedItem?.type}?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

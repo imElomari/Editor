@@ -116,7 +116,7 @@ export default function LabelsPage() {
             <p className="text-muted-foreground mt-1">Manage your label designs</p>
           </div>
           <Button onClick={() => setIsDialogOpen(true)} size={isMobile ? "sm" : "lg"}>
-            <Plus className="h-5 w-5 mr-2" />
+            <Plus className="h-5 w-5" />
             {!isMobile && "New Label"}
           </Button>
         </div>

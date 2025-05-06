@@ -149,7 +149,7 @@ export default function ProjectCard({ project, onDelete, onEdit }: ProjectCardPr
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will delete the project "{project.name}" and all its associated data. This action cannot be undone.
+              This will delete the project "{project.name}" and all its associated data.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
