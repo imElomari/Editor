@@ -12,7 +12,6 @@ import {
     Trash2,
     FolderPlus,
     Tag,
-    Tags,
     Upload,
     Shapes,
     LibraryIcon,
