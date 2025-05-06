@@ -73,12 +73,13 @@ CREATE TYPE asset_type AS ENUM (
 
 CREATE TABLE assets (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    owner_id UUID NOT NULL REFERENCES auth.users(id),
+    owner_id UUID REFERENCES auth.users(id),
     project_id UUID REFERENCES projects(id) ON DELETE CASCADE,
     name VARCHAR(255) NOT NULL,
     type asset_type NOT NULL,
     url TEXT NOT NULL,
     metadata JSONB DEFAULT '{}',
+    is_used BOOLEAN NOT NULL DEFAULT false;
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     
@@ -99,6 +100,7 @@ CREATE INDEX idx_labels_deleted_at ON labels(deleted_at);
 CREATE INDEX idx_assets_owner ON assets(owner_id);
 CREATE INDEX idx_assets_project ON assets(project_id);
 CREATE INDEX idx_assets_type ON assets(type);
+CREATE INDEX idx_assets_is_used ON assets(is_used);
 
 -- Create Triggers
 CREATE TRIGGER set_updated_at_projects
@@ -129,3 +131,27 @@ BEGIN
   RETURN '/storage/v1/object/public/' || bucket || '/' || path;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION "public"."update_asset_url"() 
+RETURNS "trigger"
+    LANGUAGE "plpgsql"
+    AS $$
+BEGIN
+  NEW.url = generate_storage_url(
+    'assets',  -- Always use 'assets' as bucket
+    CASE 
+      -- Admin global assets (no owner, no project)
+      WHEN NEW.owner_id IS NULL AND NEW.project_id IS NULL THEN 
+        'global/' || NEW.name
+      -- User assets (both global and project-specific)
+      ELSE 
+        'user/' || NEW.name
+    END
+  );
+  RETURN NEW;
+END;$$;
+
+CREATE TRIGGER set_asset_url
+    BEFORE INSERT OR UPDATE ON assets
+    FOR EACH ROW
+    EXECUTE FUNCTION update_asset_url();
