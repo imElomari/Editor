@@ -82,8 +82,8 @@ import {
     project: FolderKanban,
     newProject: FolderPlus,
     label: Tag,
-    labels: Tags,
-    asset: Shapes,
+    labels: Shapes,
+    asset: LibraryIcon,
     library: LibraryIcon,
   
     // Filters & Controls
