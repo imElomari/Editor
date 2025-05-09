@@ -1,0 +1,80 @@
+{
+  "page": {
+    "title": "المشاريع",
+    "description": "إدارة وتنظيم مشاريعك",
+    "newProject": "مشروع جديد",
+    "createFirst": "إنشاء مشروعك الأول",
+    "noProjectFound": "لم يتم العثور على مشروع"
+  },
+  "projectfilter": {
+    "title": "تصفية المشاريع",
+    "search": {
+      "label": "بحث",
+      "placeholder": "البحث في المشاريع..."
+    }
+  },
+  "empty": {
+    "noProjects": "لا توجد مشاريع بعد",
+    "noResults": "لم يتم العثور على مشاريع تطابق بحثك"
+  },
+  "card": {
+    "noDescription": "لا يوجد وصف",
+    "viewProject": "عرض المشروع",
+    "actions": {
+      "create": "إنشاء مشروع",
+      "edit": "تعديل المشروع",
+      "update": "تحديث المشروع",
+      "delete": "حذف المشروع"
+    },
+    "projectDialog": {
+      "new": "إضافة مشروع جديد لتنظيم ملصقاتك",
+      "update": "تحديث تفاصيل مشروعك أدناه",
+      "nameLabel": "اسم المشروع",
+      "namePlaceholder": "أدخل اسم المشروع",
+      "descriptionLabel": "الوصف",
+      "descriptionPlaceholder": "أدخل وصف المشروع"
+    },
+    "deleteDialog": {
+      "title": "هل أنت متأكد؟",
+      "description": "سيؤدي هذا إلى حذف المشروع \"{{projectName}}\" وجميع البيانات المرتبطة به.",
+      "confirm": "حذف المشروع"
+    },
+    "toast": {
+      "updated": {
+        "title": "تم تحديث المشروع",
+        "description": "تم تحديث \"{{projectName}}\" بنجاح."
+      },
+      "deleted": {
+        "title": "تم نقل المشروع إلى سلة المحذوفات",
+        "description": "تم نقل \"{{projectName}}\" إلى سلة المحذوفات."
+      },
+      "restored": {
+        "title": "تمت استعادة المشروع",
+        "description": "تمت استعادة \"{{projectName}}\" بنجاح."
+      },
+      "error": {
+        "delete": {
+          "title": "خطأ في حذف المشروع",
+          "description": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى."
+        },
+        "restore": {
+          "title": "خطأ في استعادة المشروع",
+          "description": "فشلت عملية استعادة المشروع. يرجى المحاولة مرة أخرى."
+        },
+        "fetch": "خطأ في جلب المشاريع"
+      }
+    }
+  },
+  "projectDetails": {
+    "tab1": {
+      "title": "الملصقات",
+      "noLabels": "لا توجد ملصقات بعد",
+      "action": "إنشاء ملصقك الأول"
+    },
+    "tab2": {
+      "title": "الموارد",
+      "noLabels": "لا توجد موارد بعد",
+      "action": "رفع مواردك الأولى"
+    }
+  }
+}

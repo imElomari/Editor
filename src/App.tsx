@@ -15,9 +15,13 @@ import AssetsPage from "./pages/AssetsPage"
 // Replace the Toaster import and usage with our enhanced SonnerProvider
 import { SonnerProvider } from "./components/ui/sonner-provider"
 import { LoadingTranslations } from "./components/LoadingTranslations"
+import { useTranslation } from "react-i18next"
 
 function App() {
+    const { i18n } = useTranslation();
+  
   return (
+    <div dir={i18n.language === 'ar' ? 'rtl' : 'ltr'} className="min-h-screen">  
     <LoadingTranslations>
     <ThemeProvider>
       <AuthProvider>
@@ -111,6 +115,7 @@ function App() {
       </AuthProvider>
     </ThemeProvider>
     </LoadingTranslations>
+  </div>  
   )
 }
 

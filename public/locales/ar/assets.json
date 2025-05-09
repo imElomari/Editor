@@ -1,0 +1,84 @@
+{
+  "page": {
+    "title": "الموارد",
+    "description": "إدارة مواردك العامة ومشاريعك",
+    "uploadAsset": "رفع مورد",
+    "createFirst": "رفع أول مورد"
+  },
+  "type": {
+    "global": "عام",
+    "project": "مشروع"
+  },
+  "assetfilter": {
+    "title": "تصفية الموارد",
+    "search": {
+      "placeholder": "البحث في الموارد..."
+    },
+    "scope": {
+      "title": "نطاق المورد",
+      "placeholder": "تصفية حسب النطاق",
+      "all": "جميع الموارد",
+      "global": "عام",
+      "project": "مشروع"
+    },
+    "type": {
+      "title": "نوع المورد",
+      "placeholder": "تصفية حسب النوع",
+      "all": "جميع الأنواع"
+    }
+  },
+  "empty": {
+    "noProjects": "لا توجد موارد بعد",
+    "noResults": "لم يتم العثور على موارد تطابق بحثك"
+  },
+  "card": {
+    "dropMenu": {
+      "rename": "إعادة تسمية",
+      "assignToProject": "تخصيص لمشروع",
+      "global": "جعله عاماً",
+      "delete": "حذف"
+    },
+    "deleteDialog": {
+      "title": "حذف المورد",
+      "description": "هل أنت متأكد من حذف {{assetName}}؟",
+      "confirm": "حذف المورد"
+    },
+    "assignProject": {
+      "title": "اختيار مشروع",
+      "placeholder": "اختر مشروعاً لتخصيص \"{{asset.name}}\"",
+      "search": "البحث في المشاريع...",
+      "Assigning": "جاري التخصيص",
+      "confirm": "تخصيص للمشروع",
+      "noProjectFound": "لم يتم العثور على مشاريع",
+      "all": "جميع المشاريع"
+    },
+    "rename": {
+      "title": "إعادة تسمية المورد",
+      "placeholder": "أدخل اسماً جديداً للمورد",
+      "label": "الاسم الجديد",
+      "newName": "أدخل الاسم الجديد",
+      "renaming": "جاري إعادة التسمية",
+      "confirm": "إعادة تسمية"
+    },
+    "uploadDialog": {
+      "title": "رفع مورد",
+      "placeholder": "رفع مورد إلى مكتبتك",
+      "type": "نوع المورد",
+      "MyAssetsTab": {
+        "title": "مواردي",
+        "description": "الموارد الشخصية متاحة في جميع مشاريعك ويمكن الوصول إليها من أي مكان في مساحة عملك."
+      },
+      "projectTab": {
+        "title": "موارد المشروع",
+        "description": "موارد المشروع خاصة بمشروع واحد وستكون متاحة فقط داخل هذا المشروع.",
+        "selectProject": "اختر مشروعاً",
+        "search": "البحث في المشاريع...",
+        "noProjectFound": "لم يتم العثور على مشاريع.",
+        "select": "الرجاء اختيار مشروع للمتابعة",
+        "uploading": "جاري الرفع...",
+        "confirm": "تم الرفع",
+        "uploaded": "رفع كمورد \"{{assetScope}}\""
+      }
+    }
+  }
+}

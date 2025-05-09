@@ -9,22 +9,20 @@ import {
 import { Icons } from '../lib/constances';
 
 export function LanguageSwitcher() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation('common');
 
   const languages = [
-    { code: 'en', label: 'English', flag: '🇬🇧' },
-    { code: 'es', label: 'Español', flag: '🇪🇸' },
-    { code: 'fr', label: 'Français', flag: '🇫🇷' }
+    { code: 'en', flag: '🇬🇧' },
+    { code: 'es', flag: '🇪🇸' },
+    { code: 'fr', flag: '🇫🇷' },
+    { code: 'ar', flag: '🇸🇦' }
   ];
 
   const handleLanguageChange = async (langCode: string) => {
-    console.log('Changing language to:', langCode);
-    try {
-      await i18n.changeLanguage(langCode);
-      console.log('Language changed successfully to:', i18n.language);
-    } catch (error) {
-      console.error('Error changing language:', error);
-    }
+    await i18n.changeLanguage(langCode);
+    // Update document direction
+    document.documentElement.dir = langCode === 'ar' ? 'rtl' : 'ltr';
+
   };
 
   return (
@@ -34,10 +32,11 @@ export function LanguageSwitcher() {
           variant="ghost" 
           size="sm"
           className="h-8 px-2 hover:bg-accent transition-colors duration-200"
+          aria-label={t('language.select')}
         >
           <Icons.global className="h-4 w-4 mr-1 text-muted-foreground" />
           <span className="text-sm font-medium uppercase">
-            {i18n.language}
+            {t(`language.${i18n.language}`)}
           </span>
         </Button>
       </DropdownMenuTrigger>
@@ -50,7 +49,7 @@ export function LanguageSwitcher() {
           >
             <div className="flex items-center gap-2">
               <span className="text-base">{lang.flag}</span>
-              <span>{lang.label}</span>
+              <span>{t(`language.${lang.code}`)}</span>
             </div>
             {lang.code === i18n.language && (
               <Icons.checkmark className="h-4 w-4 text-primary" />

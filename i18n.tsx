@@ -9,7 +9,8 @@ i18n
   .use(initReactI18next)
   .init({
     fallbackLng: 'en',
-    supportedLngs: ['en', 'es', 'fr'],
+    supportedLngs: ['en', 'es', 'fr', 'ar'],
+
     
     debug: true, // to be removed in production
     
@@ -20,7 +21,6 @@ i18n
     backend: {
       loadPath: '/locales/{{lng}}/{{ns}}.json',
     },
-
     ns: ['common', 'dashboard', 'projects', 'labels', 'assets', 'profile'],
     defaultNS: 'common',
     fallbackNS: 'common',

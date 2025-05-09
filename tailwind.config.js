@@ -60,5 +60,8 @@ export default {
         },
       },
     },
-    plugins: [require("tailwindcss-animate")],  // <== recommended for Shadcn
+    plugins: [
+      require("tailwindcss-animate"),  // <== recommended for Shadcn
+      require('tailwindcss-rtl')
+    ],
   }

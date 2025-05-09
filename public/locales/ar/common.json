@@ -1,0 +1,95 @@
+{
+  "language": {
+    "select": "اختر اللغة",
+    "en": "الإنجليزية",
+    "es": "الإسبانية",
+    "fr": "الفرنسية",
+    "ar": "العربية"
+  },
+  "sidePanel": {
+    "navigation": {
+      "dashboard": "لوحة التحكم",
+      "home": "الرئيسية",
+      "projects": "المشاريع",
+      "labels": "الملصقات",
+      "assets": "الموارد",
+      "settings": "الإعدادات",
+      "trash": "سلة المحذوفات"
+    },
+    "account": {
+      "profile": "الملف الشخصي",
+      "settings": "الإعدادات"
+    }
+  },
+  "trashPage": {
+    "title": "سلة المحذوفات",
+    "description": "يتم الاحتفاظ بالعناصر المحذوفة لمدة 30 يوماً قبل حذفها نهائياً",
+    "isEmpty": "سلة المحذوفات فارغة",
+    "msgIfEmpty": "العناصر التي تحذفها ستظهر هنا",
+    "remainingDays": "متبقي {{days}} يوم",
+    "deleted": "تم الحذف",
+    "restoreDialog": {
+      "title": "استعادة العنصر",
+      "description": "هل أنت متأكد من استعادته؟ سيتم نقله مرة أخرى إلى العناصر النشطة."
+    },
+    "deletePermanently": {
+      "title": "حذف نهائي",
+      "description": "هل أنت متأكد من الحذف النهائي؟",
+      "confirm": "حذف نهائي"
+    }
+  },
+  "login": {
+    "signin": "سجل دخول إلى حسابك للمتابعة"
+  },
+  "buttons": {
+    "signout": "تسجيل الخروج",
+    "cancel": "إلغاء",
+    "creating": "جاري الإنشاء...",
+    "updating": "جاري التحديث...",
+    "deleting": "جاري الحذف...",
+    "undo": "تراجع",
+    "restore": "استعادة",
+    "delete": "حذف"
+  },
+  "badges": {
+    "project": "مشروع",
+    "label": "ملصق"
+  },
+  "filter": {
+    "active": "تم تطبيق {{activeFilters}} فلتر",
+    "notactive": "لا توجد فلاتر",
+    "reset": "إعادة تعيين",
+    "close": "إغلاق",
+    "apply": "تطبيق الفلاتر",
+    "sort": {
+      "label": "ترتيب حسب",
+      "options": {
+        "newest": "الأحدث أولاً",
+        "oldest": "الأقدم أولاً",
+        "name": "الاسم"
+      }
+    },
+    "search": {
+      "label": "بحث"
+    },
+    "project": {
+      "title": "المشروع",
+      "placeholder": "تصفية حسب المشروع",
+      "all": "جميع المشاريع"
+    },
+    "status": {
+      "placeholder": "تصفية حسب الحالة",
+      "all": "جميع الحالات",
+      "draft": "مسودة",
+      "published": "منشور",
+      "archived": "مؤرشف"
+    }
+  },
+  "dropzone": {
+    "dragAndDrop": "اسحب وأفلت أو",
+    "selectFile": "اختر ملف",
+    "selectFiles": "اختر ملفات",
+    "toUpload": "للرفع",
+    "maxFileSize": "الحد الأقصى لحجم الملف: {{size}}"
+  }
+}

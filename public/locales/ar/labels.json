@@ -1,0 +1,75 @@
+{
+  "page": {
+    "title": "الملصقات",
+    "description": "إدارة تصاميم الملصقات",
+    "newLabel": "ملصق جديد",
+    "createFirst": "إنشاء ملصقك الأول"
+  },
+  "labelfilter": {
+    "title": "تصفية الملصقات",
+    "search": {
+      "placeholder": "البحث في الملصقات..."
+    }
+  },
+  "empty": {
+    "noLabels": "لا توجد ملصقات بعد",
+    "noResults": "لم يتم العثور على ملصقات تطابق بحثك"
+  },
+  "card": {
+    "noDescription": "لا يوجد وصف",
+    "viewLabel": "عرض الملصق",
+    "createdAt": "تم الإنشاء",
+    "actions": {
+      "create": "إنشاء ملصق",
+      "edit": "تعديل الملصق",
+      "update": "تحديث الملصق",
+      "delete": "حذف الملصق",
+      "openEditor": "فتح في المحرر"
+    },
+    "labelDialog": {
+      "new": "إضافة ملصق جديد إلى مشروعك",
+      "update": "تحديث تفاصيل ملصقك أدناه",
+      "projectLabel": "المشروع",
+      "projectPlaceholder": "اختر مشروع...",
+      "projectSearch": "البحث عن مشروع...",
+      "noProjectFound": "لم يتم العثور على مشروع.",
+      "labelName": "اسم الملصق",
+      "labelPlaceholder": "أدخل اسم الملصق",
+      "descriptionLabel": "الوصف",
+      "descriptionPlaceholder": "أدخل وصف الملصق",
+      "statusLabel": "الحالة",
+      "statusPlaceholder": "اختر الحالة"
+    },
+    "deleteDialog": {
+      "title": "هل أنت متأكد؟",
+      "description": "سيؤدي هذا إلى حذف الملصق {{labelName}}",
+      "confirm": "حذف الملصق"
+    }
+  },
+  "toast": {
+    "updated": {
+      "title": "تم تحديث الملصق",
+      "description": "تم تحديث \"{{labelName}}\" بنجاح."
+    },
+    "deleted": {
+      "title": "تم نقل الملصق إلى سلة المحذوفات",
+      "description": "تم نقل \"{{labelName}}\" إلى سلة المحذوفات."
+    },
+    "restored": {
+      "title": "تمت استعادة الملصق",
+      "description": "تمت استعادة \"{{labelName}}\" بنجاح."
+    },
+    "error": {
+      "delete": {
+        "title": "خطأ في حذف الملصق",
+        "description": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى."
+      },
+      "restore": {
+        "title": "خطأ في استعادة الملصق",
+        "description": "فشلت عملية استعادة الملصق. يرجى المحاولة مرة أخرى."
+      },
+      "fetchingProjects": "خطأ في جلب المشاريع",
+      "fetchingLabels": "خطأ في جلب الملصقات"
+    }
+  }
+}

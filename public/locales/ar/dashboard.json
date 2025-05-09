@@ -1,0 +1,92 @@
+{
+  "greeting": {
+    "morning": "صباح الخير",
+    "afternoon": "مساء الخير",
+    "evening": "مساء الخير",
+    "summary": "إليك ما يحدث مع ملصقاتك اليوم"
+  },
+  "loading": {
+    "state": "جاري تحميل لوحة التحكم...",
+    "title": "جاري التحميل"
+  },
+  "cards": {
+    "projects": {
+      "title": "المشاريع",
+      "subTitle": "تنظيم عملك"
+    },
+    "labels": {
+      "title": "مجموع الملصقات"
+    },
+    "assets": {
+      "title": "الموارد",
+      "subTitle": "مجموع الموارد المرفوعة"
+    },
+    "quickCreate": {
+      "title": "إنشاء سريع",
+      "action": "ملصق جديد",
+      "comment": "ابدأ الإنشاء الآن"
+    },
+    "recent": {
+      "title": "النشاط الأخير",
+      "subTitle": "في آخر 7 أيام"
+    }
+  },
+  "recent": {
+    "labels": {
+      "title": "الملصقات الأخيرة",
+      "description": "ملصقاتك المحدثة مؤخراً",
+      "action": "ملصق جديد",
+      "noLabels": "لم يتم إنشاء ملصقات بعد",
+      "createDescription": "أنشئ ملصقك الأول للبدء في عملية التصميم",
+      "createFirst": "إنشاء أول ملصق",
+      "viewAll": "عرض كل الملصقات"
+    },
+    "projects": {
+      "title": "المشاريع الأخيرة",
+      "description": "مشاريعك المحدثة مؤخراً",
+      "action": "مشروع جديد",
+      "noProjects": "لم يتم إنشاء مشاريع بعد",
+      "createDescription": "أنشئ مشروعك الأول لتنظيم ملصقاتك",
+      "createFirst": "إنشاء أول مشروع",
+      "viewAll": "عرض كل المشاريع"
+    },
+    "assets": {
+      "title": "الموارد الأخيرة",
+      "description": "مواردك المحدثة مؤخراً",
+      "action": "رفع مورد",
+      "noAssets": "لم يتم رفع موارد بعد",
+      "uploadDescription": "ارفع أول مورد للبدء في مكتبة مواردك",
+      "uploadFirst": "رفع أول مورد",
+      "viewAll": "عرض كل الموارد"
+    }
+  },
+  "quickActions": {
+    "title": "إجراءات سريعة",
+    "description": "المهام الشائعة التي يمكنك تنفيذها",
+    "projects": {
+      "create": "مشروع جديد",
+      "description": "بدء مشروع جديد",
+      "viewAll": "المشاريع",
+      "viewAllDescription": "عرض كل المشاريع"
+    },
+    "labels": {
+      "create": "ملصق جديد",
+      "description": "تصميم ملصق جديد",
+      "viewAll": "الملصقات",
+      "viewAllDescription": "عرض كل الملصقات"
+    },
+    "assets": {
+      "create": "رفع مورد",
+      "description": "إضافة صورة أو ملف جديد إلى مواردك",
+      "viewAll": "مكتبة الموارد",
+      "viewAllDescription": "تصفح كل الموارد"
+    }
+  },
+  "time": {
+    "now": "الآن",
+    "minutesAgo": "دقيقة مضت",
+    "hoursAgo": "ساعة مضت",
+    "yesterday": "أمس",
+    "monthsAgo": "شهر مضى"
+  }
+}
