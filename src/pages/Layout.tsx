@@ -18,7 +18,7 @@ const Layout = ({ children }: LayoutProps) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const isMobile = useMobile()
   const { user, signOut } = useAuth()
-  
+
   // Load sidebar collapsed state from localStorage
   useEffect(() => {
     const savedState = localStorage.getItem("sidebarCollapsed")
@@ -37,7 +37,7 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex flex-1 overflow-hidden">
-      {!isMobile && (
+        {!isMobile && (
           <SidePanel
             isOpen={true}
             onClose={() => {}}
@@ -45,7 +45,7 @@ const Layout = ({ children }: LayoutProps) => {
             onToggleCollapse={handleToggleCollapse}
           />
         )}
-        
+
         <div className="flex flex-col flex-1 overflow-auto">
           {/* Enhanced Mobile Top Bar */}
           {isMobile && (
@@ -53,15 +53,22 @@ const Layout = ({ children }: LayoutProps) => {
               <div className="flex items-center gap-2">
                 <h1 className="font-bold text-lg">Label Editor</h1>
               </div>
-              
-              <div className="ml-auto flex items-center gap-4">
+
+              <div className="ml-auto flex items-center gap-3">
+                <LanguageSwitcher />
                 <ThemeToggle />
                 {user && <MobileUserMenu user={user} onSignOut={signOut} />}
               </div>
-              <div className="flex items-center gap-2">
-          <ThemeToggle />
-          <LanguageSwitcher />
-        </div>
+            </div>
+          )}
+
+          {/* Desktop top bar with language switcher */}
+          {!isMobile && (
+            <div className="sticky top-0 z-10 flex items-center h-14 px-4 border-b bg-background/95 backdrop-blur-sm">
+              <div className="ml-auto flex items-center gap-3">
+                <LanguageSwitcher />
+                <ThemeToggle />
+              </div>
             </div>
           )}
 

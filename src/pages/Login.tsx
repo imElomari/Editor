@@ -14,10 +14,12 @@ import {
   CardTitle,
 } from "../components/ui/card";
 import { Icons } from "../lib/constances";
+import { useTranslation } from "react-i18next";
 
 export default function Login() {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+  const { t } = useTranslation('common');
 
   useEffect(() => {
     // Get initial session
@@ -87,7 +89,8 @@ export default function Login() {
               </Button>
             </div>
             <CardDescription>
-              Sign in to your account to continue
+            {t('common:login.signin')}
+
             </CardDescription>
           </CardHeader>
           <CardContent>
