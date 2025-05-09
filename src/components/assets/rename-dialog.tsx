@@ -5,6 +5,7 @@ import { Asset } from "../../lib/types"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { ModalWrapper } from "../ui/modal-wrapper"
+import { useTranslation } from "react-i18next"
 
 
 
@@ -17,7 +18,9 @@ interface RenameDialogProps {
 }
 
 export function RenameDialog({ asset, isOpen, isLoading, onClose, onRename }: RenameDialogProps) {
-  const [newName, setNewName] = useState("")
+  const [newName, setNewName] = useState("");
+  const { t } = useTranslation(['common', 'assets']);
+
 
   // Update newName when asset changes
   useEffect(() => {
@@ -32,25 +35,25 @@ export function RenameDialog({ asset, isOpen, isLoading, onClose, onRename }: Re
     <ModalWrapper isOpen={isOpen} onClose={onClose}>
       <div className="space-y-4">
         <div className="space-y-2">
-          <h2 className="text-xl font-semibold">Rename Asset</h2>
-          <p className="text-muted-foreground">Enter a new name for the asset</p>
+          <h2 className="text-xl font-semibold">{t('assets:card.rename.title')}</h2>
+          <p className="text-muted-foreground">{t('assets:card.rename.placeholder')}</p>
         </div>
         <div className="space-y-2">
-          <label htmlFor="assetName" className="text-sm font-medium">New Name</label>
+          <label htmlFor="assetName" className="text-sm font-medium">{t('assets:card.rename.label')}</label>
           <Input
             id="assetName"
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
-            placeholder="Enter new name"
+            placeholder={t('assets:card.rename.newName')}
             autoFocus
           />
         </div>
         <div className="flex justify-end space-x-2">
           <Button variant="outline" onClick={onClose} disabled={isLoading}>
-            Cancel
+          {t('common:buttons.cancel')}
           </Button>
           <Button onClick={() => onRename(newName)} disabled={isLoading || !newName || newName === asset?.name}>
-            {isLoading ? "Renaming..." : "Rename"}
+            {isLoading ? t('assets:card.rename.renaming') : t('assets:card.rename.confirm')}
           </Button>
         </div>
       </div>

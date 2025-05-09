@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslation } from "react-i18next"
 import { Asset, Project } from "../../lib/types"
 import { Button } from "../ui/button"
 import { ModalWrapper } from "../ui/modal-wrapper"
@@ -28,30 +29,33 @@ export function ProjectAssignmentDialog({
   onClose,
   onAssign,
 }: ProjectAssignmentDialogProps) {
+  const { t } = useTranslation(['common', 'assets']);
+
   if (!asset) return null
 
   return (
     <ModalWrapper isOpen={isOpen} onClose={onClose}>
       <div className="space-y-4">
         <div className="space-y-2">
-          <h2 className="text-xl font-semibold">Select Project</h2>
-          <p className="text-muted-foreground">Choose a project to assign "{asset?.name}" to</p>
+          <h2 className="text-xl font-semibold">{t('assets:card.assignProject.title')}
+          </h2>
+          <p className="text-muted-foreground">{t('assets:card.assignProject.placeholdre',asset?.name )}</p>
         </div>
         <div className="space-y-2">
           <ProjectSelector
             projects={projects}
             selectedProjectId={selectedProjectId}
             onSelect={setSelectedProjectId}
-            placeholder="Select a project"
+            placeholder={t('assets:card.assignProject.title')}
             disabled={isLoading}
           />
         </div>
         <div className="flex justify-end space-x-2">
           <Button variant="outline" onClick={onClose} disabled={isLoading}>
-            Cancel
+          {t('common:buttons.cancel')}
           </Button>
           <Button onClick={onAssign} disabled={isLoading || !selectedProjectId}>
-            {isLoading ? "Assigning..." : "Assign to Project"}
+            {isLoading ? t('assets:card.assignProject.assigning') : t('assets:card.assignProject.confirm')}
           </Button>
         </div>
       </div>

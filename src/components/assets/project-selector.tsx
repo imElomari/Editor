@@ -14,6 +14,7 @@ import {
 } from "../ui/command";
 import { cn } from "../../lib/utils";
 import { Icons } from "../../lib/constances";
+import { useTranslation } from "react-i18next";
 
 interface ProjectSelectorProps {
   projects: Project[];
@@ -38,6 +39,8 @@ export function ProjectSelector({
 
   const selectedProject = projects.find((p) => p.id === selectedProjectId);
   const displayValue = selectedProject?.name || placeholder;
+  const { t } = useTranslation('assets');
+
 
   // Close popover when selectedProjectId changes
   useEffect(() => {
@@ -66,9 +69,9 @@ export function ProjectSelector({
       </PopoverTrigger>
       <PopoverContent className="w-[250px] p-0" align="start">
         <Command>
-          <CommandInput placeholder="Search projects..." autoFocus />
+          <CommandInput placeholder={t('assets:card.assignProject.search')} autoFocus />
           <CommandList>
-            <CommandEmpty>No projects found</CommandEmpty>
+            <CommandEmpty>{t('assets:card.assignProject.noProjectFound')}</CommandEmpty>
             <CommandGroup>
               {includeAllOption && (
                 <CommandItem
@@ -84,7 +87,7 @@ export function ProjectSelector({
                       selectedProjectId === "all" ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  All Projects
+                  {t('assets:card.assignProject.all')}
                 </CommandItem>
               )}
               {projects.map((project) => (
