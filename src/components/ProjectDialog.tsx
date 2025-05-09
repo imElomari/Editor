@@ -19,6 +19,7 @@ import {
 } from "../components/ui/dialog";
 import { useMobile } from "../hooks/use-mobile";
 import { Icons } from "../lib/constances";
+import { useTranslation } from "react-i18next";
 
 interface ProjectDialogProps {
   project?: Project;
@@ -42,6 +43,7 @@ export function ProjectDialog({
   const isMobile = useMobile();
 
   const isEditing = Boolean(project);
+  const { t } = useTranslation(['common', 'projects']);
 
   useEffect(() => {
     if (project) {
@@ -111,12 +113,12 @@ export function ProjectDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Icons.project className="h-5 w-5" />
-            {isEditing ? "Edit Project" : "Create New Project"}
+            {isEditing ? t('projects:card.actions.edit') : t('projects:card.actions.create')}
           </DialogTitle>
           <DialogDescription>
             {isEditing
-              ? "Update your project details below"
-              : "Add a new project to organize your labels"}
+              ? t('projects:card.projectDialog.update')
+              : t('projects:card.projectDialog.new')}
           </DialogDescription>
         </DialogHeader>
 
@@ -126,7 +128,7 @@ export function ProjectDialog({
         >
           <div className="space-y-2">
             <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-              Project Name <span className="text-destructive">*</span>
+            {t('projects:card.projectDialog.nameLabel')} <span className="text-destructive">*</span>
             </label>
             <Input
               required
@@ -134,7 +136,7 @@ export function ProjectDialog({
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
-              placeholder="Enter project name"
+              placeholder={t('projects:card.projectDialog.namePlaceholder')}
               className="w-full"
               disabled={loading}
             />
@@ -142,14 +144,14 @@ export function ProjectDialog({
 
           <div className="space-y-2">
             <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-              Description
+            {t('projects:card.projectDialog.descriptionLabel')}
             </label>
             <Textarea
               value={formData.description}
               onChange={(e) =>
                 setFormData({ ...formData, description: e.target.value })
               }
-              placeholder="Enter project description"
+              placeholder={t('projects:card.projectDialog.descriptionPlaceholder')}
               className="w-full min-h-[100px]"
               disabled={loading}
             />
@@ -162,18 +164,18 @@ export function ProjectDialog({
               onClick={onClose}
               disabled={loading}
             >
-              Cancel
+              {t('common:buttons.cancel')}
             </Button>
             <Button type="submit" disabled={loading}>
               {loading ? (
                 <>
                   <Icons.loading className="mr-2 h-4 w-4 animate-spin" />
-                  {isEditing ? "Updating..." : "Creating..."}
+                  {isEditing ? t('common:buttons.updating') : t('common:buttons.creating')}
                 </>
               ) : isEditing ? (
-                "Update Project"
+                t('projects:card.actions.update')
               ) : (
-                "Create Project"
+                t('projects:card.actions.create')
               )}
             </Button>
           </div>

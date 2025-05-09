@@ -35,6 +35,7 @@ import {
 import { useMobile } from "../hooks/use-mobile";
 import { cn } from "../lib/utils";
 import { Icons } from "../lib/constances";
+import { useTranslation } from "react-i18next";
 
 interface ProjectCardProps {
   project: Project;
@@ -51,6 +52,9 @@ export default function ProjectCard({
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const isMobile = useMobile();
+  const { t } = useTranslation(['common','projects']);
+  
+
 
   async function handleDelete() {
     try {
@@ -62,10 +66,10 @@ export default function ProjectCard({
 
       if (error) throw error;
 
-      toast.success("Project moved to trash", {
-        description: `"${project.name}" has been moved to trash.`,
+      toast.success(t('projects:card.toast.deleted.title'), {
+        description: t('projects:card.toast.deleted.description', { projectName: project.name }),
         action: {
-          label: "Undo",
+          label: t('projects:card.toast.deleted.undo'),
           onClick: () => handleRestore(),
         },
         icon: true,
@@ -73,8 +77,8 @@ export default function ProjectCard({
       onDelete();
     } catch (error) {
       console.error("Error:", error);
-      toast.error("Error deleting project", {
-        description: "An unexpected error occurred. Please try again.",
+      toast.error(t('projects:card.toast.error.delete.title'), {
+        description: t('projects:card.toast.error.delete.description'),
         icon: true,
       });
     } finally {
@@ -92,15 +96,15 @@ export default function ProjectCard({
 
       if (error) throw error;
 
-      toast.success("Project restored", {
-        description: `"${project.name}" has been restored successfully.`,
+      toast.success(t('projects:card.toast.restored.title'), {
+        description: t('projects:card.toast.restored.description', { projectName: project.name }),
         icon: true,
       });
       onDelete(); // Refresh the list
     } catch (error) {
       console.error("Error:", error);
-      toast.error("Error restoring project", {
-        description: "Failed to restore the project. Please try again.",
+      toast.error(t('projects:card.toast.error.restore.title'), {
+        description: t('projects:card.toast.error.restore.description'),
         icon: true,
       });
     }
@@ -137,7 +141,7 @@ export default function ProjectCard({
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => onEdit(project)}>
                 <Icons.edit className="mr-2 h-4 w-4" />
-                Edit project
+                {t('projects:card.actions.edit')}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
@@ -145,14 +149,14 @@ export default function ProjectCard({
                 onClick={() => setIsDeleteDialogOpen(true)}
               >
                 <Icons.delete className="mr-2 h-4 w-4" />
-                Delete project
+                {t('projects:card.actions.delete')}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground line-clamp-2">
-            {project.description || "No description provided"}
+            {project.description || t('projects:card.noDescription')}
           </p>
         </CardContent>
         <CardFooter>
@@ -161,7 +165,7 @@ export default function ProjectCard({
             className="w-full"
             onClick={() => navigate(`/projects/${project.id}`)}
           >
-            View Project
+            {t('projects:card.viewProject')}
           </Button>
         </CardFooter>
       </Card>
@@ -172,21 +176,22 @@ export default function ProjectCard({
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogTitle>{t('projects:card.deleteDialog.title')}</AlertDialogTitle>
             <AlertDialogDescription>
-              This will delete the project "{project.name}" and all its
-              associated data.
+            {t('projects:card.deleteDialog.description', { projectName: project.name })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={isDeleting}>
+            {t('common:buttons.cancel')}
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               disabled={isDeleting}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              {isDeleting ? "Deleting..." : "Delete Project"}
-            </AlertDialogAction>
+              {isDeleting ? t('common:buttons.deleting') : t('projects:card.deleteDialog.confirm')}
+              </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

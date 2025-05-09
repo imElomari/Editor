@@ -11,7 +11,6 @@ import {
 } from "../components/ui/tabs";
 import { Icons } from "../lib/constances";
 
-import { toast } from "sonner";
 import LabelCard from "../components/LabelCard";
 import { LabelDialog } from "../components/LabelDialog";
 import { AssetUploadDialog } from "../components/AssetUploadDialog";
@@ -59,7 +58,7 @@ export default function ProjectDetails() {
   const [isLabelDialogOpen, setIsLabelDialogOpen] = useState(false);
   const [isAssetDialogOpen, setIsAssetDialogOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<string>("assets");
-
+  
   useEffect(() => {
     fetchProjectData();
   }, [projectId]);
@@ -99,7 +98,6 @@ export default function ProjectDetails() {
       setAssets(assetsData.data || []);
     } catch (error) {
       console.error("Error:", error);
-      toast.error("Error fetching project data");
     } finally {
       setLoading(false);
     }

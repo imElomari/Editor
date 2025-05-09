@@ -19,6 +19,7 @@ import {
 import { ProjectDialog } from "../components/ProjectDialog";
 import { MobileFilterBar } from "../components/MobileFilterBar";
 import { useMobile } from "../hooks/use-mobile";
+import { useTranslation } from "react-i18next";
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -29,6 +30,9 @@ export default function ProjectsPage() {
   const [selectedProject, setSelectedProject] = useState<Project | undefined>();
   const { user } = useAuth();
   const isMobile = useMobile();
+  const { t } = useTranslation(['projects', "common"]);
+
+
   const handleResetFilters = () => {
     setSearchQuery("");
     setSortBy("newest");
@@ -51,7 +55,7 @@ export default function ProjectsPage() {
       if (error) throw error;
       setProjects(data || []);
     } catch (error) {
-      toast.error("Error fetching projects");
+      toast.error(t('projects:card.toast.error.fetch'));
       console.error("Error:", error);
     } finally {
       setLoading(false);
@@ -102,9 +106,9 @@ export default function ProjectsPage() {
       <div className="flex flex-col gap-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold">Projects</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold">{t('projects:page.title')}</h1>
             <p className="text-muted-foreground mt-1">
-              Manage and organize your projects
+            {t('projects:page.description')}
             </p>
           </div>
           <Button
@@ -112,23 +116,23 @@ export default function ProjectsPage() {
             size={isMobile ? "sm" : "lg"}
           >
             <Icons.plus className="h-5 w-5" />
-            {!isMobile && "New Project"}
+            {!isMobile && t('projects:page.newProject')}
           </Button>
         </div>
 
         {/* Mobile Filters */}
         <MobileFilterBar
           activeFilters={activeFiltersCount}
-          title="Filter Projects"
+          title={t('projects:projectfilter.title')}
           onReset={handleResetFilters}
         >
           <div className="space-y-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Search</label>
+              <label className="text-sm font-medium">{t('common:filter.search.label')}</label>
               <div className="relative">
                 <Icons.search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Search projects..."
+                  placeholder={t('projects:projectfilter.search.placeholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-10"
@@ -137,15 +141,15 @@ export default function ProjectsPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Sort By</label>
+              <label className="text-sm font-medium">{t('common:filter.sort.label')}</label>
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Sort by" />
+                  <SelectValue placeholder={t('common:filter.sort.label')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="newest">Newest First</SelectItem>
-                  <SelectItem value="oldest">Oldest First</SelectItem>
-                  <SelectItem value="name">Name</SelectItem>
+                  <SelectItem value="newest">{t('common:filter.sort.options.newest')}</SelectItem>
+                  <SelectItem value="oldest">{t('common:filter.sort.options.oldest')}</SelectItem>
+                  <SelectItem value="name">{t('common:filter.sort.options.name')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -157,7 +161,7 @@ export default function ProjectsPage() {
           <div className="relative flex-1">
             <Icons.search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search projects..."
+              placeholder={t('projects:projectfilter.search.placeholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10"
@@ -166,12 +170,12 @@ export default function ProjectsPage() {
           <Select value={sortBy} onValueChange={setSortBy}>
             <SelectTrigger className="w-[180px]">
               <Icons.updown className="h-4 w-4 mr-2" />
-              <SelectValue placeholder="Sort by" />
+              <SelectValue placeholder={t('common:filter.sort.label')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="newest">Newest First</SelectItem>
-              <SelectItem value="oldest">Oldest First</SelectItem>
-              <SelectItem value="name">Name</SelectItem>
+              <SelectItem value="newest">{t('common:filter.sort.options.newest')}</SelectItem>
+              <SelectItem value="oldest">{t('common:filter.sort.options.oldest')}</SelectItem>
+              <SelectItem value="name">{t('common:filter.sort.options.name')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -197,8 +201,8 @@ export default function ProjectsPage() {
               <div className="text-center py-12 bg-muted/30 rounded-lg">
                 <p className="text-muted-foreground">
                   {searchQuery
-                    ? "No projects found matching your search"
-                    : "No projects yet"}
+                    ? t('projects:empty.noResults')
+                    : t('projects:empty.noProjects')}
                 </p>
                 <Button
                   variant="outline"
@@ -206,7 +210,7 @@ export default function ProjectsPage() {
                   onClick={() => setIsDialogOpen(true)}
                 >
                   <Icons.plus className="h-4 w-4 mr-2" />
-                  Create your first project
+                  {t('projects:page.createFirst')}
                 </Button>
               </div>
             )}
