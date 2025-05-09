@@ -51,7 +51,7 @@ export default function Dashboard() {
   const isMobile = useMobile();
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
   const [assets, setAssets] = useState<Asset[]>([]);
-  const { t } = useTranslation('dashboard')
+  const { t } = useTranslation(['common', 'dashboard', 'projects', 'labels', 'assets']);
 
   // Fetch user's data
   const fetchData = async () => {
@@ -175,9 +175,9 @@ export default function Dashboard() {
   // Get time of day for greeting
   const getGreeting = () => {
     const hour = new Date().getHours()
-    if (hour < 12) return t('greeting.morning')
-    if (hour < 18) return t('greeting.afternoon')
-    return t('greeting.evening')
+    if (hour < 12) return t('dashboard:greeting.morning')
+    if (hour < 18) return t('dashboard:greeting.afternoon')
+    return t('dashboard:greeting.evening')
   }
 
   // Get first name from email or metadata
@@ -196,11 +196,11 @@ export default function Dashboard() {
     const now = new Date();
     const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
-    if (diffInSeconds < 60) return "Just now";
-    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+    if (diffInSeconds < 60) return t('dashboard:time.now');
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}t('dashboard:time.monthsAgo')`;
     if (diffInSeconds < 86400)
-      return `${Math.floor(diffInSeconds / 3600)}h ago`;
-    if (diffInSeconds < 172800) return "Yesterday";
+      return `${Math.floor(diffInSeconds / 3600)}t('dashboard:time.hoursAgo')`;
+    if (diffInSeconds < 172800) return t('dashboard:time.yesterday');
     return date.toLocaleDateString();
   };
 
@@ -210,21 +210,21 @@ export default function Dashboard() {
         return (
           <Badge className="bg-green-500/10 text-green-500 border-green-500/20 flex items-center gap-1">
             <CheckCircle2 className="h-3 w-3" />
-            <span>Published</span>
+            <span>{t('common:filter.status.published')}</span>
           </Badge>
         );
       case "archived":
         return (
           <Badge className="bg-gray-500/10 text-gray-500 border-gray-500/20 flex items-center gap-1">
             <Icons.archive className="h-3 w-3" />
-            <span>Archived</span>
+            <span>{t('common:filter.status.archived')}</span>
           </Badge>
         );
       default:
         return (
           <Badge className="bg-amber-500/10 text-amber-500 border-amber-500/20 flex items-center gap-1">
             <PenTool className="h-3 w-3" />
-            <span>Draft</span>
+            <span>{t('common:filter.status.draft')}</span>
           </Badge>
         );
     }
@@ -257,12 +257,12 @@ export default function Dashboard() {
             </h1>
           </div>
           <p className="text-muted-foreground ml-0 sm:ml-3">
-          {t('greeting.summary')}
+          {t('dashboard:greeting.summary')}
           </p>
         </div>
       </div>
 
-      {/* Stats Cards - Enhanced with better gradients and animations */}
+      {/* Stats Cards */}
       <div
         className={cn(
           "grid gap-4 mb-8",
@@ -275,7 +275,7 @@ export default function Dashboard() {
           <CardHeader className="pb-2 relative">
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm font-medium">
-                Total Labels
+              {t('dashboard:cards.labels.title')}
               </CardTitle>
               <div className="p-2 bg-primary/10 rounded-full group-hover:scale-110 transition-transform duration-300">
                 <Icons.labels className="h-4 w-4 text-primary" />
@@ -291,7 +291,7 @@ export default function Dashboard() {
                 variant="outline"
                 className="bg-green-500/10 text-green-500 border-green-500/20"
               >
-                {stats.publishedLabels} published
+                {stats.publishedLabels} {t('common:filter.status.published')}
               </Badge>
               {stats.publishedLabels > 0 && (
                 <Icons.trend className="h-4 w-4 text-green-500" />
@@ -305,7 +305,7 @@ export default function Dashboard() {
           <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-blue-500/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700"></div>
           <CardHeader className="pb-2 relative">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium">Projects</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('dashboard:cards.projects.title')}</CardTitle>
               <div className="p-2 bg-blue-500/10 rounded-full group-hover:scale-110 transition-transform duration-300">
                 <Icons.project className="h-4 w-4 text-blue-500" />
               </div>
@@ -317,7 +317,7 @@ export default function Dashboard() {
             </div>
             <p className="text-sm text-muted-foreground mt-2 flex items-center gap-1">
               <Icons.mark className="h-4 w-4" />
-              <span>Organize your work</span>
+              <span>{t('dashboard:cards.projects.subTitle')}</span>
             </p>
           </CardContent>
         </Card>
@@ -327,7 +327,7 @@ export default function Dashboard() {
           <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-green-500/50 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700"></div>
           <CardHeader className="pb-2 relative">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium">Assets</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('dashboard:cards.assets.title')}</CardTitle>
               <div className="p-2 bg-green-500/10 rounded-full group-hover:scale-110 transition-transform duration-300">
                 <Icons.asset className="h-4 w-4 text-green-500" />
               </div>
@@ -339,7 +339,7 @@ export default function Dashboard() {
             </div>
             <p className="text-sm text-muted-foreground mt-2 flex items-center gap-1">
               <Icons.file className="h-4 w-4" />
-              <span>Total uploaded assets</span>
+              <span>{t('dashboard:cards.assets.subTitle')}</span>
             </p>
           </CardContent>
         </Card>
@@ -350,7 +350,7 @@ export default function Dashboard() {
           <CardHeader className="pb-2 relative">
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm font-medium">
-                Recent Activity
+              {t('dashboard:cards.recent.title')}
               </CardTitle>
               <div className="p-2 bg-amber-500/10 rounded-full group-hover:scale-110 transition-transform duration-300">
                 <Icons.calendar className="h-4 w-4 text-amber-500" />
@@ -363,7 +363,7 @@ export default function Dashboard() {
             </div>
             <p className="text-sm text-muted-foreground mt-2 flex items-center gap-1">
               <Icons.clock className="h-4 w-4" />
-              <span>In the last 7 days</span>
+              <span>{t('dashboard:cards.recent.subTitle')}</span>
             </p>
           </CardContent>
         </Card>
@@ -377,7 +377,7 @@ export default function Dashboard() {
           <CardHeader className="pb-2 relative">
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm font-medium">
-                Quick Create
+              {t('dashboard:cards.quickCreate.title')}
               </CardTitle>
               <div className="p-2 bg-purple-500/10 rounded-full group-hover:scale-110 transition-transform duration-300">
                 <Icons.sparkle className="h-4 w-4 text-purple-500" />
@@ -393,17 +393,17 @@ export default function Dashboard() {
                 <div className="absolute inset-0 bg-purple-500/20 rounded-full animate-ping opacity-75 group-hover:opacity-100"></div>
                 <Icons.plus className="h-4 w-4 relative z-10" />
               </div>
-              <span className="font-medium">New Label</span>
+              <span className="font-medium">{t('dashboard:cards.quickCreate.action')}</span>
             </Button>
             <p className="text-sm text-muted-foreground mt-2 flex items-center gap-1">
               <Icons.zap className="h-4 w-4" />
-              <span>Start creating now</span>
+              <span>{t('dashboard:cards.quickCreate.comment')}</span>
             </p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Recent Items - Enhanced with better styling */}
+      {/* Recent Items */}
       <Tabs defaultValue="labels" className="space-y-6">
         <div className="flex items-center justify-between">
           <TabsList className="bg-muted/50 p-1 rounded-xl">
@@ -412,21 +412,21 @@ export default function Dashboard() {
               className="flex items-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"
             >
               <Icons.labels className="h-4 w-4" />
-              <span>Labels</span>
+              <span>{t('common:sidePanel.navigation.labels')}</span>
             </TabsTrigger>
             <TabsTrigger
               value="projects"
               className="flex items-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"
             >
               <Icons.project className="h-4 w-4" />
-              <span>Projects</span>
+              <span>{t('common:sidePanel.navigation.projects')}</span>
             </TabsTrigger>
             <TabsTrigger
               value="assets"
               className="flex items-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"
             >
               <Icons.asset className="h-4 w-4" />
-              <span>Assets</span>
+              <span>{t('common:sidePanel.navigation.assets')}</span>
             </TabsTrigger>
           </TabsList>
         </div>
@@ -442,14 +442,14 @@ export default function Dashboard() {
               <div>
                 <CardTitle className="text-xl flex items-center gap-2">
                   <Icons.labels className="h-5 w-5 text-primary" />
-                  Recent Labels
+                  {t('dashboard:recent.labels.title')}
                 </CardTitle>
-                <CardDescription>Your recently updated labels</CardDescription>
+                <CardDescription>{t('dashboard:recent.labels.description')}</CardDescription>
               </div>
               {!isMobile && (
                 <Button onClick={handleCreateLabel} variant="outline" size="sm">
                   <Icons.plus className="h-4 w-4 mr-2" />
-                  New Label
+                  {t('dashboard:recent.labels.action')}
                 </Button>
               )}
             </CardHeader>
@@ -461,15 +461,14 @@ export default function Dashboard() {
                     <Icons.labels className="h-10 w-10 sm:h-12 sm:w-12 mx-auto text-primary/70 relative z-10" />
                   </div>
                   <h3 className="text-base sm:text-lg font-medium mb-1">
-                    No labels created yet
+                  {t('dashboard:recent.labels.noLabels')}
                   </h3>
                   <p className="text-sm text-muted-foreground mb-4 max-w-md mx-auto px-4">
-                    Create your first label to get started with your design
-                    process.
+                  {t('dashboard:recent.labels.createDescription')}
                   </p>
                   <Button onClick={handleCreateLabel} className="shadow-sm">
                     <Icons.plus className="h-4 w-4 mr-2" />
-                    Create Your First Label
+                    {t('dashboard:recent.labels.createFirst')}
                   </Button>
                 </div>
               ) : (
@@ -542,7 +541,7 @@ export default function Dashboard() {
                       className="w-full justify-between mt-4 text-muted-foreground hover:text-foreground group"
                       onClick={() => navigate("/labels")}
                     >
-                      <span>View all labels</span>
+                      <span>{t('dashboard:recent.labels.viewAll')}</span>
                       <Icons.arrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   )}
@@ -563,10 +562,10 @@ export default function Dashboard() {
               <div>
                 <CardTitle className="text-xl flex items-center gap-2">
                   <Icons.project className="h-5 w-5 text-blue-500" />
-                  Recent Projects
+                  {t('dashboard:recent.projects.title')}
                 </CardTitle>
                 <CardDescription>
-                  Your recently updated projects
+                {t('dashboard:recent.projects.description')}
                 </CardDescription>
               </div>
               {!isMobile && (
@@ -576,7 +575,7 @@ export default function Dashboard() {
                   size="sm"
                 >
                   <Icons.plus className="h-4 w-4 mr-2" />
-                  New Project
+                  {t('dashboard:recent.projects.action')}
                 </Button>
               )}
             </CardHeader>
@@ -588,14 +587,14 @@ export default function Dashboard() {
                     <Icons.project className="h-10 w-10 sm:h-12 sm:w-12 mx-auto text-blue-500/70 relative z-10" />
                   </div>
                   <h3 className="text-base sm:text-lg font-medium mb-1">
-                    No projects created yet
+                  {t('dashboard:recent.projects.noProjects')}
                   </h3>
                   <p className="text-sm text-muted-foreground mb-4 max-w-md mx-auto px-4">
-                    Projects help you organize your labels into collections.
+                  {t('dashboard:recent.projects.createDescription')}
                   </p>
                   <Button onClick={handleCreateProject} className="shadow-sm">
                     <Icons.plus className="h-4 w-4 mr-2" />
-                    Create Your First Project
+                    {t('dashboard:recent.projects.createFirst')}
                   </Button>
                 </div>
               ) : (
@@ -661,7 +660,7 @@ export default function Dashboard() {
                       className="w-full justify-between mt-4 text-muted-foreground hover:text-foreground group"
                       onClick={() => navigate("/projects")}
                     >
-                      <span>View all projects</span>
+                      <span>{t('dashboard:recent.projects.viewAll')}</span>
                       <Icons.arrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   )}
@@ -681,9 +680,9 @@ export default function Dashboard() {
               <div>
                 <CardTitle className="text-xl flex items-center gap-2">
                   <Icons.asset className="h-5 w-5 text-green-500" />
-                  Recent Assets
+                  {t('dashboard:recent.assets.title')}
                 </CardTitle>
-                <CardDescription>Your recently uploaded assets</CardDescription>
+                <CardDescription>{t('dashboard:recent.assets.description')}</CardDescription>
               </div>
               {!isMobile && (
                 <Button
@@ -692,7 +691,7 @@ export default function Dashboard() {
                   size="sm"
                 >
                   <Icons.plus className="h-4 w-4 mr-2" />
-                  Upload Asset
+                  {t('dashboard:recent.assets.action')}
                 </Button>
               )}
             </CardHeader>
@@ -704,18 +703,17 @@ export default function Dashboard() {
                     <Icons.asset className="h-10 w-10 sm:h-12 sm:w-12 mx-auto text-green-500/70 relative z-10" />
                   </div>
                   <h3 className="text-base sm:text-lg font-medium mb-1">
-                    No assets uploaded yet
+                  {t('dashboard:recent.assets.noAssets')}
                   </h3>
                   <p className="text-sm text-muted-foreground mb-4 max-w-md mx-auto px-4">
-                    Upload your first asset to get started with your asset
-                    library.
+                  {t('dashboard:recent.assets.uploadDescription')}
                   </p>
                   <Button
                     onClick={() => setIsUploadDialogOpen(true)}
                     className="shadow-sm"
                   >
                     <Icons.plus className="h-4 w-4 mr-2" />
-                    Upload Your First Asset
+                    {t('dashboard:recent.assets.uploadFirst')}
                   </Button>
                 </div>
               ) : (
@@ -770,7 +768,7 @@ export default function Dashboard() {
                       className="w-full justify-between mt-4 text-muted-foreground hover:text-foreground group"
                       onClick={() => navigate("/assets")}
                     >
-                      <span>View all assets</span>
+                      <span>{t('dashboard:recent.assets.viewAll')}</span>
                       <Icons.arrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   )}
@@ -781,11 +779,11 @@ export default function Dashboard() {
         </TabsContent>
       </Tabs>
 
-      {/* Quick Actions - Enhanced with better styling */}
+      {/* Quick Actions */}
       <div className="mt-8 sm:mt-10">
         <div className="flex items-center gap-3 mb-6">
           <h2 className="text-lg sm:text-xl font-semibold tracking-tight">
-            Quick Actions
+          {t('dashboard:quickActions.title')}
           </h2>
           <div className="h-px flex-1 bg-border/60" />
         </div>
@@ -814,10 +812,10 @@ export default function Dashboard() {
                 </div>
                 <div>
                   <h3 className="font-medium group-hover:text-primary transition-colors">
-                    New Project
+                  {t('dashboard:quickActions.projects.create')}
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Start organizing your labels
+                  {t('dashboard:quickActions.projects.description')}
                   </p>
                 </div>
               </div>
@@ -843,10 +841,10 @@ export default function Dashboard() {
                 </div>
                 <div>
                   <h3 className="font-medium group-hover:text-blue-500 transition-colors">
-                    New Label
+                  {t('dashboard:quickActions.labels.create')}
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Create a new label
+                  {t('dashboard:quickActions.labels.description')}
                   </p>
                 </div>
               </div>
@@ -872,10 +870,10 @@ export default function Dashboard() {
                 </div>
                 <div>
                   <h3 className="font-medium group-hover:text-green-500 transition-colors">
-                    Upload Asset
+                  {t('dashboard:quickActions.assets.create')}
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Add new assets
+                  {t('dashboard:quickActions.assets.description')}
                   </p>
                 </div>
               </div>
@@ -898,10 +896,10 @@ export default function Dashboard() {
                 </div>
                 <div>
                   <h3 className="font-medium group-hover:text-teal-500 transition-colors">
-                    Assets Library
+                  {t('dashboard:quickActions.assets.viewAll')}
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Browse all assets
+                  {t('dashboard:quickActions.assets.viewAllDescription')}
                   </p>
                 </div>
               </div>
@@ -924,10 +922,10 @@ export default function Dashboard() {
                 </div>
                 <div>
                   <h3 className="font-medium group-hover:text-violet-500 transition-colors">
-                    Labels
+                  {t('dashboard:quickActions.labels.viewAll')}
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1">
-                    View all labels
+                  {t('dashboard:quickActions.labels.viewAllDescription')}
                   </p>
                 </div>
               </div>
@@ -950,10 +948,10 @@ export default function Dashboard() {
                 </div>
                 <div>
                   <h3 className="font-medium group-hover:text-amber-500 transition-colors">
-                    Projects
+                  {t('dashboard:quickActions.projects.viewAll')}
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1">
-                    View all projects
+                  {t('dashboard:quickActions.projects.viewAllDescription')}
                   </p>
                 </div>
               </div>

@@ -12,6 +12,7 @@ import {
 import { Shapes, FolderKanban, Tag } from "lucide-react";
 import { AssetUploadDialog } from "../AssetUploadDialog";
 import { cn } from "../../lib/utils";
+import { useTranslation } from "react-i18next";
 
 interface QuickActionProps {
   className?: string;
@@ -19,25 +20,25 @@ interface QuickActionProps {
 
 export function QuickActions({ className }: QuickActionProps) {
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
-
+const { t } = useTranslation(['common', 'dashboard', 'projects', 'labels', 'assets']);
   const actions = [
     {
-      title: "Upload Asset",
-      description: "Add a new image or file to your assets",
+      title: t('assets:card.uploadDialog.title')      ,
+      description: t('dashboard:quickActions.assets.description') ,
       icon: Shapes,
       onClick: () => setIsUploadDialogOpen(true),
       color: "bg-blue-500/10 text-blue-500",
     },
     {
-      title: "Create Project",
-      description: "Start a new project",
+      title: t('projects:card.actions.create'),
+      description: t('dashboard:quickActions.projects.description'),
       icon: FolderKanban,
       onClick: () => (window.location.href = "/projects"),
       color: "bg-purple-500/10 text-purple-500",
     },
     {
-      title: "Create Label",
-      description: "Design a new label",
+      title: t('labels:card.actions.create'),
+      description: t('dashboard:quickActions.labels.description'),
       icon: Tag,
       onClick: () => (window.location.href = "/labels"),
       color: "bg-green-500/10 text-green-500",
@@ -48,8 +49,8 @@ export function QuickActions({ className }: QuickActionProps) {
     <>
       <Card className={cn("border shadow-sm", className)}>
         <CardHeader className="pb-3">
-          <CardTitle>Quick Actions</CardTitle>
-          <CardDescription>Common tasks you can perform</CardDescription>
+          <CardTitle>{t('dashboard:quickActions.title')}</CardTitle>
+          <CardDescription>{t('dashboard:quickActions.description')}</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
           {actions.map((action) => (
