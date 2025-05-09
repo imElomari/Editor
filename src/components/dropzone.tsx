@@ -15,6 +15,7 @@ import {
   useContext,
 } from "react";
 import { Icons } from "../lib/constances";
+import { useTranslation } from "react-i18next";
 
 export const formatBytes = (
   bytes: number,
@@ -49,7 +50,6 @@ type DropzoneProps = UseSupabaseUploadReturn & {
   className?: string;
 };
 
-// Replace the entire Dropzone component with this enhanced version
 const Dropzone = ({
   className,
   children,
@@ -256,6 +256,8 @@ const DropzoneEmptyState = ({ className }: { className?: string }) => {
     isDragActive,
     isDragReject,
   } = useDropzoneContext();
+  const { t } = useTranslation(['common', 'dashboard']);
+
 
   // Don't show empty state if there are files or upload was successful
   if (isSuccess || files.length > 0) {
@@ -270,7 +272,7 @@ const DropzoneEmptyState = ({ className }: { className?: string }) => {
           <Icons.upload size={28} className="text-primary" />
         </div>
         <p className="text-primary font-medium animate-pulse">
-          Drop files to upload
+        {t('common:dropzone.dropFile')}
         </p>
       </div>
     );
@@ -304,20 +306,22 @@ const DropzoneEmptyState = ({ className }: { className?: string }) => {
           {!maxFiles || maxFiles > 1 ? "s" : ""}
         </p>
         <p className="text-sm text-muted-foreground text-center max-w-xs">
-          Drag and drop or{" "}
-          <a
-            onClick={() => inputRef.current?.click()}
-            className="text-primary underline cursor-pointer transition hover:text-primary/80"
-          >
-            select {maxFiles === 1 ? `file` : "files"}
-          </a>{" "}
-          to upload
+        {t('dropzone.dragAndDrop')}{' '}
+        <a
+          onClick={() => inputRef.current?.click()}
+          className="text-primary underline cursor-pointer transition hover:text-primary/80"
+        >
+          {t(maxFiles === 1 ? 'dropzone.selectFile' : 'dropzone.selectFiles')}
+        </a>{' '}
+        {t('dropzone.toUpload')}
         </p>
         {maxFileSize !== Number.POSITIVE_INFINITY && (
-          <p className="text-xs text-muted-foreground mt-2 bg-muted/50 px-3 py-1 rounded-full">
-            Maximum file size: {formatBytes(maxFileSize, 2)}
-          </p>
-        )}
+        <p className="text-xs text-muted-foreground mt-2 bg-muted/50 px-3 py-1 rounded-full">
+          {t('dropzone.maxFileSize', {
+            size: formatBytes(maxFileSize, 2)
+          })}
+        </p>
+      )}
       </div>
     </div>
   );

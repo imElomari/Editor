@@ -14,6 +14,7 @@ import { Pen } from "lucide-react";
 import { getStorageUrl } from "../../lib/utils";
 import { getAssetIcon, getAssetTypeLabel } from "./asset-utils";
 import { Icons } from "../../lib/constances";
+import { useTranslation } from "react-i18next";
 
 interface AssetCardProps {
   asset: Asset;
@@ -33,6 +34,9 @@ export function AssetCard({
   const AssetIcon = getAssetIcon(asset.type);
   const typeLabel = getAssetTypeLabel(asset.type);
   const isGlobal = asset.project_id === null;
+  const { t } = useTranslation(['common', 'assets']);
+
+
 
   return (
     <Card className="group hover:shadow-md transition-all duration-200">
@@ -49,16 +53,6 @@ export function AssetCard({
                 e.currentTarget.src = "/placeholder-image.png";
               }}
             />
-            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-              <Button
-                variant="secondary"
-                size="sm"
-                className="h-8"
-                onClick={() => window.open(asset.url, "_blank")}
-              >
-                View Full Size
-              </Button>
-            </div>
           </div>
         ) : (
           <div className="w-full h-32 bg-muted rounded-md mb-2 flex flex-col items-center justify-center gap-2">
@@ -82,17 +76,17 @@ export function AssetCard({
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => onRename(asset)}>
                   <Pen className="h-4 w-4 mr-2" />
-                  Rename
+                  {t('assets:card.dropMenu.rename')}
                 </DropdownMenuItem>
                 {asset.project_id === null ? (
                   <DropdownMenuItem onClick={() => onAssignToProject(asset)}>
                     <Icons.project className="h-4 w-4 mr-2" />
-                    Assign to Project
+                    {t('assets:card.dropMenu.assignToProject')}
                   </DropdownMenuItem>
                 ) : (
                   <DropdownMenuItem onClick={() => onMakeGlobal(asset)}>
                     <Icons.global className="h-4 w-4 mr-2" />
-                    Make Global
+                    {t('assets:card.dropMenu.global')}
                   </DropdownMenuItem>
                 )}
                 <DropdownMenuItem
@@ -100,7 +94,7 @@ export function AssetCard({
                   onClick={() => onDelete(asset)}
                 >
                   <Icons.delete className="h-4 w-4 mr-2" />
-                  Delete
+                  {t('assets:card.dropMenu.delete')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -118,12 +112,12 @@ export function AssetCard({
               {isGlobal ? (
                 <span className="flex items-center gap-1">
                   <Icons.global className="h-3 w-3" />
-                  Global
+                  {t('assets:type.global')}
                 </span>
               ) : (
                 <span className="flex items-center gap-1">
                   <Icons.project className="h-3 w-3" />
-                  Project
+                  {t('assets:type.project')}
                 </span>
               )}
             </Badge>

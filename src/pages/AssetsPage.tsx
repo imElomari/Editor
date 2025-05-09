@@ -27,10 +27,13 @@ import { ProjectAssignmentDialog } from "../components/assets/project-assignment
 import { RenameDialog } from "../components/assets/rename-dialog";
 import { EmptyState } from "../components/assets/empty-state";
 import { Icons } from "../lib/constances";
+import { useTranslation } from "react-i18next";
 
 export default function AssetsPage() {
   const { user } = useAuth();
   const isMobile = useMobile();
+  const { t } = useTranslation('assets');
+
 
   // State for assets and projects
   const [assets, setAssets] = useState<Asset[]>([]);
@@ -277,9 +280,9 @@ export default function AssetsPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold">Assets</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold">{t('assets:page.title')}            </h1>
             <p className="text-muted-foreground mt-1">
-              Manage your global and project assets
+            {t('assets:page.description')}
             </p>
           </div>
           <Button
@@ -287,7 +290,7 @@ export default function AssetsPage() {
             size={isMobile ? "sm" : "lg"}
           >
             <Icons.plus className="h-5 w-5" />
-            {!isMobile && "Upload Asset"}
+            {!isMobile && t('assets:page.uploadAsset')}
           </Button>
         </div>
 

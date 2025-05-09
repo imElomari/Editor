@@ -30,6 +30,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "../lib/utils";
 import { Icons } from "../lib/constances";
+import { useTranslation } from "react-i18next";
 
 // Add this type if it doesn't exist in your types file
 type AssetScope = "admin-global" | "user" | "project";
@@ -58,6 +59,8 @@ export function AssetUploadDialog({
   const [projectsLoading, setProjectsLoading] = useState(false);
   const [projects, setProjects] = useState<any[]>([]);
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation(['common', 'assets']);
+
 
   // Initialize dropzone props
   const dropzoneProps = useSupabaseUpload({
@@ -249,11 +252,11 @@ export function AssetUploadDialog({
   const getScopeLabel = (scope: AssetScope): string => {
     switch (scope) {
       case "admin-global":
-        return "Global";
+        return "admin";
       case "user":
-        return "Personal";
+        return t('assets:assetfilter.scope.global');
       case "project":
-        return "Project";
+        return t('assets:assetfilter.scope.project');
       default:
         return scope;
     }
@@ -265,15 +268,15 @@ export function AssetUploadDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Icons.upload className="h-5 w-5 text-primary" />
-            Upload Asset
+            {t('assets:card.uploadDialog.title')}
           </DialogTitle>
-          <DialogDescription>Upload an asset to your library</DialogDescription>
+          <DialogDescription>{t('assets:card.uploadDialog.placeholder')}</DialogDescription>
         </DialogHeader>
 
         <div className="grid gap-4 py-4">
           {/* Asset Type Selection */}
           <div className="space-y-2">
-            <Label>Asset Type</Label>
+            <Label>{t('assets:card.uploadDialog.type')}</Label>
             <Tabs
               value={assetScope}
               onValueChange={(value) => setAssetScope(value as AssetScope)}
@@ -289,16 +292,22 @@ export function AssetUploadDialog({
                 )} */}
                 <TabsTrigger value="user" className="flex items-center gap-2">
                   <Icons.user className="h-4 w-4" />
-                  <span>My Assets</span>
+                  <span>{t('assets:card.uploadDialog.MyAssetsTab.title')}</span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="project"
                   className="flex items-center gap-2"
                 >
                   <Icons.project className="h-4 w-4" />
-                  <span>Project Assets</span>
+                  <span>{t('assets:card.uploadDialog.projectTab.title')}</span>
                 </TabsTrigger>
               </TabsList>
+
+              <TabsContent value="user" className="pt-2">
+                <p className="text-sm text-muted-foreground mb-4">
+                {t('assets:card.uploadDialog.MyAssetsTab.description')}
+                </p>
+              </TabsContent>
 
               <TabsContent value="admin-global" className="pt-2">
                 <p className="text-sm text-muted-foreground mb-4">
@@ -306,22 +315,15 @@ export function AssetUploadDialog({
                 </p>
               </TabsContent>
 
-              <TabsContent value="user" className="pt-2">
-                <p className="text-sm text-muted-foreground mb-4">
-                  Personal assets are available across all your projects and can
-                  be accessed from anywhere in your workspace.
-                </p>
-              </TabsContent>
 
               <TabsContent value="project" className="space-y-2 pt-2">
                 <p className="text-sm text-muted-foreground mb-4">
-                  Project assets are specific to a single project and will only
-                  be available within that project.
+                {t('assets:card.uploadDialog.projectTab.description')}
                 </p>
 
                 <div className="space-y-1">
                   <Label htmlFor="project-select" className="font-medium">
-                    Select Project
+                  {t('assets:card.uploadDialog.projectTab.selectProject')}
                   </Label>
                   <Popover open={open} onOpenChange={setOpen}>
                     <PopoverTrigger asChild>
@@ -335,15 +337,15 @@ export function AssetUploadDialog({
                         {selectedProjectId
                           ? projects.find(
                               (project) => project.id === selectedProjectId
-                            )?.name || "Select a project"
-                          : "Select a project"}
+                            )?.name || t('assets:card.uploadDialog.projectTab.selectProject')
+                          : t('assets:card.uploadDialog.projectTab.selectProject')}
                         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-full p-0">
                       <Command>
                         <CommandInput
-                          placeholder="Search projects..."
+                          placeholder={t('assets:card.uploadDialog.projectTab.search')}
                           className="h-9"
                         />
                         <CommandList>
@@ -354,7 +356,7 @@ export function AssetUploadDialog({
                                 <span>Loading projects...</span>
                               </div>
                             ) : (
-                              "No projects found."
+                              t('assets:card.uploadDialog.projectTab.noProjectFound')
                             )}
                           </CommandEmpty>
                           <CommandGroup>
@@ -386,7 +388,7 @@ export function AssetUploadDialog({
                   {assetScope === "project" && !selectedProjectId && (
                     <p className="text-xs text-amber-500 mt-1 flex items-center gap-1">
                       <Icons.warning className="h-3 w-3" />
-                      Please select a project to continue
+                      {t('assets:card.uploadDialog.projectTab.select')}
                     </p>
                   )}
                 </div>
@@ -410,7 +412,7 @@ export function AssetUploadDialog({
             onClick={onClose}
             disabled={loading || uploadLoading}
           >
-            Cancel
+            {t('common:buttons.cancel')}
           </Button>
           <Button
             onClick={handleUpload}
@@ -426,18 +428,18 @@ export function AssetUploadDialog({
             {loading || uploadLoading ? (
               <>
                 <Icons.loading className="mr-2 h-4 w-4 animate-spin" />
-                Uploading...
+                {t('assets:card.uploadDialog.projectTab.uploading')}
                 <span className="absolute bottom-0 left-0 h-[2px] bg-primary/50 animate-progress"></span>
               </>
             ) : isSuccess ? (
               <>
                 <CheckCircle className="mr-2 h-4 w-4" />
-                Uploaded
+                {t('assets:card.uploadDialog.projectTab.confirm')}
               </>
             ) : (
               <>
                 <Icons.upload className="mr-2 h-4 w-4" />
-                Upload as {getScopeLabel(assetScope)} Asset
+                {t('assets:card.uploadDialog.projectTab.uploaded', { assetScope : getScopeLabel(assetScope)} )}
               </>
             )}
           </Button>
