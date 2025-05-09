@@ -26,12 +26,14 @@ import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
 import { supabase } from "../lib/supabase";
 import { toast } from "sonner";
 import { cn } from "../lib/utils";
+import { useTranslation } from "react-i18next";
 
 const ProfilePage = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const [resetSent, setResetSent] = useState(false);
   const [resetLoading, setResetLoading] = useState(false);
+  const { t } = useTranslation(['common', 'profile']);
 
   if (!user) {
     return (
@@ -58,24 +60,24 @@ const ProfilePage = () => {
       });
 
       if (error) {
-        toast.error("Password reset failed", {
+        toast.error(t('profile:toast.error.title'), {
           description:
             error.message ||
-            "Failed to send password reset email. Please try again.",
+            t('profile:toast.error.description'),
           icon: true,
         });
       } else {
         setResetSent(true);
-        toast.success("Password reset email sent", {
-          description: "Check your email for the password reset link.",
+        toast.success(t('profile:toast.success.title'), {
+          description: t('profile:toast.success.description'),
           duration: 5000,
           icon: true,
         });
       }
     } catch (error) {
       console.error("Error resetting password:", error);
-      toast.error("Password reset failed", {
-        description: "An unexpected error occurred. Please try again.",
+      toast.error(t('profile:toast.error.title'), {
+        description: t('profile:toast.error.description'),
         icon: true,
       });
     } finally {
@@ -87,11 +89,12 @@ const ProfilePage = () => {
     <div className="container max-w-5xl mx-auto px-4 py-10">
       <div className="mb-10 text-center">
         <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-          Your Profile
+        {t('profile:page.title')}
+
         </h1>
         <p className="text-muted-foreground max-w-md mx-auto">
-          Manage your account information and security settings
-        </p>
+        {t('profile:page.description')}
+         </p>
       </div>
 
       <Tabs defaultValue="info" className="w-full mx-auto">
@@ -111,7 +114,7 @@ const ProfilePage = () => {
             )}
           >
             <Icons.user className="h-4 w-4 mr-2" />
-            Profile Information
+            {t('profile:page.tab1.title')}
           </TabsTrigger>
           <TabsTrigger
             value="security"
@@ -128,7 +131,7 @@ const ProfilePage = () => {
             )}
           >
             <Icons.security className="h-4 w-4 mr-2" />
-            Security
+            {t('profile:page.tab2.title')}
           </TabsTrigger>
         </TabsList>
         <div className="mt-8">
@@ -162,7 +165,7 @@ const ProfilePage = () => {
                 <div className="grid gap-6 md:grid-cols-2">
                   <InfoCard
                     icon={<Icons.clock className="h-5 w-5 text-primary" />}
-                    title="Account Created"
+                    title={t('profile:page.tab1.created')}
                     value={
                       user.created_at
                         ? new Date(user.created_at).toLocaleString()
@@ -172,7 +175,7 @@ const ProfilePage = () => {
 
                   <InfoCard
                     icon={<Icons.clock className="h-5 w-5 text-primary" />}
-                    title="Account Updated"
+                    title={t('profile:page.tab1.updated')}
                     value={
                       user.updated_at
                         ? new Date(user.updated_at).toLocaleString()
@@ -182,7 +185,7 @@ const ProfilePage = () => {
 
                   <InfoCard
                     icon={<Icons.clock className="h-5 w-5 text-primary" />}
-                    title="Last Sign In"
+                    title={t('profile:page.tab1.last_signin')}
                     value={
                       user.last_sign_in_at
                         ? new Date(user.last_sign_in_at).toLocaleString()
@@ -192,7 +195,7 @@ const ProfilePage = () => {
 
                   <InfoCard
                     icon={<Icons.security className="h-5 w-5 text-primary" />}
-                    title="Role"
+                    title={t('profile:page.tab1.role')}
                     value={user.role || "User"}
                   />
 
@@ -207,8 +210,8 @@ const ProfilePage = () => {
                         )}
                       />
                     }
-                    title="Email Verified"
-                    value={user.email_confirmed_at ? "Yes" : "No"}
+                    title={t('profile:page.tab1.verified.title')}
+                    value={user.email_confirmed_at ? t('profile:page.tab1.verified.true') : "t('profile:page.tab1.verified.false')"}
                     valueClassName={
                       user.email_confirmed_at
                         ? "text-green-500 font-medium"
@@ -228,7 +231,7 @@ const ProfilePage = () => {
                   }}
                 >
                   <Icons.logout className="h-4 w-4" />
-                  <span>Sign Out</span>
+                  <span>{t('common:buttons.signout')}</span>
                 </Button>
               </CardFooter>
             </Card>
@@ -242,9 +245,9 @@ const ProfilePage = () => {
                     <Icons.key className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <CardTitle>Security Settings</CardTitle>
+                    <CardTitle>{t('profile:page.tab2.security.title')}</CardTitle>
                     <CardDescription>
-                      Manage your password and security preferences
+                    {t('profile:page.tab2.security.description')}
                     </CardDescription>
                   </div>
                 </div>
@@ -257,18 +260,17 @@ const ProfilePage = () => {
                       <Icons.mail className="h-5 w-5 text-primary" />
                     </div>
                     <div className="space-y-2 flex-1">
-                      <h3 className="text-lg font-medium">Password Reset</h3>
+                      <h3 className="text-lg font-medium">{t('profile:page.tab2.password_reset.title')}</h3>
                       <p className="text-sm text-muted-foreground">
-                        You'll receive an email with a link to reset your
-                        password.
+                      {t('profile:page.tab2.password_reset.description')}
                       </p>
 
                       {resetSent && (
                         <Alert className="bg-green-50 border-green-200 text-green-800 dark:bg-green-900/20 dark:border-green-900/30 dark:text-green-400 mt-4">
                           <Icons.success className="h-4 w-4" />
-                          <AlertTitle>Email sent</AlertTitle>
+                          <AlertTitle>{t('profile:page.tab2.password_reset.email_sent')}</AlertTitle>
                           <AlertDescription>
-                            Check your email for the password reset link.
+                          {t('profile:page.tab2.password_reset.check')}
                           </AlertDescription>
                         </Alert>
                       )}
@@ -281,7 +283,7 @@ const ProfilePage = () => {
                         {resetLoading && (
                           <Icons.loading className="mr-2 h-4 w-4 animate-spin" />
                         )}
-                        Send Password Reset Email
+                        {t('profile:page.tab2.password_reset.send')}
                       </Button>
                     </div>
                   </div>
@@ -294,17 +296,14 @@ const ProfilePage = () => {
                     </div>
                     <div className="space-y-2">
                       <h3 className="text-lg font-medium">
-                        Account Security Tips
+                      {t('profile:page.tab2.tips.title')}
                       </h3>
                       <ul className="space-y-2 text-sm text-muted-foreground list-disc pl-5">
-                        <li>Use a strong, unique password for your account</li>
-                        <li>Enable two-factor authentication if available</li>
-                        <li>
-                          Never share your password or security details with
-                          others
-                        </li>
-                        <li>Check for suspicious activity regularly</li>
-                        <li>Update your password periodically</li>
+                        <li>{t('profile:page.tab2.tips.1')}</li>
+                        <li>{t('profile:page.tab2.tips.2')}</li>
+                        <li>{t('profile:page.tab2.tips.3')}</li>
+                        <li>{t('profile:page.tab2.tips.4')}</li>
+                        <li>{t('profile:page.tab2.tips.5')}</li>
                       </ul>
                     </div>
                   </div>
@@ -321,7 +320,7 @@ const ProfilePage = () => {
                   }}
                 >
                   <Icons.logout className="h-4 w-4" />
-                  <span>Sign Out</span>
+                  <span>{t('common:buttons.signout')}</span>
                 </Button>
               </CardFooter>
             </Card>

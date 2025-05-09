@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { cn } from "../lib/utils";
 import { Icons } from "../lib/constances";
+import { useTranslation } from "react-i18next";
 
 interface User {
   user_metadata?: {
@@ -28,6 +29,7 @@ export const MobileUserMenu = ({
   onSignOut: () => void;
 }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation(['common', 'profile']);
 
   return (
     <DropdownMenu>
@@ -90,7 +92,8 @@ export const MobileUserMenu = ({
           )}
         >
           <Icons.user className="h-4 w-4 opacity-70" />
-          <span>My Profile</span>
+          <span>{t('profile:page.title')}
+          </span>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
@@ -106,7 +109,7 @@ export const MobileUserMenu = ({
           )}
         >
           <Icons.logout className="h-4 w-4" />
-          <span>Sign Out</span>
+          <span>{t('common:buttons.signout')}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
