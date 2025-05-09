@@ -37,6 +37,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useMobile } from "../hooks/use-mobile";
 import { Icons } from "../lib/constances";
+import { useTranslation } from "react-i18next";
 
 interface LabelCardProps {
   label: Label;
@@ -49,6 +50,7 @@ export default function LabelCard({ label, onDelete, onEdit }: LabelCardProps) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const isMobile = useMobile();
+  const { t } = useTranslation(['common', 'labels']);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -126,8 +128,7 @@ export default function LabelCard({ label, onDelete, onEdit }: LabelCardProps) {
               {label.name}
             </CardTitle>
             <Badge variant={getStatusColor(label.status)}>
-              {label.status.charAt(0).toUpperCase() + label.status.slice(1)}
-            </Badge>
+            {t(`common:filter.status.${label.status}`)}            </Badge>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -147,7 +148,7 @@ export default function LabelCard({ label, onDelete, onEdit }: LabelCardProps) {
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => onEdit(label)}>
                 <Icons.edit className="mr-2 h-4 w-4" />
-                Edit label
+                {t('labels:card.actions.edit')}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
@@ -155,28 +156,28 @@ export default function LabelCard({ label, onDelete, onEdit }: LabelCardProps) {
                 onClick={() => setIsDeleteDialogOpen(true)}
               >
                 <Icons.delete className="mr-2 h-4 w-4" />
-                Delete label
+                {t('labels:card.actions.delete')}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
-            {label.description || "No description provided"}
+            {label.description || t('labels:card.noDescription')}
           </p>
           <Button
             className="w-full"
             onClick={() => navigate(`/editor/${label.id}`)}
           >
             <Edit3 className="h-4 w-4 mr-2" />
-            Open in Editor
+            {t('labels:card.actions.openEditor')}
           </Button>
         </CardContent>
 
         <CardFooter>
           <div className="flex items-center text-sm text-muted-foreground">
             <Icons.label className="mr-1 h-3 w-3" />
-            Created {format(new Date(label.created_at), "MMM d, yyyy")}
+            {t('labels:card.createdAt')} {format(new Date(label.created_at), "MMM d, yyyy")}
           </div>
         </CardFooter>
       </Card>
@@ -187,19 +188,19 @@ export default function LabelCard({ label, onDelete, onEdit }: LabelCardProps) {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogTitle>{t('labels:card.deleteDialog.title')}</AlertDialogTitle>
             <AlertDialogDescription>
-              This will delete the label "{label.name}".
+            {t('labels:card.deleteDialog.description', {labelName :label.name} )}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={isDeleting}>{t('common:buttons.cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               disabled={isDeleting}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              {isDeleting ? "Deleting..." : "Delete Label"}
+              {isDeleting ? t('common:buttons.deleting') : t('labels:card.deleteDialog.confirm')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

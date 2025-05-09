@@ -36,6 +36,7 @@ import {
 } from "./ui/command";
 import { cn } from "../lib/utils";
 import { Icons } from "../lib/constances";
+import { useTranslation } from "react-i18next";
 
 interface LabelDialogProps {
   label?: Label;
@@ -65,6 +66,7 @@ export function LabelDialog({
 
   const isEditing = Boolean(label);
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation(['common', 'labels']);
 
   useEffect(() => {
     fetchProjects();
@@ -172,12 +174,12 @@ export function LabelDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Icons.labels className="h-5 w-5" />
-            {isEditing ? "Edit Label" : "Create New Label"}
+            {isEditing ? t('labels:card.actions.edit') : t('labels:card.actions.create')}
           </DialogTitle>
           <DialogDescription>
             {isEditing
-              ? "Update your label details below"
-              : "Add a new label to your project"}
+              ? t('labels:card.labelDialog.update')
+              : t('labels:card.labelDialog.new')}
           </DialogDescription>
         </DialogHeader>
 
@@ -187,7 +189,7 @@ export function LabelDialog({
         >
           <div className="space-y-2">
             <label className="text-sm font-medium">
-              Project <span className="text-destructive">*</span>
+            {t('labels:card.labelDialog.projectLabel')} <span className="text-destructive">*</span>
             </label>
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
@@ -202,14 +204,14 @@ export function LabelDialog({
                     ? projects.find(
                         (project) => project.id === formData.project_id
                       )?.name
-                    : "Select project..."}
+                    : t('labels:card.labelDialog.projectPlaceholder') }
                   <Icons.chevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-full p-0">
                 <Command>
-                  <CommandInput placeholder="Search project..." />
-                  <CommandEmpty>No project found.</CommandEmpty>
+                  <CommandInput placeholder= {t('labels:card.labelDialog.projectSearch')} />
+                  <CommandEmpty>{t('labels:card.labelDialog.noProjectFound')}</CommandEmpty>
                   <CommandGroup>
                     {projects.map((project) => (
                       <CommandItem
@@ -239,7 +241,7 @@ export function LabelDialog({
 
           <div className="space-y-2">
             <label className="text-sm font-medium">
-              Label Name <span className="text-destructive">*</span>
+            {t('labels:card.labelDialog.labelName')} <span className="text-destructive">*</span>
             </label>
             <Input
               required
@@ -247,27 +249,27 @@ export function LabelDialog({
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
-              placeholder="Enter label name"
+              placeholder={t('labels:card.labelDialog.labelPlaceholder')}
               className="w-full"
               disabled={loading}
             />
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium">Description</label>
+            <label className="text-sm font-medium">{t('labels:card.labelDialog.descriptionLabel')}</label>
             <Textarea
               value={formData.description}
               onChange={(e) =>
                 setFormData({ ...formData, description: e.target.value })
               }
-              placeholder="Enter label description"
+              placeholder={t('labels:card.labelDialog.descriptionPlaceholder')}
               className="w-full min-h-[80px] sm:min-h-[100px]"
               disabled={loading}
             />
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium">Status</label>
+            <label className="text-sm font-medium">{t('labels:card.labelDialog.statusLabel')}</label>
             <Select
               value={formData.status}
               onValueChange={(value) =>
@@ -278,12 +280,12 @@ export function LabelDialog({
               }
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select status" />
+                <SelectValue placeholder={t('labels:card.labelDialog.statusPlaceholder')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="draft">Draft</SelectItem>
-                <SelectItem value="published">Published</SelectItem>
-                <SelectItem value="archived">Archived</SelectItem>
+                <SelectItem value="draft">{t('common:filter.status.draft')}</SelectItem>
+                <SelectItem value="published">{t('common:filter.status.published')}</SelectItem>
+                <SelectItem value="archived">{t('common:filter.status.archived')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -295,18 +297,18 @@ export function LabelDialog({
               onClick={onClose}
               disabled={loading}
             >
-              Cancel
+              {t('common:buttons.cancel')}
             </Button>
             <Button type="submit" disabled={loading}>
               {loading ? (
                 <>
                   <Icons.loading className="mr-2 h-4 w-4 animate-spin" />
-                  {isEditing ? "Updating..." : "Creating..."}
+                  {isEditing ? t('common:buttons.updating') : t('common:buttons.creating')}
                 </>
               ) : isEditing ? (
-                "Update Label"
+                t('labels:card.actions.update')
               ) : (
-                "Create Label"
+                t('labels:card.actions.create')
               )}
             </Button>
           </div>

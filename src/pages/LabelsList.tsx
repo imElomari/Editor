@@ -19,6 +19,7 @@ import { LabelDialog } from "../components/LabelDialog";
 import { MobileFilterBar } from "../components/MobileFilterBar";
 import { useMobile } from "../hooks/use-mobile";
 import { Icons } from "../lib/constances";
+import { useTranslation } from "react-i18next";
 
 export default function LabelsPage() {
   const [labels, setLabels] = useState<Label[]>([]);
@@ -31,6 +32,7 @@ export default function LabelsPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedLabel, setSelectedLabel] = useState<Label | undefined>();
   const { user } = useAuth();
+  const { t } = useTranslation(['common', 'labels']);
   const isMobile = useMobile();
   const handleResetFilters = () => {
     setSearchQuery("");
@@ -55,7 +57,7 @@ export default function LabelsPage() {
       if (error) throw error;
       setProjects(data || []);
     } catch {
-      toast.error("Error fetching projects");
+      toast.error(t('labels:toast.error.fetchingProjects'));
     }
   }
 
@@ -71,7 +73,7 @@ export default function LabelsPage() {
       if (error) throw error;
       setLabels(data || []);
     } catch (error) {
-      toast.error("Error fetching labels");
+      toast.error(t('labels:toast.error.fetchingLabels'));
       console.error("Error:", error);
     } finally {
       setLoading(false);
@@ -130,9 +132,9 @@ export default function LabelsPage() {
       <div className="flex flex-col gap-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold">Labels</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold">{t('labels:page.title')}</h1>
             <p className="text-muted-foreground mt-1">
-              Manage your label designs
+            {t('labels:page.description')}
             </p>
           </div>
           <Button
@@ -140,23 +142,23 @@ export default function LabelsPage() {
             size={isMobile ? "sm" : "lg"}
           >
             <Icons.plus className="h-5 w-5" />
-            {!isMobile && "New Label"}
+            {!isMobile && t('labels:page.newLabel')}
           </Button>
         </div>
 
         {/* Mobile Filters */}
         <MobileFilterBar
           activeFilters={activeFiltersCount}
-          title="Filter Labels"
+          title={t('labels:labelfilter.title')}
           onReset={handleResetFilters}
         >
           <div className="space-y-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Search</label>
+              <label className="text-sm font-medium">{t('labels:labelfilter.title')}</label>
               <div className="relative">
                 <Icons.search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Search labels..."
+                  placeholder={t('labels:labelfilter.search.placeholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-10"
@@ -165,13 +167,13 @@ export default function LabelsPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Project</label>
+              <label className="text-sm font-medium">{t('common:filter.project.title')}</label>
               <Select value={projectFilter} onValueChange={setProjectFilter}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Filter by project" />
+                  <SelectValue placeholder={t('common:filter.project.placeholder')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Projects</SelectItem>
+                  <SelectItem value="all">{t('common:filter.project.all')}</SelectItem>
                   {projects.map((project) => (
                     <SelectItem key={project.id} value={project.id}>
                       {project.name}
@@ -182,30 +184,30 @@ export default function LabelsPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Status</label>
+              <label className="text-sm font-medium">{t('common:filter.status.placeholder')}</label>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Filter by status" />
+                  <SelectValue placeholder={t('common:filter.status.placeholder')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="draft">Draft</SelectItem>
-                  <SelectItem value="published">Published</SelectItem>
-                  <SelectItem value="archived">Archived</SelectItem>
+                  <SelectItem value="all">{t('common:filter.status.all')}</SelectItem>
+                  <SelectItem value="draft">{t('common:filter.status.draft')}</SelectItem>
+                  <SelectItem value="published">{t('common:filter.status.published')}</SelectItem>
+                  <SelectItem value="archived">{t('common:filter.status.archived')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Sort By</label>
+              <label className="text-sm font-medium">{t('common:filter.sort.label')}</label>
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Sort by" />
+                  <SelectValue placeholder={t('common:filter.sort.label')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="newest">Newest First</SelectItem>
-                  <SelectItem value="oldest">Oldest First</SelectItem>
-                  <SelectItem value="name">Name</SelectItem>
+                  <SelectItem value="newest">{t('common:filter.sort.options.newest')}</SelectItem>
+                  <SelectItem value="oldest">{t('common:filter.sort.options.oldest')}</SelectItem>
+                  <SelectItem value="name">{t('common:filter.sort.options.name')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -217,7 +219,7 @@ export default function LabelsPage() {
           <div className="relative flex-1">
             <Icons.search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search labels..."
+              placeholder={t('labels:labelfilter.search.placeholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10"
@@ -227,10 +229,10 @@ export default function LabelsPage() {
           <Select value={projectFilter} onValueChange={setProjectFilter}>
             <SelectTrigger className="w-[180px]">
               <Icons.filter className="h-4 w-4 mr-2" />
-              <SelectValue placeholder="Filter by project" />
+              <SelectValue placeholder={t('common:filter.project.placeholder')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Projects</SelectItem>
+              <SelectItem value="all">{t('common:filter.project.all')}</SelectItem>
               {projects.map((project) => (
                 <SelectItem key={project.id} value={project.id}>
                   {project.name}
@@ -242,25 +244,25 @@ export default function LabelsPage() {
           <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger className="w-[180px]">
               <Icons.filter className="h-4 w-4 mr-2" />
-              <SelectValue placeholder="Filter by status" />
+              <SelectValue placeholder={t('common:filter.status.placeholder')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="draft">Draft</SelectItem>
-              <SelectItem value="published">Published</SelectItem>
-              <SelectItem value="archived">Archived</SelectItem>
+              <SelectItem value="all">{t('common:filter.status.all')}</SelectItem>
+              <SelectItem value="draft">{t('common:filter.status.draft')}</SelectItem>
+              <SelectItem value="published">{t('common:filter.status.published')}</SelectItem>
+              <SelectItem value="archived">{t('common:filter.status.archived')}</SelectItem>
             </SelectContent>
           </Select>
 
           <Select value={sortBy} onValueChange={setSortBy}>
             <SelectTrigger className="w-[180px]">
               <Icons.updown className="h-4 w-4 mr-2" />
-              <SelectValue placeholder="Sort by" />
+              <SelectValue placeholder={t('common:filter.sort.label')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="newest">Newest First</SelectItem>
-              <SelectItem value="oldest">Oldest First</SelectItem>
-              <SelectItem value="name">Name</SelectItem>
+              <SelectItem value="newest">{t('common:filter.sort.options.newest')}</SelectItem>
+              <SelectItem value="oldest">{t('common:filter.sort.options.oldest')}</SelectItem>
+              <SelectItem value="name">{t('common:filter.sort.options.name')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -288,8 +290,8 @@ export default function LabelsPage() {
                   {searchQuery ||
                   statusFilter !== "all" ||
                   projectFilter !== "all"
-                    ? "No labels found matching your filters"
-                    : "No labels yet"}
+                    ? t('labels:empty.noResults')
+                    : t('labels:empty.noLabels')}
                 </p>
                 <Button
                   variant="outline"
@@ -297,7 +299,7 @@ export default function LabelsPage() {
                   onClick={() => setIsDialogOpen(true)}
                 >
                   <Icons.plus className="h-4 w-4 mr-2" />
-                  Create Your First Label
+                  {t('labels:page.createFirst')}
                 </Button>
               </div>
             )}
