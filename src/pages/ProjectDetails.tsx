@@ -15,6 +15,7 @@ import LabelCard from "../components/LabelCard";
 import { LabelDialog } from "../components/LabelDialog";
 import { AssetUploadDialog } from "../components/AssetUploadDialog";
 import { getStorageUrl } from "../lib/utils";
+import { useTranslation } from "react-i18next";
 
 function getAssetIcon(type: string) {
   if (type.startsWith("image/")) return Icons.image;
@@ -58,6 +59,7 @@ export default function ProjectDetails() {
   const [isLabelDialogOpen, setIsLabelDialogOpen] = useState(false);
   const [isAssetDialogOpen, setIsAssetDialogOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<string>("assets");
+  const { t } = useTranslation(['common', 'projects']);
   
   useEffect(() => {
     fetchProjectData();
@@ -114,7 +116,7 @@ export default function ProjectDetails() {
   if (!project) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <p className="text-muted-foreground">Project not found</p>
+        <p className="text-muted-foreground">{t('projects:page.noProjectFound')}</p>
       </div>
     );
   }
@@ -135,7 +137,7 @@ export default function ProjectDetails() {
             <div>
               <h1 className="text-3xl font-bold">{project.name}</h1>
               <p className="text-muted-foreground mt-1">
-                {project.description || "No description provided"}
+                {project.description || t('projects:card.noDescription')}
               </p>
             </div>
           </div>
@@ -150,11 +152,11 @@ export default function ProjectDetails() {
           <TabsList>
             <TabsTrigger value="labels" className="flex items-center gap-2">
               <Icons.labels className="h-4 w-4" />
-              Labels ({labels.length})
+              {t('projects:projectDetails.tab1.title')} ({labels.length})
             </TabsTrigger>
             <TabsTrigger value="assets" className="flex items-center gap-2">
               <Icons.asset className="h-4 w-4" />
-              Assets ({assets.length})
+              {t('projects:projectDetails.tab2.title')} ({assets.length})
             </TabsTrigger>
           </TabsList>
 
@@ -173,14 +175,14 @@ export default function ProjectDetails() {
               </div>
             ) : (
               <div className="text-center py-12 bg-muted/30 rounded-lg">
-                <p className="text-muted-foreground">No labels yet</p>
+                <p className="text-muted-foreground">{t('projects:projectDetails.tab1.noLabels')}</p>
                 <Button
                   variant="outline"
                   className="mt-4"
                   onClick={() => setIsLabelDialogOpen(true)}
                 >
                   <Icons.plus className="h-4 w-4 mr-2" />
-                  Create your first label
+                  {t('projects:projectDetails.tab1.action')}
                 </Button>
               </div>
             )}
@@ -191,7 +193,7 @@ export default function ProjectDetails() {
             <div className="flex justify-end mb-6">
               <Button onClick={() => setIsAssetDialogOpen(true)}>
                 <Icons.upload className="h-4 w-4 mr-2" />
-                Upload Asset
+                {t('projects:projectDetails.tab2.action')}
               </Button>
             </div>
 
@@ -219,16 +221,6 @@ export default function ProjectDetails() {
                               e.currentTarget.src = "/placeholder-image.png";
                             }}
                           />
-                          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                            <Button
-                              variant="secondary"
-                              size="sm"
-                              className="h-8"
-                              onClick={() => window.open(asset.url, "_blank")}
-                            >
-                              View Full Size
-                            </Button>
-                          </div>
                         </div>
                       ) : (
                         <div className="w-full h-32 bg-muted rounded-md mb-2 flex flex-col items-center justify-center gap-2">
@@ -250,16 +242,16 @@ export default function ProjectDetails() {
                               : typeLabel}
                           </p>
                           {/* <div className="flex items-center gap-1">
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="h-8 w-8 p-0"
-              onClick={() => window.open(getStorageUrl('project-assets', asset.metadata.storagePath ?? ''), '_blank')}
-              title="Open in new tab"
-            >
-              <AssetIcon className="h-4 w-4" />
-            </Button>
-          </div> */}
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="h-8 w-8 p-0"
+                              onClick={() => window.open(getStorageUrl('project-assets', asset.metadata.storagePath ?? ''), '_blank')}
+                              title="Open in new tab"
+                            >
+                              <AssetIcon className="h-4 w-4" />
+                            </Button>
+                          </div> */}
                         </div>
                       </div>
                     </div>
@@ -268,7 +260,7 @@ export default function ProjectDetails() {
               </div>
             ) : (
               <div className="text-center py-12 bg-muted/30 rounded-lg">
-                <p className="text-muted-foreground">No assets yet</p>
+                <p className="text-muted-foreground">{t('projects:projectDetails.tab2.noAsset')}</p>
               </div>
             )}
             <AssetUploadDialog

@@ -3,7 +3,8 @@
     "title": "Proyectos",
     "description": "Administra y organiza tus proyectos",
     "newProject": "Nuevo Proyecto",
-    "createFirst": "Crea tu primer proyecto"
+    "createFirst": "Crea tu primer proyecto",
+    "noProjectFound": " esNo project found"
   },
   "projectfilter": {
     "title": "Filtrar Proyectos",
@@ -62,6 +63,18 @@
         "description": "No se pudo restaurar el proyecto. Por favor, inténtalo de nuevo."
       },
       "fetch": "Error al cargar los proyectos"
+    }
+  },
+  "projectDetails": {
+    "tab1": {
+      "title": "Etiquetas",
+      "noLabels": "Aún no hay etiquetas",
+      "action": "Crea tu primera etiqueta"
+    },
+    "tab2": {
+      "title": "Recursos",
+      "noLabels": "Aún no hay recursos",
+      "action": "Sube tu primer recurso"
     }
   }
 }

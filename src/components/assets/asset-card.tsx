@@ -64,12 +64,12 @@ export function AssetCard({
         {/* Asset Info */}
         <div className="space-y-1">
           <div className="flex items-center justify-between">
-            <p className="font-medium truncate" title={asset.name}>
+            <p className="font-medium break-words line-clamp-2 text-sm flex-1" title={asset.name}>
               {asset.name}
             </p>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-8 w-8">
+                <Button variant="ghost" size="icon" className="h-8 w-8 flex-shrink-0">
                   <Icons.settings2 className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>

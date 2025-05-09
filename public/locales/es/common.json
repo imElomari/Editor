@@ -1,4 +1,11 @@
 {
+  "language": {
+    "select": "Seleccionar idioma",
+    "en": "Inglés",
+    "es": "Español",
+    "fr": "Francés",
+    "ar": "Árabe"
+  },
   "sidePanel": {
     "navigation": {
       "dashboard": "Panel",

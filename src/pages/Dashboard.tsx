@@ -404,22 +404,22 @@ export default function Dashboard() {
       </div>
 
       {/* Recent Items */}
-      <Tabs defaultValue="labels" className="space-y-6">
+      <Tabs defaultValue="projects" className="space-y-6">
         <div className="flex items-center justify-between">
           <TabsList className="bg-muted/50 p-1 rounded-xl">
-            <TabsTrigger
-              value="labels"
-              className="flex items-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"
-            >
-              <Icons.labels className="h-4 w-4" />
-              <span>{t('common:sidePanel.navigation.labels')}</span>
-            </TabsTrigger>
             <TabsTrigger
               value="projects"
               className="flex items-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"
             >
               <Icons.project className="h-4 w-4" />
               <span>{t('common:sidePanel.navigation.projects')}</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="labels"
+              className="flex items-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"
+            >
+              <Icons.labels className="h-4 w-4" />
+              <span>{t('common:sidePanel.navigation.labels')}</span>
             </TabsTrigger>
             <TabsTrigger
               value="assets"
@@ -430,6 +430,125 @@ export default function Dashboard() {
             </TabsTrigger>
           </TabsList>
         </div>
+
+        <TabsContent value="projects" className="m-0 space-y-4">
+          <Card className="overflow-hidden border-t-4 border-t-blue-500/50">
+            <CardHeader
+              className={cn(
+                "flex flex-row items-center justify-between pb-3",
+                isMobile && "px-4 py-3"
+              )}
+            >
+              <div>
+                <CardTitle className="text-xl flex items-center gap-2">
+                  <Icons.project className="h-5 w-5 text-blue-500" />
+                  {t('dashboard:recent.projects.title')}
+                </CardTitle>
+                <CardDescription>
+                {t('dashboard:recent.projects.description')}
+                </CardDescription>
+              </div>
+              {!isMobile && (
+                <Button
+                  onClick={handleCreateProject}
+                  variant="outline"
+                  size="sm"
+                >
+                  <Icons.plus className="h-4 w-4 mr-2" />
+                  {t('dashboard:recent.projects.action')}
+                </Button>
+              )}
+            </CardHeader>
+            <CardContent className={isMobile ? "px-4 py-2" : undefined}>
+              {projects.length === 0 ? (
+                <div className="text-center py-8 sm:py-12 border-2 border-dashed rounded-lg bg-muted/20">
+                  <div className="relative w-16 h-16 mx-auto mb-4">
+                    <div className="absolute inset-0 bg-blue-500/10 rounded-full animate-pulse"></div>
+                    <Icons.project className="h-10 w-10 sm:h-12 sm:w-12 mx-auto text-blue-500/70 relative z-10" />
+                  </div>
+                  <h3 className="text-base sm:text-lg font-medium mb-1">
+                  {t('dashboard:recent.projects.noProjects')}
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-4 max-w-md mx-auto px-4">
+                  {t('dashboard:recent.projects.createDescription')}
+                  </p>
+                  <Button onClick={handleCreateProject} className="shadow-sm">
+                    <Icons.plus className="h-4 w-4 mr-2" />
+                    {t('dashboard:recent.projects.createFirst')}
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {projects.map((project, index) => (
+                    <div key={project.id}>
+                      <div
+                        className="flex items-center justify-between p-3 hover:bg-muted/50 rounded-lg cursor-pointer transition-all duration-200 hover:shadow-sm"
+                        onClick={() => openProject(project.id)}
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="h-10 w-10 rounded-md bg-gradient-to-br from-blue-500/10 to-blue-500/5 flex items-center justify-center flex-shrink-0 border border-border/50 shadow-sm">
+                            <Icons.project className="h-5 w-5 text-blue-500" />
+                          </div>
+                          <div className="min-w-0">
+                            <div className="font-medium truncate">
+                              {project.name}
+                            </div>
+                            <div className="text-sm text-muted-foreground flex items-center gap-2 flex-wrap">
+                              <span className="flex items-center">
+                                <Icons.clock className="h-3 w-3 mr-1 flex-shrink-0" />
+                                {formatRelativeTime(project.updated_at)}
+                              </span>
+                              {project.description && (
+                                <span className="inline-flex items-center">
+                                  <span className="mx-1 hidden sm:inline">
+                                    •
+                                  </span>
+                                  <span className="truncate">
+                                    {project.description.substring(0, 30)}
+                                    {project.description.length > 30
+                                      ? "..."
+                                      : ""}
+                                  </span>
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <PenTool className="h-4 w-4" />
+                          </Button>
+                          <div className="h-8 w-8 rounded-full bg-muted/50 flex items-center justify-center">
+                            <Icons.chevronRight className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                          </div>
+                        </div>
+                      </div>
+                      {index < projects.length - 1 && (
+                        <Separator className="my-1 opacity-50" />
+                      )}
+                    </div>
+                  ))}
+
+                  {/* View All Link */}
+                  {projects.length > 0 && (
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-between mt-4 text-muted-foreground hover:text-foreground group"
+                      onClick={() => navigate("/projects")}
+                    >
+                      <span>{t('dashboard:recent.projects.viewAll')}</span>
+                      <Icons.arrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  )}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
 
         <TabsContent value="labels" className="m-0 space-y-4">
           <Card className="overflow-hidden border-t-4 border-t-primary/50">
@@ -542,125 +661,6 @@ export default function Dashboard() {
                       onClick={() => navigate("/labels")}
                     >
                       <span>{t('dashboard:recent.labels.viewAll')}</span>
-                      <Icons.arrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  )}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="projects" className="m-0 space-y-4">
-          <Card className="overflow-hidden border-t-4 border-t-blue-500/50">
-            <CardHeader
-              className={cn(
-                "flex flex-row items-center justify-between pb-3",
-                isMobile && "px-4 py-3"
-              )}
-            >
-              <div>
-                <CardTitle className="text-xl flex items-center gap-2">
-                  <Icons.project className="h-5 w-5 text-blue-500" />
-                  {t('dashboard:recent.projects.title')}
-                </CardTitle>
-                <CardDescription>
-                {t('dashboard:recent.projects.description')}
-                </CardDescription>
-              </div>
-              {!isMobile && (
-                <Button
-                  onClick={handleCreateProject}
-                  variant="outline"
-                  size="sm"
-                >
-                  <Icons.plus className="h-4 w-4 mr-2" />
-                  {t('dashboard:recent.projects.action')}
-                </Button>
-              )}
-            </CardHeader>
-            <CardContent className={isMobile ? "px-4 py-2" : undefined}>
-              {projects.length === 0 ? (
-                <div className="text-center py-8 sm:py-12 border-2 border-dashed rounded-lg bg-muted/20">
-                  <div className="relative w-16 h-16 mx-auto mb-4">
-                    <div className="absolute inset-0 bg-blue-500/10 rounded-full animate-pulse"></div>
-                    <Icons.project className="h-10 w-10 sm:h-12 sm:w-12 mx-auto text-blue-500/70 relative z-10" />
-                  </div>
-                  <h3 className="text-base sm:text-lg font-medium mb-1">
-                  {t('dashboard:recent.projects.noProjects')}
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-4 max-w-md mx-auto px-4">
-                  {t('dashboard:recent.projects.createDescription')}
-                  </p>
-                  <Button onClick={handleCreateProject} className="shadow-sm">
-                    <Icons.plus className="h-4 w-4 mr-2" />
-                    {t('dashboard:recent.projects.createFirst')}
-                  </Button>
-                </div>
-              ) : (
-                <div className="space-y-2">
-                  {projects.map((project, index) => (
-                    <div key={project.id}>
-                      <div
-                        className="flex items-center justify-between p-3 hover:bg-muted/50 rounded-lg cursor-pointer transition-all duration-200 hover:shadow-sm"
-                        onClick={() => openProject(project.id)}
-                      >
-                        <div className="flex items-center gap-3 min-w-0">
-                          <div className="h-10 w-10 rounded-md bg-gradient-to-br from-blue-500/10 to-blue-500/5 flex items-center justify-center flex-shrink-0 border border-border/50 shadow-sm">
-                            <Icons.project className="h-5 w-5 text-blue-500" />
-                          </div>
-                          <div className="min-w-0">
-                            <div className="font-medium truncate">
-                              {project.name}
-                            </div>
-                            <div className="text-sm text-muted-foreground flex items-center gap-2 flex-wrap">
-                              <span className="flex items-center">
-                                <Icons.clock className="h-3 w-3 mr-1 flex-shrink-0" />
-                                {formatRelativeTime(project.updated_at)}
-                              </span>
-                              {project.description && (
-                                <span className="inline-flex items-center">
-                                  <span className="mx-1 hidden sm:inline">
-                                    •
-                                  </span>
-                                  <span className="truncate">
-                                    {project.description.substring(0, 30)}
-                                    {project.description.length > 30
-                                      ? "..."
-                                      : ""}
-                                  </span>
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="opacity-0 group-hover:opacity-100 transition-opacity"
-                          >
-                            <PenTool className="h-4 w-4" />
-                          </Button>
-                          <div className="h-8 w-8 rounded-full bg-muted/50 flex items-center justify-center">
-                            <Icons.chevronRight className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                          </div>
-                        </div>
-                      </div>
-                      {index < projects.length - 1 && (
-                        <Separator className="my-1 opacity-50" />
-                      )}
-                    </div>
-                  ))}
-
-                  {/* View All Link */}
-                  {projects.length > 0 && (
-                    <Button
-                      variant="ghost"
-                      className="w-full justify-between mt-4 text-muted-foreground hover:text-foreground group"
-                      onClick={() => navigate("/projects")}
-                    >
-                      <span>{t('dashboard:recent.projects.viewAll')}</span>
                       <Icons.arrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   )}

@@ -19,7 +19,7 @@
             "placeholder": "Filter by scope",
             "all": "All Assets",
             "global": "Global",
-            "project": "Project",
+            "project": "Project"
         },
         "type": {
             "title": "Asset Type",

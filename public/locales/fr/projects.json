@@ -3,7 +3,8 @@
     "title": "Projets",
     "description": "Gérez et organisez vos projets",
     "newProject": "Nouveau projet",
-    "createFirst": "Créez votre premier projet"
+    "createFirst": "Créez votre premier projet",
+    "noProjectFound": "fr No project found"
   },
   "projectfilter": {
     "title": "Filtrer les projets",
@@ -66,6 +67,18 @@
         "description": "Impossible de restaurer le projet. Veuillez réessayer."
       },
       "fetch": "Erreur lors du chargement des projets"
+    }
+  },
+  "projectDetails": {
+    "tab1": {
+      "title": "Étiquettes",
+      "noLabels": "Aucune étiquette pour le moment",
+      "action": "Créez votre première étiquette"
+    },
+    "tab2": {
+      "title": "Ressources",
+      "noLabels": "Aucune ressource pour le moment",
+      "action": "Téléchargez votre première ressource"
     }
   }
 }

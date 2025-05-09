@@ -3,7 +3,8 @@
       "title": "Projects",
       "description": "Manage and organize your projects",
       "newProject": "New Project",
-      "createFirst": "Create your first project"
+      "createFirst": "Create your first project",
+      "noProjectFound": "No project found"
     },
     "projectfilter": {
       "title": "Filter Projects",
@@ -64,5 +65,17 @@
             "fetch": "Error fetching projects"
           }
         } 
+      },
+      "projectDetails": {
+        "tab1": {
+          "title": "Labels",
+          "noLabels": "No labels yet",
+          "action": "Create your first label"
+          },
+        "tab2": {
+          "title": "Assets",
+          "noLabels": "No assets yet",
+          "action": "Upload your first asset"
+        }
       }
     }

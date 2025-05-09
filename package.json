@@ -10,7 +10,6 @@
     "preview": "vite preview",
     "extract": "i18next-scanner --config i18next-scanner.config.js",
     "compile": "tsc && i18next-conv -l en -s locales/en/translation.json -t locales/es/translation.json"
-
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.11",
@@ -48,7 +47,8 @@
     "react-router-dom": "^6.30.0",
     "sonner": "^2.0.3",
     "tailwind-merge": "^3.2.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "tailwindcss-rtl": "^0.9.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
