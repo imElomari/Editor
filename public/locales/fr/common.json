@@ -1,0 +1,94 @@
+{
+  "sidePanel": {
+    "navigation": {
+      "dashboard": "Tableau de bord",
+      "home": "Accueil",
+      "projects": "Projets",
+      "labels": "Étiquettes",
+      "assets": "Ressources",
+      "settings": "Paramètres",
+      "trash": "Corbeille"
+    },
+    "account": {
+      "profile": "Profil",
+      "settings": "Paramètres"
+    }
+  },
+
+  "trashPage": {
+    "title": "Ma Corbeille",
+    "description": "Les éléments supprimés sont conservés pendant 30 jours avant d'être définitivement supprimés",
+    "isEmpty": "La corbeille est vide",
+    "msgIfEmpty": "Les éléments que vous supprimez apparaîtront ici",
+    "remainingDays": "{{days}} jours restants",
+    "deleted": "Supprimé",
+    "restoreDialog": {
+      "title": "Restaurer l'élément",
+      "description": "Êtes-vous sûr de vouloir le restaurer ? Il sera remis dans vos éléments actifs."
+    },
+    "deletePermanently": {
+      "title": "Supprimer définitivement",
+      "description": "Êtes-vous sûr de vouloir supprimer définitivement cet élément ?",
+      "confirm": "Supprimer définitivement"
+    }
+  },
+
+  "login": {
+    "signin": "Connectez-vous à votre compte pour continuer"
+  },
+
+  "buttons": {
+    "signout": "Déconnexion",
+    "cancel": "Annuler",
+    "creating": "Création...",
+    "updating": "Mise à jour...",
+    "deleting": "Suppression...",
+    "undo": "Annuler",
+    "restore": "Restaurer",
+    "delete": "Supprimer"
+  },
+
+  "badges": {
+    "project": "Projet",
+    "label": "Étiquette"
+  },
+
+  "filter": {
+    "active": "{{activeFilters}} filtres appliqués",
+    "notactive": "Aucun filtre",
+    "reset": "Réinitialiser",
+    "close": "Fermer",
+    "apply": "Appliquer les filtres",
+    "sort": {
+      "label": "Trier par",
+      "options": {
+        "newest": "Plus récent",
+        "oldest": "Plus ancien",
+        "name": "Nom"
+      }
+    },
+    "search": {
+      "label": "Rechercher"
+    },
+    "project": {
+      "title": "Projet",
+      "placeholder": "Filtrer par projet",
+      "all": "Tous les projets"
+    },
+    "status": {
+      "placeholder": "Filtrer par statut",
+      "all": "Tous les statuts",
+      "draft": "Brouillon",
+      "published": "Publié",
+      "archived": "Archivé"
+    }
+  },
+
+  "dropzone": {
+    "dragAndDrop": "Glissez-déposez ou",
+    "selectFile": "sélectionnez un fichier",
+    "selectFiles": "sélectionnez des fichiers",
+    "toUpload": "à télécharger",
+    "maxFileSize": "Taille maximale du fichier : {{size}}"
+  }
+}

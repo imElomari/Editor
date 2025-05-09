@@ -1,12 +1,89 @@
 {
-    "greeting": {
-      "morning": "Buenos días",
-      "afternoon": "Buenas tardes",
-      "evening": "Buenas noches",
-      "summary": "Esto es lo que está pasando con tus etiquetas hoy"
+  "greeting": {
+    "morning": "Buenos días",
+    "afternoon": "Buenas tardes",
+    "evening": "Buenas noches",
+    "summary": "Esto es lo que está pasando con tus etiquetas hoy"
+  },
+  "loading": {
+    "state": "Cargando tu panel...",
+    "title": "Cargando"
+  },
+  "cards": {
+    "projects": {
+      "title": "Proyectos",
+      "subTitle": "Organiza tu trabajo"
     },
-    "loading": {
-      "state": "Cargando tu panel...",
-      "title": "Cargando"
+    "labels": {
+      "title": "Total de Etiquetas"
+    },
+    "assets": {
+      "title": "Recursos",
+      "subTitle": "Total de recursos subidos"
+    },
+    "quickCreate": {
+      "title": "Creación Rápida",
+      "action": "Nueva Etiqueta",
+      "comment": "Empieza a crear ahora"
     }
+  },
+  "recent": {
+    "title": "Actividad Reciente",
+    "subTitle": "En los últimos 7 días",
+    "labels": {
+      "title": "Etiquetas Recientes",
+      "description": "Tus etiquetas actualizadas recientemente",
+      "action": "Nueva Etiqueta",
+      "noLabels": "Aún no hay etiquetas creadas",
+      "createDescription": "Crea tu primera etiqueta para comenzar con tu proceso de diseño.",
+      "createFirst": "Crear Tu Primera Etiqueta",
+      "viewAll": "Ver Todas las Etiquetas"
+    },
+    "projects": {
+      "title": "Proyectos Recientes",
+      "description": "Tus proyectos actualizados recientemente",
+      "action": "Nuevo Proyecto",
+      "noProjects": "Aún no hay proyectos creados",
+      "createDescription": "Crea tu primer proyecto para organizar tus etiquetas.",
+      "createFirst": "Crear Tu Primer Proyecto",
+      "viewAll": "Ver Todos los Proyectos"
+    },
+    "assets": {
+      "title": "Recursos Recientes",
+      "description": "Tus recursos actualizados recientemente",
+      "action": "Subir Recurso",
+      "noAssets": "Aún no hay recursos subidos",
+      "uploadDescription": "Sube tu primer recurso para comenzar con tu biblioteca de recursos.",
+      "uploadFirst": "Subir Tu Primer Recurso",
+      "viewAll": "Ver Todos los Recursos"
+    }
+  },
+  "quickActions": {
+    "title": "Acciones Rápidas",
+    "description": "Tareas comunes que puedes realizar",
+    "projects": {
+      "create": "Nuevo Proyecto",
+      "description": "Comenzar un nuevo proyecto",
+      "viewAll": "Proyectos",
+      "viewAllDescription": "Ver todos los proyectos"
+    },
+    "labels": {
+      "create": "Nueva Etiqueta",
+      "description": "Diseñar una nueva etiqueta",
+      "viewAll": "Etiquetas",
+      "viewAllDescription": "Ver todas las etiquetas"
+    },
+    "assets": {
+      "create": "Subir Recurso",
+      "description": "Añadir una nueva imagen o archivo a tus recursos",
+      "viewAll": "Biblioteca de Recursos",
+      "viewAllDescription": "Explorar todos los recursos"
+    }
+  },
+  "time": {
+    "now": "Ahora mismo",
+    "hoursAgo": "h atrás",
+    "yesterday": "Ayer",
+    "monthsAgo": "m atrás"
+  }
 }

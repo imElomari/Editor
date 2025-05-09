@@ -1,0 +1,50 @@
+{
+    "page": {
+        "title": "Votre Profil",
+        "description": "Gérez vos informations de compte et paramètres de sécurité",
+        "tab1": {
+            "title": "Informations du profil",
+            "created": "Compte créé",
+            "updated": "Compte mis à jour",
+            "last_signin": "Dernière connexion",
+            "role": "Rôle",
+            "verified": {
+                "title": "Email vérifié",
+                "true": "Oui",
+                "false": "Non"
+            }
+        },
+        "tab2": {
+            "title": "Sécurité",
+            "security": {
+                "title": "Paramètres de sécurité",
+                "description": "Gérez votre mot de passe et vos préférences de sécurité"
+            },
+            "password_reset": {
+                "title": "Réinitialiser le mot de passe",
+                "description": "Vous recevrez un e-mail avec un lien pour réinitialiser votre mot de passe.",
+                "email_sent": "E-mail envoyé",
+                "check": "Vérifiez votre boîte de réception pour le lien de réinitialisation du mot de passe.",
+                "send": "Envoyer l'e-mail de réinitialisation"
+            },
+            "tips": {
+                "title": "Conseils de sécurité",
+                "1": "Utilisez un mot de passe fort et unique pour votre compte",
+                "2": "Activez l'authentification à deux facteurs si disponible",
+                "3": "Ne partagez jamais votre mot de passe ou vos informations de sécurité",
+                "4": "Vérifiez régulièrement les activités suspectes",
+                "5": "Mettez à jour votre mot de passe périodiquement"
+            }
+        }
+    },
+    "toast": {
+        "success": {
+            "title": "E-mail de réinitialisation envoyé",
+            "description": "Vérifiez votre boîte de réception pour le lien de réinitialisation du mot de passe."
+        },
+        "error": {
+            "title": "Erreur de réinitialisation du mot de passe",
+            "description": "Impossible d'envoyer l'e-mail de réinitialisation. Veuillez réessayer."
+        }
+    }
+}

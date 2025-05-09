@@ -1,5 +1,6 @@
 {
-  "navigation": {
+  "sidePanel": {
+    "navigation": {
       "dashboard": "Panel",
       "home": "Inicio",
       "projects": "Proyectos",
@@ -10,7 +11,84 @@
     },
     "account": {
       "profile": "Perfil",
-      "settings": "Ajustes",
-      "logout": "Cerrar sesión"
+      "settings": "Ajustes"
     }
+  },
+
+  "trashPage": {
+    "title": "Mi Papelera",
+    "description": "Los elementos eliminados se conservan durante 30 días antes de ser eliminados permanentemente",
+    "isEmpty": "La papelera está vacía",
+    "msgIfEmpty": "Los elementos que elimines aparecerán aquí",
+    "remainingDays": "{{days}} días restantes",
+    "deleted": "Eliminado",
+    "restoreDialog": {
+      "title": "Restaurar Elemento",
+      "description": "¿Estás seguro de que quieres restaurarlo? Se moverá de vuelta a tus elementos activos."
+    },
+    "deletePermanently": {
+      "title": "Eliminar Permanentemente",
+      "description": "¿Estás seguro de que quieres eliminarlo permanentemente?",
+      "confirm": "Eliminar Permanentemente"
+    }
+  },
+
+  "login": {
+    "signin": "Inicia sesión en tu cuenta para continuar"
+  },
+
+  "buttons": {
+    "signout": "Cerrar Sesión",
+    "cancel": "Cancelar",
+    "creating": "Creando...",
+    "updating": "Actualizando...",
+    "deleting": "Eliminando...",
+    "undo": "Deshacer",
+    "restore": "Restaurar",
+    "delete": "Eliminar"
+  },
+  "badges": {
+    "project": "Proyecto",
+    "label":  "Etiqueta" 
+  },
+
+  "filter": {
+    "active": "{{activeFilters}} filtros aplicados",
+    "notactive": "Sin filtros",
+    "reset": "Restablecer",
+    "close": "Cerrar",
+    "apply": "Aplicar Filtros",
+    "sort": {
+      "label": "Ordenar por",
+      "options": {
+        "newest": "Más recientes",
+        "oldest": "Más antiguos",
+        "name": "Nombre"
+      }
+    },
+    "search": {
+      "label": "Buscar"
+    },
+    "project": {
+      "title": "Proyecto",
+      "placeholder": "Filtrar por proyecto",
+      "all": "Todos los Proyectos"
+    },
+    "status": {
+      "placeholder": "Filtrar por estado",
+      "all": "Todos los Estados",
+      "draft": "Borrador",
+      "published": "Publicado",
+      "archived": "Archivado"
+    }
+  },
+
+  "dropzone": {
+    "dragAndDrop": "Arrastra y suelta o",
+    "selectFile": "selecciona un archivo",
+    "selectFiles": "selecciona archivos",
+    "toUpload": "para subir",
+    "maxFileSize": "Tamaño máximo de archivo: {{size}}"
+
   }
+}

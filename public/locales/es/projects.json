@@ -1,0 +1,67 @@
+{
+  "page": {
+    "title": "Proyectos",
+    "description": "Administra y organiza tus proyectos",
+    "newProject": "Nuevo Proyecto",
+    "createFirst": "Crea tu primer proyecto"
+  },
+  "projectfilter": {
+    "title": "Filtrar Proyectos",
+    "search": {
+      "label": "Buscar",
+      "placeholder": "Buscar proyectos..."
+    }
+  },
+  "empty": {
+    "noProjects": "Aún no hay proyectos",
+    "noResults": "No se encontraron proyectos que coincidan con tu búsqueda"
+  },
+  "card": {
+    "noDescription": "Sin descripción",
+    "viewProject": "Ver Proyecto",
+    "actions": {
+      "create": "Crear Proyecto",
+      "edit": "Editar Proyecto",
+      "update": "Actualizar Proyecto",
+      "delete": "Eliminar Proyecto"
+    },
+    "projectDialog": {
+      "new": "Añade un nuevo proyecto para organizar tus etiquetas",
+      "update": "Actualiza los detalles de tu proyecto a continuación",
+      "nameLabel": "Nombre del Proyecto",
+      "namePlaceholder": "Introduce el nombre del proyecto",
+      "descriptionLabel": "Descripción",
+      "descriptionPlaceholder": "Introduce la descripción del proyecto"
+    }
+  },
+  "deleteDialog": {
+    "title": "¿Estás seguro?",
+    "description": "Esto eliminará el proyecto \"{{projectName}}\" y todos sus datos asociados.",
+    "confirm": "Eliminar Proyecto"
+  },
+  "toast": {
+    "updated": {
+      "title": "Proyecto actualizado",
+      "description": "\"{{projectName}}\" ha sido actualizado exitosamente."
+    },
+    "deleted": {
+      "title": "Proyecto movido a la papelera",
+      "description": "\"{{projectName}}\" ha sido movido a la papelera."
+    },
+    "restored": {
+      "title": "Proyecto restaurado",
+      "description": "\"{{projectName}}\" ha sido restaurado exitosamente."
+    },
+    "error": {
+      "delete": {
+        "title": "Error al eliminar el proyecto",
+        "description": "Ocurrió un error inesperado. Por favor, inténtalo de nuevo."
+      },
+      "restore": {
+        "title": "Error al restaurar el proyecto",
+        "description": "No se pudo restaurar el proyecto. Por favor, inténtalo de nuevo."
+      },
+      "fetch": "Error al cargar los proyectos"
+    }
+  }
+}

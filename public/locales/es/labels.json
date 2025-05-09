@@ -1,0 +1,75 @@
+{
+  "page": {
+    "title": "Etiquetas",
+    "description": "Administra tus diseños de etiquetas",
+    "newLabel": "Nueva Etiqueta",
+    "createFirst": "Crea tu primera etiqueta"
+  },
+  "labelfilter": {
+    "title": "Filtrar Etiquetas",
+    "search": {
+      "placeholder": "Buscar etiquetas..."
+    }
+  },
+  "empty": {
+    "noLabels": "Aún no hay etiquetas",
+    "noResults": "No se encontraron etiquetas que coincidan con tu búsqueda"
+  },
+  "card": {
+    "noDescription": "Sin descripción",
+    "viewLabel": "Ver Etiqueta",
+    "createdAt": "Creado el",
+    "actions": {
+      "create": "Crear Etiqueta",
+      "edit": "Editar Etiqueta",
+      "update": "Actualizar Etiqueta",
+      "delete": "Eliminar Etiqueta",
+      "openEditor": "Abrir en Editor"
+    },
+    "labelDialog": {
+      "new": "Añade una nueva etiqueta a tu proyecto",
+      "update": "Actualiza los detalles de tu etiqueta a continuación",
+      "projectLabel": "Proyecto",
+      "projectPlaceholder": "Seleccionar proyecto...",
+      "projectSearch": "Buscar proyecto...",
+      "noProjectFound": "No se encontró ningún proyecto.",
+      "labelName": "Nombre de la Etiqueta",
+      "labelPlaceholder": "Introduce el nombre de la etiqueta",
+      "descriptionLabel": "Descripción",
+      "descriptionPlaceholder": "Introduce la descripción de la etiqueta",
+      "statusLabel": "Estado",
+      "statusPlaceholder": "Seleccionar estado"
+    },
+    "deleteDialog": {
+      "title": "¿Estás seguro?",
+      "description": "Esto eliminará la etiqueta \"{{labelName}}\"",
+      "confirm": "Eliminar Etiqueta"
+    }
+  },
+  "toast": {
+    "updated": {
+      "title": "Etiqueta actualizada",
+      "description": "\"{{labelName}}\" ha sido actualizada exitosamente."
+    },
+    "deleted": {
+      "title": "Etiqueta movida a la papelera",
+      "description": "\"{{labelName}}\" ha sido movida a la papelera."
+    },
+    "restored": {
+      "title": "Etiqueta restaurada",
+      "description": "\"{{labelName}}\" ha sido restaurada exitosamente."
+    },
+    "error": {
+      "delete": {
+        "title": "Error al eliminar la etiqueta",
+        "description": "Ocurrió un error inesperado. Por favor, inténtalo de nuevo."
+      },
+      "restore": {
+        "title": "Error al restaurar la etiqueta",
+        "description": "No se pudo restaurar la etiqueta. Por favor, inténtalo de nuevo."
+      },
+      "fetchingProjects": "Error al cargar los proyectos",
+      "fetchingLabels": "Error al cargar las etiquetas"
+    }
+  }
+}

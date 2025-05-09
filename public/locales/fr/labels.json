@@ -1,0 +1,79 @@
+{
+  "page": {
+    "title": "Étiquettes",
+    "description": "Gérez vos conceptions d'étiquettes",
+    "newLabel": "Nouvelle étiquette",
+    "createFirst": "Créez votre première étiquette"
+  },
+  "labelfilter": {
+    "title": "Filtrer les étiquettes",
+    "search": {
+      "placeholder": "Rechercher des étiquettes..."
+    }
+  },
+  "empty": {
+    "noLabels": "Aucune étiquette disponible",
+    "noResults": "Aucune étiquette ne correspond à votre recherche"
+  },
+  "card": {
+    "noDescription": "Aucune description",
+    "viewLabel": "Voir l'étiquette",
+    "actions": {
+      "create": "Créer une étiquette",
+      "edit": "Modifier l'étiquette",
+      "update": "Mettre à jour l'étiquette",
+      "delete": "Supprimer l'étiquette",
+      "openEditor": "Ouvrir dans l'éditeur"
+    },
+    "labelDialog": {
+      "new": "Ajoutez une nouvelle étiquette à votre projet",
+      "update": "Mettez à jour les détails de votre étiquette ci-dessous",
+      "projectLabel": "Projet",
+      "projectPlaceholder": "Sélectionner un projet...",
+      "projectSearch": "Rechercher un projet...",
+      "noProjectFound": "Aucun projet trouvé.",
+      "labelName": "Nom de l'étiquette",
+      "labelPlaceholder": "Saisissez le nom de l'étiquette",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Saisissez la description de l'étiquette",
+      "statusLabel": "Statut",
+      "statusPlaceholder": "Sélectionner un statut"
+    }
+  },
+  "toast": {
+    "created": {
+      "title": "Étiquette créée",
+      "description": "\"{{labelName}}\" a été créée avec succès."
+    },
+    "updated": {
+      "title": "Étiquette mise à jour",
+      "description": "\"{{labelName}}\" a été mise à jour avec succès."
+    },
+    "deleted": {
+      "title": "Étiquette déplacée dans la corbeille",
+      "description": "\"{{labelName}}\" a été déplacée dans la corbeille."
+    },
+    "restored": {
+      "title": "Étiquette restaurée",
+      "description": "\"{{labelName}}\" a été restaurée avec succès."
+    },
+    "error": {
+      "create": {
+        "title": "Erreur lors de la création",
+        "description": "Une erreur est survenue lors de la création de l'étiquette."
+      },
+      "update": {
+        "title": "Erreur lors de la mise à jour",
+        "description": "Une erreur est survenue lors de la mise à jour de l'étiquette."
+      },
+      "delete": {
+        "title": "Erreur lors de la suppression",
+        "description": "Une erreur est survenue lors de la suppression de l'étiquette."
+      },
+      "restore": {
+        "title": "Erreur lors de la restauration",
+        "description": "Une erreur est survenue lors de la restauration de l'étiquette."
+      }
+    }
+  }
+}

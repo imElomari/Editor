@@ -1,5 +1,6 @@
 {
-  "navigation": {
+  "sidePanel": {
+    "navigation": {
       "dashboard": "Dashboard",
       "home": "Home",
       "projects": "Projects",
@@ -8,9 +9,89 @@
       "settings": "Settings",
       "trash": "Trash"
     },
-    "account": {
+  "account": {
       "profile": "Profile",
-      "settings": "Settings",
-      "logout": "Log out"
+      "settings": "Settings"
     }
-  }
+  },
+
+  "trashPage": {
+    "title": "My Trash",
+    "description": "Deleted items are kept for 30 days before being permanently removed",
+    "isEmpty": "Trash is empty",
+    "msgIfEmpty": "Items that you delete will appear here",
+    "remainingDays": "{{days}} days remaining",
+    "deleted": "Deleted",
+    "restoreDialog": {
+      "title": "Restore Item",
+      "description": "Are you sure you want to restore it ? It will be moved back to your active items."
+    },
+    "deletePermanently": {
+      "title": "Delete Permanently",
+      "description": " Are you sure you want to permanently delete it ?" ,
+      "confirm": "Delete Permanently"
+   }
+
+
+  },
+
+  "login": {
+    "signin": "Sign in to your account to continue"
+  },
+  "buttons": {
+    "signout": "Sign Out",
+    "cancel": "Cancel",
+    "creating": "Creating...",
+    "updating": "Updating...",
+    "deleting": "Deleting...",
+    "undo": "Undo",
+    "restore": "Restore",
+    "delete": "Delete"
+  },
+  "badges": {
+    "project": "Project",
+    "label": "Label"
+    },
+
+    "filter":{
+      "active": " {{activeFilters}} filters applied",
+      "notactive": "no Filters",
+      "reset": "Reset",
+      "close": "Close",
+      "apply": "Apply Filters",
+      "sort": {
+        "label": "Sort By",
+        "options": {
+          "newest": "Newest First",
+          "oldest": "Oldest First",
+          "name": "Name"
+          }
+      },
+      "search": {
+        "label": "Search"
+        },
+      "project": {
+          "title": "Project",
+          "placeholder": "Filter by project",
+          "all": "All Projects"
+        },
+      "status": {
+        "placeholder": "Filter by status",
+        "all": "All Status",
+        "draft": "Draft",
+        "published":"Published",
+        "archived": "Archived"
+      }
+  },
+        "dropzone":{
+          "dropzone": {
+          "dragAndDrop": "Drag and drop or",
+          "selectFile": "select file",
+          "selectFiles": "select files",
+          "toUpload": "to upload",
+          "maxFileSize": "Maximum file size: {{size}}"
+
+        }
+
+      }
+}

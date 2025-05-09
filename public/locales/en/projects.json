@@ -1,0 +1,68 @@
+{
+    "page": {
+      "title": "Projects",
+      "description": "Manage and organize your projects",
+      "newProject": "New Project",
+      "createFirst": "Create your first project"
+    },
+    "projectfilter": {
+      "title": "Filter Projects",
+      "search": {
+        "label": "Search",
+        "placeholder": "Search projects..."
+        }
+    },
+    "empty": {
+      "noProjects": "No projects yet",
+      "noResults": "No projects found matching your search"
+    },
+      "card": {
+        "noDescription": "No description provided",
+        "viewProject": "View Project",
+        "actions": {
+          "create": "Create Project",
+          "edit": "Edit Project",
+          "update": "Update Project",
+          "delete": "Delete Project"
+        },
+        "projectDialog": {
+          "new": "Add a new project to organize your labels",
+          "update": "Update your project details below",
+          "nameLabel": "Project Name",
+          "namePlaceholder": "Enter project name",
+          "descriptionLabel": "Description",
+          "descriptionPlaceholder": "Enter project description"
+          },
+       
+        "deleteDialog": {
+          "title": "Are you sure?",
+          "description": "This will delete the project \"{{projectName}}\" and all its associated data.",
+          "confirm": "Delete Project"
+        },
+        "toast": {
+          "updated" : {
+            "title": "Project updated",
+            "description": "\"{{projectName}}\" has been updated successfully."
+          },
+          "deleted": {
+            "title": "Project moved to trash",
+            "description": "\"{{projectName}}\" has been moved to trash."
+          },
+          "restored": {
+            "title": "Project restored",
+            "description": "\"{{projectName}}\" has been restored successfully."
+          },
+          "error": {
+            "delete": {
+              "title": "Error deleting project",
+              "description": "An unexpected error occurred. Please try again."
+            },
+            "restore": {
+              "title": "Error restoring project",
+              "description": "Failed to restore the project. Please try again."
+            },
+            "fetch": "Error fetching projects"
+          }
+        } 
+      }
+    }

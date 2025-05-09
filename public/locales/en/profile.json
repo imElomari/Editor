@@ -1,0 +1,51 @@
+{
+    "page":
+    {
+        "title": "Your Profile",
+        "description": "Manage your account information and security settings",
+        "tab1": {
+            "title": "Profile Information",
+            "created": "Account Created",
+            "updated": "Account Updated",
+            "last_signin": "Last Sign In",
+            "role": "Role",
+            "verified": {
+                "title": "Email Verified",
+                "true": "Yes",
+                "false": "No"
+            }
+        },
+        "tab2":{
+            "title": "Security",
+            "security": {
+                "title": "Security Settings",
+                "description": "Manage your password and security preferences"
+            },
+            "password_reset": {
+                "title": "Password Reset",
+                "description": "You'll receive an email with a link to reset your password.",
+                "email_sent": "Email sent",
+                "check": "Check your email for the password reset link.",
+                "send": "Send Password Reset Email"
+            },
+            "tips":{
+                "title": "Account Security Tips",
+                "1" :"Use a strong, unique password for your account",
+                "2": "Enable two-factor authentication if available",
+                "3": "Never share your password or security details with others",
+                "4": "Check for suspicious activity regularly",
+                "5": "Update your password periodically"
+            }
+        }
+    },
+    "toast": {
+          "success" : {
+            "title": "Password reset email sent",
+            "description": "Check your email for the password reset link."
+          },
+          "error": {
+            "title": "Password reset failed",
+            "description": "Failed to send password reset email. Please try again."
+          }
+    }
+}

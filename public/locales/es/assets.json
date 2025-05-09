@@ -1,0 +1,84 @@
+{
+  "page": {
+    "title": "Recursos",
+    "description": "Administra tus recursos globales y de proyecto",
+    "uploadAsset": "Subir Recurso",
+    "createFirst": "Sube tu primer recurso"
+  },
+  "type": {
+    "global": "Global",
+    "project": "Proyecto"
+  },
+  "assetfilter": {
+    "title": "Filtrar Recursos",
+    "search": {
+      "placeholder": "Buscar recursos..."
+    },
+    "scope": {
+      "title": "Alcance del Recurso",
+      "placeholder": "Filtrar por alcance",
+      "all": "Todos los Recursos",
+      "global": "Globales",
+      "project": "de Proyecto"
+    },
+    "type": {
+      "title": "Tipo de Recurso",
+      "placeholder": "Filtrar por tipo",
+      "all": "Todos los Tipos"
+    }
+  },
+  "empty": {
+    "noProjects": "Aún no hay recursos",
+    "noResults": "No se encontraron recursos que coincidan con tu búsqueda"
+  },
+  "card": {
+    "dropMenu": {
+      "rename": "Renombrar",
+      "assignToProject": "Asignar a Proyecto",
+      "global": "Hacer Global",
+      "delete": "Eliminar"
+    },
+    "deleteDialog": {
+      "title": "Eliminar Recurso",
+      "description": "¿Estás seguro de que quieres eliminar {{assetName}}?",
+      "confirm": "Eliminar Recurso"
+    },
+    "assignProject": {
+      "title": "Seleccionar Proyecto",
+      "placeholder": "Elige un proyecto para asignar \"{{asset.name}}\"",
+      "search": "Buscar proyectos...",
+      "Assigning": "Asignando",
+      "confirm": "Asignar a Proyecto",
+      "noProjectFound": "No se encontraron proyectos",
+      "all": "Todos los Proyectos"
+    },
+    "rename": {
+      "title": "Renombrar Recurso",
+      "placeholder": "Introduce un nuevo nombre para el recurso",
+      "label": "Nuevo Nombre",
+      "newName": "Introduce nuevo nombre",
+      "renaming": "Renombrando",
+      "confirm": "Renombrar"
+    },
+    "uploadDialog": {
+      "title": "Subir Recurso",
+      "placeholder": "Sube un recurso a tu biblioteca",
+      "type": "Tipo de Recurso",
+      "MyAssetsTab": {
+        "title": "Mis Recursos",
+        "description": "Los recursos personales están disponibles en todos tus proyectos y se pueden acceder desde cualquier parte de tu espacio de trabajo."
+      },
+      "projectTab": {
+        "title": "Recursos del Proyecto",
+        "description": "Los recursos del proyecto son específicos para un proyecto y solo estarán disponibles dentro de ese proyecto.",
+        "selectProject": "Seleccionar Proyecto",
+        "search": "Buscar proyectos...",
+        "noProjectFound": "No se encontraron proyectos.",
+        "select": "Por favor, selecciona un proyecto para continuar",
+        "uploading": "Subiendo...",
+        "confirm": "Subido",
+        "uploaded": "Subir como Recurso {{assetScope}}"
+      }
+    }
+  }
+}

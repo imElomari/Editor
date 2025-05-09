@@ -1,0 +1,50 @@
+{
+    "page": {
+        "title": "Tu Perfil",
+        "description": "Administra tu información de cuenta y configuración de seguridad",
+        "tab1": {
+            "title": "Información del Perfil",
+            "created": "Cuenta Creada",
+            "updated": "Cuenta Actualizada",
+            "last_signin": "Último Inicio de Sesión",
+            "role": "Rol",
+            "verified": {
+                "title": "Correo Verificado",
+                "true": "Sí",
+                "false": "No"
+            }
+        },
+        "tab2": {
+            "title": "Seguridad",
+            "security": {
+                "title": "Configuración de Seguridad",
+                "description": "Administra tu contraseña y preferencias de seguridad"
+            },
+            "password_reset": {
+                "title": "Restablecer Contraseña",
+                "description": "Recibirás un correo electrónico con un enlace para restablecer tu contraseña.",
+                "email_sent": "Correo enviado",
+                "check": "Revisa tu correo para encontrar el enlace de restablecimiento de contraseña.",
+                "send": "Enviar Correo de Restablecimiento"
+            },
+            "tips": {
+                "title": "Consejos de Seguridad",
+                "1": "Usa una contraseña fuerte y única para tu cuenta",
+                "2": "Activa la autenticación de dos factores si está disponible",
+                "3": "Nunca compartas tu contraseña o detalles de seguridad con otros",
+                "4": "Revisa regularmente la actividad sospechosa",
+                "5": "Actualiza tu contraseña periódicamente"
+            }
+        }
+    },
+    "toast": {
+        "success": {
+            "title": "Correo de restablecimiento enviado",
+            "description": "Revisa tu correo para encontrar el enlace de restablecimiento de contraseña."
+        },
+        "error": {
+            "title": "Error al restablecer la contraseña",
+            "description": "No se pudo enviar el correo de restablecimiento. Por favor, inténtalo de nuevo."
+        }
+    }
+}

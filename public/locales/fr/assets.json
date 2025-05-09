@@ -1,0 +1,84 @@
+{
+  "page": {
+    "title": "Ressources",
+    "description": "Gérez vos ressources globales et de projet",
+    "uploadAsset": "Télécharger une ressource",
+    "createFirst": "Téléchargez votre première ressource"
+  },
+  "type": {
+    "global": "Global",
+    "project": "Projet"
+  },
+  "assetfilter": {
+    "title": "Filtrer les ressources",
+    "search": {
+      "placeholder": "Rechercher des ressources..."
+    },
+    "scope": {
+      "title": "Portée de la ressource",
+      "placeholder": "Filtrer par portée",
+      "all": "Toutes les ressources",
+      "global": "Ressources globales",
+      "project": "Ressources de projet"
+    },
+    "type": {
+      "title": "Type de ressource",
+      "placeholder": "Filtrer par type",
+      "all": "Tous les types"
+    }
+  },
+  "empty": {
+    "noAssets": "Aucune ressource disponible",
+    "noResults": "Aucune ressource ne correspond à votre recherche"
+  },
+  "card": {
+    "dropMenu": {
+      "rename": "Renommer",
+      "assignToProject": "Assigner au projet",
+      "global": "Rendre global",
+      "delete": "Supprimer"
+    },
+    "deleteDialog": {
+      "title": "Supprimer la ressource",
+      "description": "Êtes-vous sûr de vouloir supprimer \"{{asset.name}}\" ?",
+      "confirm": "Supprimer la ressource"
+    },
+    "assignProject": {
+      "title": "Sélectionner un projet",
+      "placeholder": "Choisissez un projet pour assigner \"{{asset.name}}\"",
+      "search": "Rechercher des projets...",
+      "assigning": "Attribution en cours",
+      "confirm": "Assigner au projet",
+      "noProjectFound": "Aucun projet trouvé",
+      "all": "Tous les projets"
+    },
+    "rename": {
+      "title": "Renommer la ressource",
+      "placeholder": "Saisissez un nouveau nom pour la ressource",
+      "label": "Nouveau nom",
+      "newName": "Saisissez le nouveau nom",
+      "renaming": "Renommage en cours",
+      "confirm": "Renommer"
+    },
+    "uploadDialog": {
+      "title": "Télécharger une ressource",
+      "placeholder": "Téléchargez une ressource dans votre bibliothèque",
+      "type": "Type de ressource",
+      "MyAssetsTab": {
+        "title": "Mes ressources",
+        "description": "Les ressources personnelles sont disponibles dans tous vos projets et peuvent être consultées depuis n'importe où dans votre espace de travail."
+      },
+      "projectTab": {
+        "title": "Ressources du projet",
+        "description": "Les ressources du projet sont spécifiques à un projet et ne seront disponibles que dans ce projet.",
+        "selectProject": "Sélectionner un projet",
+        "search": "Rechercher des projets...",
+        "noProjectFound": "Aucun projet trouvé.",
+        "select": "Veuillez sélectionner un projet pour continuer",
+        "uploading": "Téléchargement en cours...",
+        "confirm": "Téléchargé",
+        "uploaded": "Télécharger comme ressource \"{{assetScope}}\""
+      }
+    }
+  }
+}

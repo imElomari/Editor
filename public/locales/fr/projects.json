@@ -1,0 +1,71 @@
+{
+  "page": {
+    "title": "Projets",
+    "description": "Gérez et organisez vos projets",
+    "newProject": "Nouveau projet",
+    "createFirst": "Créez votre premier projet"
+  },
+  "projectfilter": {
+    "title": "Filtrer les projets",
+    "search": {
+      "label": "Rechercher",
+      "placeholder": "Rechercher des projets..."
+    }
+  },
+  "empty": {
+    "noProjects": "Aucun projet disponible",
+    "noResults": "Aucun projet ne correspond à votre recherche"
+  },
+  "card": {
+    "noDescription": "Aucune description",
+    "viewProject": "Voir le projet",
+    "actions": {
+      "create": "Créer un projet",
+      "edit": "Modifier le projet",
+      "update": "Mettre à jour le projet",
+      "delete": "Supprimer le projet"
+    },
+    "projectDialog": {
+      "new": "Ajoutez un nouveau projet pour organiser vos étiquettes",
+      "update": "Mettez à jour les détails de votre projet ci-dessous",
+      "nameLabel": "Nom du projet",
+      "namePlaceholder": "Saisissez le nom du projet",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Saisissez la description du projet"
+    }
+  },
+  "deleteDialog": {
+    "title": "Êtes-vous sûr ?",
+    "description": "Cela supprimera le projet \"{{projectName}}\" et toutes ses données associées.",
+    "confirm": "Supprimer le projet"
+  },
+  "toast": {
+    "created": {
+      "title": "Projet créé",
+      "description": "\"{{projectName}}\" a été créé avec succès."
+    },
+    "updated": {
+      "title": "Projet mis à jour",
+      "description": "\"{{projectName}}\" a été mis à jour avec succès."
+    },
+    "deleted": {
+      "title": "Projet déplacé dans la corbeille",
+      "description": "\"{{projectName}}\" a été déplacé dans la corbeille."
+    },
+    "restored": {
+      "title": "Projet restauré",
+      "description": "\"{{projectName}}\" a été restauré avec succès."
+    },
+    "error": {
+      "delete": {
+        "title": "Erreur lors de la suppression",
+        "description": "Une erreur inattendue est survenue. Veuillez réessayer."
+      },
+      "restore": {
+        "title": "Erreur lors de la restauration",
+        "description": "Impossible de restaurer le projet. Veuillez réessayer."
+      },
+      "fetch": "Erreur lors du chargement des projets"
+    }
+  }
+}

@@ -9,9 +9,9 @@ i18n
   .use(initReactI18next)
   .init({
     fallbackLng: 'en',
-    supportedLngs: ['en', 'es'],
+    supportedLngs: ['en', 'es', 'fr'],
     
-    debug: true, // Remove in production
+    debug: true, // to be removed in production
     
     interpolation: {
       escapeValue: false,
@@ -21,8 +21,9 @@ i18n
       loadPath: '/locales/{{lng}}/{{ns}}.json',
     },
 
-    ns: ['common', 'dashboard'],
+    ns: ['common', 'dashboard', 'projects', 'labels', 'assets', 'profile'],
     defaultNS: 'common',
+    fallbackNS: 'common',
   });
 
 export default i18n;

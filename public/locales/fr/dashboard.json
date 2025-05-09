@@ -1,0 +1,78 @@
+{
+  "greeting": {
+    "morning": "Bonjour",
+    "afternoon": "Bon après-midi",
+    "evening": "Bonsoir",
+    "summary": "Voici ce qui se passe avec vos étiquettes aujourd'hui"
+  },
+  "loading": {
+    "state": "Chargement de votre tableau de bord...",
+    "title": "Chargement"
+  },
+  "stats": {
+    "totalProjects": "Total des projets",
+    "totalLabels": "Total des étiquettes",
+    "recentActivity": "Activité récente",
+    "publishedLabels": "Étiquettes publiées",
+    "totalAssets": "Total des ressources"
+  },
+  "quickActions": {
+    "title": "Actions rapides",
+    "description": "Tâches courantes que vous pouvez effectuer",
+    "projects": {
+      "create": "Nouveau projet",
+      "description": "Commencer un nouveau projet",
+      "viewAll": "Projets",
+      "viewAllDescription": "Voir tous les projets"
+    },
+    "labels": {
+      "create": "Nouvelle étiquette",
+      "description": "Concevoir une nouvelle étiquette",
+      "viewAll": "Étiquettes",
+      "viewAllDescription": "Voir toutes les étiquettes"
+    },
+    "assets": {
+      "create": "Télécharger une ressource",
+      "description": "Ajouter une nouvelle image ou un fichier à vos ressources",
+      "viewAll": "Bibliothèque de ressources",
+      "viewAllDescription": "Parcourir toutes les ressources"
+    }
+  },
+  "recent": {
+    "title": "Activité récente",
+    "subTitle": "Ces 7 derniers jours",
+    "labels": {
+      "title": "Étiquettes récentes",
+      "description": "Vos étiquettes récemment mises à jour",
+      "action": "Nouvelle étiquette",
+      "noLabels": "Aucune étiquette créée pour le moment",
+      "createDescription": "Créez votre première étiquette pour commencer votre processus de conception.",
+      "createFirst": "Créer votre première étiquette",
+      "viewAll": "Voir toutes les étiquettes"
+    },
+    "projects": {
+      "title": "Projets récents",
+      "description": "Vos projets récemment mis à jour",
+      "action": "Nouveau projet",
+      "noProjects": "Aucun projet créé pour le moment",
+      "createDescription": "Créez votre premier projet pour organiser vos étiquettes.",
+      "createFirst": "Créer votre premier projet",
+      "viewAll": "Voir tous les projets"
+    },
+    "assets": {
+      "title": "Ressources récentes",
+      "description": "Vos ressources récemment mises à jour",
+      "action": "Télécharger une ressource",
+      "noAssets": "Aucune ressource téléchargée pour le moment",
+      "uploadDescription": "Téléchargez votre première ressource pour commencer votre bibliothèque.",
+      "uploadFirst": "Télécharger votre première ressource",
+      "viewAll": "Voir toutes les ressources"
+    }
+  },
+  "time": {
+    "now": "À l'instant",
+    "hoursAgo": "h",
+    "yesterday": "Hier",
+    "monthsAgo": "m"
+  }
+}
