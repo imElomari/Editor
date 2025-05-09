@@ -19,6 +19,7 @@ import {
   AlertDialogTitle,
 } from "../components/ui/alert-dialog";
 import { Icons } from "../lib/constances";
+import { useTranslation } from "react-i18next";
 
 interface TrashItem {
   id: string;
@@ -30,6 +31,7 @@ interface TrashItem {
 
 export default function TrashPage() {
   const { user } = useAuth();
+  const { t } = useTranslation(['common', 'assets']);
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState<TrashItem[]>([]);
   const [selectedItem, setSelectedItem] = useState<TrashItem | null>(null);
@@ -176,12 +178,11 @@ export default function TrashPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
         <div className="space-y-4 w-full sm:w-auto">
-          <h1 className="text-2xl sm:text-3xl font-bold">My Trash</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">{t('common:trashPage.title')}          </h1>
           <div className="flex items-center gap-2 text-amber-500 bg-amber-500/10 px-3 py-2 rounded-md">
             <Icons.alert className="h-4 w-4 flex-shrink-0" />
             <p className="text-xs sm:text-sm">
-              Deleted items are kept for 30 days before being permanently
-              removed
+            {t('common:trashPage.description')}
             </p>
           </div>
         </div>
@@ -191,9 +192,9 @@ export default function TrashPage() {
         <Card>
           <CardContent className="py-12 sm:py-16 flex flex-col items-center justify-center text-center px-4">
             <Icons.delete className="h-12 w-12 text-muted-foreground mb-4" />
-            <h3 className="text-lg font-medium">Trash is empty</h3>
+            <h3 className="text-lg font-medium">{t('common:trashPage.isEmpty')}</h3>
             <p className="text-sm text-muted-foreground mt-1 max-w-md">
-              Items that you delete will appear here
+            {t('common:trashPage.msgIfEmpty')}
             </p>
           </CardContent>
         </Card>
@@ -214,16 +215,16 @@ export default function TrashPage() {
                     <div className="font-medium flex flex-wrap items-center gap-2">
                       <span className="truncate">{item.name}</span>
                       <Badge variant="outline" className="flex-shrink-0">
-                        {item.type === "project" ? "Project" : "Label"}
+                        {item.type === "project" ? t('common:badges.project') : t('common:badges.label')}
                       </Badge>
                     </div>
                     <div className="text-xs sm:text-sm text-muted-foreground">
                       <span className="whitespace-nowrap">
-                        {getDaysRemaining(item.deleted_at)} days remaining
+                      {t('common:trashPage.remainingDays', {days: getDaysRemaining(item.deleted_at)})}
                       </span>
                       <span className="mx-2">•</span>
                       <span className="whitespace-nowrap">
-                        Deleted {new Date(item.deleted_at).toLocaleDateString()}
+                      {t('common:trashPage.deleted')} {new Date(item.deleted_at).toLocaleDateString()}
                       </span>
                     </div>
                   </div>
@@ -239,7 +240,7 @@ export default function TrashPage() {
                     }}
                   >
                     <Icons.reset className="h-4 w-4 mr-2" />
-                    Restore
+                    {t('common:buttons.restore')}
                   </Button>
                   <Button
                     variant="destructive"
@@ -251,7 +252,7 @@ export default function TrashPage() {
                     }}
                   >
                     <Icons.delete className="h-4 w-4 mr-2" />
-                    Delete
+                    {t('common:buttons.delete')}
                   </Button>
                 </div>
               </CardContent>
@@ -266,16 +267,15 @@ export default function TrashPage() {
       >
         <AlertDialogContent className="sm:max-w-[425px]">
           <AlertDialogHeader>
-            <AlertDialogTitle>Restore Item</AlertDialogTitle>
+            <AlertDialogTitle> {t('common:trashPage.restoreDialog.title')}</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to restore this {selectedItem?.type}? It
-              will be moved back to your active items.
+            {t('common:trashPage.restoreDialog.description')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('common:buttons.cancel')}</AlertDialogCancel>
             <AlertDialogAction onClick={handleRestore}>
-              Restore
+            {t('common:buttons.restore')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -287,16 +287,15 @@ export default function TrashPage() {
       >
         <AlertDialogContent className="sm:max-w-[425px]">
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Permanently</AlertDialogTitle>
+            <AlertDialogTitle>{t('common:trashPage.deletePermanently.title')}</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to permanently delete this{" "}
-              {selectedItem?.type}?
+            {t('common:trashPage.deletePermanently.description')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('common:buttons.cancel')}</AlertDialogCancel>
             <AlertDialogAction onClick={handlePermanentDelete}>
-              Delete Permanently
+            {t('common:trashPage.deletePermanently.confirm')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
