@@ -13,6 +13,7 @@ import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
 import { ProjectSelector } from "./project-selector";
 import { Button } from "../ui/button";
 import { Icons } from "../../lib/constances";
+import { useTranslation } from "react-i18next";
 
 interface DesktopFilterBarProps {
   assetScope: AssetScope;
@@ -58,6 +59,9 @@ export function DesktopFilterBar({
     projectFilter !== "all" ||
     typeFilter !== "all" ||
     sortBy !== "newest";
+     
+  const { t } = useTranslation(['common', 'assets']);
+  
 
   return (
     <div className="hidden md:flex flex-col gap-4">
@@ -69,13 +73,13 @@ export function DesktopFilterBar({
         >
           <TabsList className="w-full max-w-md">
             <TabsTrigger value="all" className="flex-1">
-              All Assets
+            {t('assets:assetfilter.scope.all')}
             </TabsTrigger>
             <TabsTrigger value="global" className="flex-1">
-              Global Assets
+            {t('assets:assetfilter.scope.global')}
             </TabsTrigger>
             <TabsTrigger value="project" className="flex-1">
-              Project Assets
+            {t('assets:assetfilter.scope.project')}
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -87,7 +91,7 @@ export function DesktopFilterBar({
             className="ml-4 text-muted-foreground hover:text-foreground"
           >
             <Icons.reset className="h-4 w-4 mr-2" />
-            Reset Filters
+            {t('common:filter.reset')}
           </Button>
         )}
       </div>
@@ -96,7 +100,7 @@ export function DesktopFilterBar({
         <div className="relative flex-1">
           <Icons.search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search assets..."
+            placeholder={t('assets:assetfilter.search.placeholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10"
@@ -108,7 +112,7 @@ export function DesktopFilterBar({
             projects={projects}
             selectedProjectId={projectFilter}
             onSelect={setProjectFilter}
-            placeholder="Filter by project"
+            placeholder={t('common:filter.project.placeholder')}
             triggerClassName="w-[200px]"
             includeAllOption={true}
           />
@@ -117,10 +121,10 @@ export function DesktopFilterBar({
         <Select value={typeFilter} onValueChange={setTypeFilter}>
           <SelectTrigger className="w-[180px]">
             <Icons.filter className="h-4 w-4 mr-2" />
-            <SelectValue placeholder="Filter by type" />
+            <SelectValue placeholder={t('assets:assetfilter.type.title')}/>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Types</SelectItem>
+            <SelectItem value="all">{t('assets:assetfilter.type.placeholder')}</SelectItem>
             <SelectItem value="image">Images</SelectItem>
             <SelectItem value="font">Fonts</SelectItem>
             <SelectItem value="application">Documents</SelectItem>
@@ -131,12 +135,12 @@ export function DesktopFilterBar({
         <Select value={sortBy} onValueChange={setSortBy}>
           <SelectTrigger className="w-[180px]">
             <Icons.updown className="h-4 w-4 mr-2" />
-            <SelectValue placeholder="Sort by" />
+            <SelectValue placeholder={t('common:filter.sort.label')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="newest">Newest First</SelectItem>
-            <SelectItem value="oldest">Oldest First</SelectItem>
-            <SelectItem value="name">Name</SelectItem>
+            <SelectItem value="newest">{t('common:filter.sort.options.newest')}</SelectItem>
+            <SelectItem value="oldest">{t('common:filter.sort.options.oldest')}</SelectItem>
+            <SelectItem value="name">{t('common:filter.sort.options.name')}</SelectItem>
           </SelectContent>
         </Select>
       </div>

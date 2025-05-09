@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Button } from "./ui/button";
 import { MobileBottomSheet } from "./MobileBottomSheet";
 import { Icons } from "../lib/constances";
+import { useTranslation } from "react-i18next";
 
 interface MobileFilterBarProps {
   children: React.ReactNode;
@@ -21,14 +22,15 @@ export function MobileFilterBar({
   onReset,
 }: MobileFilterBarProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation('common');
 
   return (
     <>
       <div className="md:hidden sticky top-16 z-10 bg-background/95 backdrop-blur-sm border-b py-2 px-4 flex items-center justify-between">
         <h2 className="font-medium text-sm">
           {activeFilters > 0
-            ? `${activeFilters} filters applied`
-            : "No filters"}
+            ? t('common:filter.active', {activeFilters})
+            : t('common:filter.notactive')}
         </h2>
         <div className="flex items-center gap-2">
           {activeFilters > 0 && (
@@ -69,16 +71,16 @@ export function MobileFilterBar({
             {activeFilters > 0 && (
               <Button variant="outline" onClick={onReset}>
                 <Icons.reset className="h-4 w-4 mr-2" />
-                Reset
+                {t('common:filter.reset')}
               </Button>
             )}
             <Button variant="outline" onClick={() => setIsOpen(false)}>
               <Icons.close className="h-4 w-4 mr-2" />
-              Close
+              {t('common:filter.close')}
             </Button>
             <Button onClick={() => setIsOpen(false)}>
               <Icons.sliders className="h-4 w-4 mr-2" />
-              Apply Filters
+              {t('common:filter.apply')}
             </Button>
           </div>
         </div>
