@@ -57,7 +57,12 @@ export function AssetUploadDialog({
   );
   const [loading, setLoading] = useState(false);
   const [projectsLoading, setProjectsLoading] = useState(false);
-  const [projects, setProjects] = useState<any[]>([]);
+  interface Project {
+    id: string;
+    name: string;
+  }
+  
+  const [projects, setProjects] = useState<Project[]>([]);
   const [open, setOpen] = useState(false);
   const { t } = useTranslation(['common', 'assets']);
 
