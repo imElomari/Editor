@@ -27,55 +27,57 @@ const baseConfig = {
           'variants',
           'useSupabaseUpload',
           'ThemeProvider',
-          'AuthProvider'
-        ]
-      }
+          'AuthProvider',
+        ],
+      },
     ],
     'react-hooks/exhaustive-deps': [
       'warn',
       {
         enableDangerousAutofixThisMayCauseInfiniteLoops: true,
-        additionalHooks: '(useAsync|useAsyncCallback)'
-      }
+        additionalHooks: '(useAsync|useAsyncCallback)',
+      },
     ],
     '@typescript-eslint/no-explicit-any': 'warn',
     '@typescript-eslint/no-unused-vars': [
       'warn',
       {
         argsIgnorePattern: '^_',
-        varsIgnorePattern: '^_'
-      }
-    ]
-  }
+        varsIgnorePattern: '^_',
+      },
+    ],
+  },
 }
 
 export default tseslint.config(
   // Ignore patterns
-  { ignores: [
-    'dist/**',
-    'node_modules/**',
-    '.next/**',
-    'build/**',
-    'coverage/**',
-    'public/**',
-    '*.config.js'
-  ] },
-  
+  {
+    ignores: [
+      'dist/**',
+      'node_modules/**',
+      '.next/**',
+      'build/**',
+      'coverage/**',
+      'public/**',
+      '*.config.js',
+    ],
+  },
+
   // Base config for all TypeScript/TSX files
   {
     ...baseConfig,
     files: ['**/*.{ts,tsx}'],
   },
-  
+
   // Config for hooks
   {
     files: ['**/hooks/**/*.{ts,tsx}'],
     rules: {
       'react-hooks/exhaustive-deps': 'off',
-      'react-refresh/only-export-components': 'off'
-    }
+      'react-refresh/only-export-components': 'off',
+    },
   },
-  
+
   // Config for components
   {
     files: ['**/components/**/*.{ts,tsx}'],
@@ -84,10 +86,10 @@ export default tseslint.config(
       'react-hooks/exhaustive-deps': [
         'error',
         {
-          enableDangerousAutofixThisMayCauseInfiniteLoops: true
-        }
-      ]
-    }
+          enableDangerousAutofixThisMayCauseInfiniteLoops: true,
+        },
+      ],
+    },
   },
 
   // Config for pages
@@ -98,11 +100,11 @@ export default tseslint.config(
         'error',
         {
           enableDangerousAutofixThisMayCauseInfiniteLoops: true,
-          additionalHooks: '(useAsync|useAsyncCallback)'
-        }
+          additionalHooks: '(useAsync|useAsyncCallback)',
+        },
       ],
-      'react-hooks/rules-of-hooks': 'error'
-    }
+      'react-hooks/rules-of-hooks': 'error',
+    },
   },
 
   // Config for utilities
@@ -110,7 +112,7 @@ export default tseslint.config(
     files: ['**/utils/**/*.{ts,tsx}', '**/lib/**/*.{ts,tsx}'],
     rules: {
       'react-refresh/only-export-components': 'off',
-      'react-hooks/exhaustive-deps': 'off'
-    }
+      'react-hooks/exhaustive-deps': 'off',
+    },
   }
 )

@@ -84,9 +84,8 @@ export default function AssetsPage() {
     }
   }, [assetScope, projectFilter, typeFilter, user])
   // Load projects from service
-  
-  const loadProjects: () => Promise<void> = useCallback(async () => {
 
+  const loadProjects: () => Promise<void> = useCallback(async () => {
     try {
       if (!user) return
 
@@ -104,8 +103,6 @@ export default function AssetsPage() {
       loadProjects()
     }
   }, [user, assetScope, projectFilter, typeFilter, loadAssets, loadProjects])
-
-
 
   // Delete asset handler
   const handleDeleteAsset = async () => {
@@ -393,5 +390,4 @@ export default function AssetsPage() {
       />
     </div>
   )
-
 }

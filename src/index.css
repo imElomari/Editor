@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @plugin "tailwindcss-animate";
 
@@ -125,7 +125,8 @@
 
 /* Grid pattern for canvas background */
 .bg-grid-pattern {
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
   background-size: 20px 20px;
 }
@@ -177,7 +178,7 @@
 }
 
 @layer base {
-  :root[dir="rtl"] {
+  :root[dir='rtl'] {
     --window-padding: 1rem;
   }
 
@@ -188,58 +189,58 @@
   }
 
   /* RTL specific overrides */
-  [dir="rtl"] .ltr-only {
+  [dir='rtl'] .ltr-only {
     display: none;
   }
 
-  [dir="rtl"] .rtl-only {
+  [dir='rtl'] .rtl-only {
     display: block;
   }
 
   /* RTL specific margins and paddings */
-  [dir="rtl"] .ml-auto {
+  [dir='rtl'] .ml-auto {
     margin-left: unset;
     margin-right: auto;
   }
 
-  [dir="rtl"] .mr-auto {
+  [dir='rtl'] .mr-auto {
     margin-right: unset;
     margin-left: auto;
   }
 
   /* Enhanced RTL support for flex containers */
-  [dir="rtl"] .flex-row {
+  [dir='rtl'] .flex-row {
     flex-direction: row-reverse;
   }
 
-  [dir="rtl"] .items-center.justify-between {
+  [dir='rtl'] .items-center.justify-between {
     flex-direction: row-reverse;
   }
 
   /* RTL text alignment for cards and content */
-  [dir="rtl"] .card-content {
+  [dir='rtl'] .card-content {
     text-align: right;
   }
 
   /* RTL support for icons in flex containers */
-  [dir="rtl"] .flex.items-center .mr-1,
-  [dir="rtl"] .flex.items-center .mr-2 {
+  [dir='rtl'] .flex.items-center .mr-1,
+  [dir='rtl'] .flex.items-center .mr-2 {
     margin-right: 0;
     margin-left: 0.25rem;
   }
 
-  [dir="rtl"] .flex.items-center .ml-1,
-  [dir="rtl"] .flex.items-center .ml-2 {
+  [dir='rtl'] .flex.items-center .ml-1,
+  [dir='rtl'] .flex.items-center .ml-2 {
     margin-left: 0;
     margin-right: 0.25rem;
   }
 
   /* Fix for space utilities in RTL */
-  [dir="rtl"] .space-x-2 > :not([hidden]) ~ :not([hidden]) {
+  [dir='rtl'] .space-x-2 > :not([hidden]) ~ :not([hidden]) {
     --tw-space-x-reverse: 1;
   }
 
-  [dir="rtl"] .space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+  [dir='rtl'] .space-x-reverse > :not([hidden]) ~ :not([hidden]) {
     --tw-space-x-reverse: 1;
   }
 }
@@ -258,19 +259,19 @@
 }
 
 .rtl-bullet-item::before {
-  content: "•";
+  content: '•';
   position: absolute;
   right: 0.5rem;
   color: currentColor;
 }
 
 /* Override Tailwind's list-disc in RTL mode */
-[dir="rtl"] ul.list-disc {
+[dir='rtl'] ul.list-disc {
   padding-right: 1.5rem;
   padding-left: 0;
 }
 
-[dir="rtl"] ul.list-disc li {
+[dir='rtl'] ul.list-disc li {
   list-style-position: inside;
 }
 
@@ -336,7 +337,7 @@
   );
 }
 
-[dir="rtl"] .top-bar-gradient {
+[dir='rtl'] .top-bar-gradient {
   background: linear-gradient(
     to left,
     rgba(var(--primary-rgb), 0.05),
@@ -357,7 +358,7 @@
   @apply flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/50 border border-border/50 transition-all duration-200 hover:bg-muted/80;
 }
 
-[dir="rtl"] .top-bar-user-badge {
+[dir='rtl'] .top-bar-user-badge {
   @apply flex-row-reverse;
 }
 
@@ -365,7 +366,7 @@
   @apply h-8 w-1 bg-gradient-to-b from-primary to-primary/20 rounded-full;
 }
 
-[dir="rtl"] .top-bar-title-accent {
+[dir='rtl'] .top-bar-title-accent {
   @apply bg-gradient-to-t;
 }
 
@@ -373,7 +374,7 @@
   @apply font-bold text-lg bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70;
 }
 
-[dir="rtl"] .top-bar-title {
+[dir='rtl'] .top-bar-title {
   @apply bg-gradient-to-l;
 }
 
@@ -400,6 +401,6 @@
   animation: pulse-dot 2s infinite;
 }
 
-[dir="rtl"] .notification-dot {
+[dir='rtl'] .notification-dot {
   @apply left-0 right-auto;
 }

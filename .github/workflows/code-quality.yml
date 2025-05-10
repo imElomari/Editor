@@ -2,9 +2,9 @@ name: Code Quality
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   quality:
@@ -12,22 +12,22 @@ jobs:
     steps:
       # Step 1: Checkout the repository code
       - uses: actions/checkout@v3
-      
+
       # Step 2: Set up Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-          cache: 'npm'   # For faster runs
-          
+          cache: 'npm' # For faster runs
+
       # Step 3: Install dependencies using clean install
       - name: Install dependencies
         run: npm ci
-        
+
       # Step 4
       - name: Run ESLint
         run: npm run lint
-        
+
       # Step 5: Check code formatting using Prettier
       - name: Check formatting
         run: npx prettier --check .

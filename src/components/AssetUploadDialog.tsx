@@ -99,7 +99,7 @@ export function AssetUploadDialog({
       setSelectedProjectId(projectId)
       setAssetScope('project')
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, user, projectId])
 
   const fetchProjects = useCallback(async () => {
@@ -131,7 +131,7 @@ export function AssetUploadDialog({
       setSelectedProjectId(projectId)
       setAssetScope('project')
     }
-  }, [isOpen, user, projectId, fetchProjects]) 
+  }, [isOpen, user, projectId, fetchProjects])
 
   // getStoragePath function
   const getStoragePath = (fileName: string) => {
@@ -448,7 +448,3 @@ export function AssetUploadDialog({
     </Dialog>
   )
 }
-
-
-
-
