@@ -11,7 +11,6 @@ import {
     MoreVertical,
     Trash2,
     FolderPlus,
-    Tag,
     Upload,
     Shapes,
     LibraryIcon,
@@ -80,7 +79,7 @@ import {
     // Features
     project: FolderKanban,
     newProject: FolderPlus,
-    label: Tag,
+    label: Shapes,
     labels: Shapes,
     asset: LibraryIcon,
     library: LibraryIcon,
