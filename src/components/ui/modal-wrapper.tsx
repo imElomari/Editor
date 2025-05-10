@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import type React from "react"
-import { cn } from "../../lib/utils"
+import type React from 'react'
+import { cn } from '../../lib/utils'
 
 interface ModalWrapperProps {
   isOpen: boolean
@@ -27,8 +27,8 @@ export function ModalWrapper({ isOpen, onClose, children, className }: ModalWrap
     >
       <div
         className={cn(
-          "bg-background rounded-lg shadow-lg p-6 max-w-md w-full mx-4 animate-in fade-in zoom-in duration-300",
-          className,
+          'bg-background rounded-lg shadow-lg p-6 max-w-md w-full mx-4 animate-in fade-in zoom-in duration-300',
+          className
         )}
         onClick={(e) => e.stopPropagation()}
       >

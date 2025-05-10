@@ -1,28 +1,22 @@
-"use client";
+'use client'
 
-import type React from "react";
+import type React from 'react'
 
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
-import { Button } from "../ui/button";
-import { cn } from "../../lib/utils";
-import { QuickAssetButton } from "./quick-action-button";
-import { Icons } from "../../lib/constances";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card'
+import { Button } from '../ui/button'
+import { cn } from '../../lib/utils'
+import { QuickAssetButton } from './quick-action-button'
+import { Icons } from '../../lib/constances'
 
 interface StatsCardProps {
-  title: string;
-  value: number;
-  description: string;
-  icon: React.ReactNode;
-  className?: string;
-  actionLabel?: string;
-  actionHref?: string;
-  showQuickUpload?: boolean;
+  title: string
+  value: number
+  description: string
+  icon: React.ReactNode
+  className?: string
+  actionLabel?: string
+  actionHref?: string
+  showQuickUpload?: boolean
 }
 
 export function StatsCard({
@@ -31,12 +25,12 @@ export function StatsCard({
   description,
   icon,
   className,
-  actionLabel = "View all",
-  actionHref = "#",
+  actionLabel = 'View all',
+  actionHref = '#',
   showQuickUpload = false,
 }: StatsCardProps) {
   return (
-    <Card className={cn("shadow-sm", className)}>
+    <Card className={cn('shadow-sm', className)}>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
         {icon}
@@ -52,10 +46,8 @@ export function StatsCard({
             <Icons.arrowRight className="ml-2 h-4 w-4" />
           </a>
         </Button>
-        {showQuickUpload && (
-          <QuickAssetButton variant="outline" size="sm" showLabel={false} />
-        )}
+        {showQuickUpload && <QuickAssetButton variant="outline" size="sm" showLabel={false} />}
       </CardFooter>
     </Card>
-  );
+  )
 }

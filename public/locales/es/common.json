@@ -56,7 +56,7 @@
   },
   "badges": {
     "project": "Proyecto",
-    "label":  "Etiqueta" 
+    "label": "Etiqueta"
   },
 
   "filter": {
@@ -96,6 +96,5 @@
     "selectFiles": "selecciona archivos",
     "toUpload": "para subir",
     "maxFileSize": "Tamaño máximo de archivo: {{size}}"
-
   }
 }

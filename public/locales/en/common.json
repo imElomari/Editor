@@ -16,7 +16,7 @@
       "settings": "Settings",
       "trash": "Trash"
     },
-  "account": {
+    "account": {
       "profile": "Profile",
       "settings": "Settings"
     }
@@ -35,11 +35,9 @@
     },
     "deletePermanently": {
       "title": "Delete Permanently",
-      "description": " Are you sure you want to permanently delete it ?" ,
+      "description": " Are you sure you want to permanently delete it ?",
       "confirm": "Delete Permanently"
-   }
-
-
+    }
   },
 
   "login": {
@@ -58,47 +56,45 @@
   "badges": {
     "project": "Project",
     "label": "Label"
-    },
-
-    "filter":{
-      "active": " {{activeFilters}} filters applied",
-      "notactive": "no Filters",
-      "reset": "Reset",
-      "close": "Close",
-      "apply": "Apply Filters",
-      "sort": {
-        "label": "Sort By",
-        "options": {
-          "newest": "Newest First",
-          "oldest": "Oldest First",
-          "name": "Name"
-          }
-      },
-      "search": {
-        "label": "Search"
-        },
-      "project": {
-          "title": "Project",
-          "placeholder": "Filter by project",
-          "all": "All Projects"
-        },
-      "status": {
-        "placeholder": "Filter by status",
-        "all": "All Status",
-        "draft": "Draft",
-        "published":"Published",
-        "archived": "Archived"
-      }
   },
-        "dropzone":{
-          "dropzone": {
-          "dragAndDrop": "Drag and drop or",
-          "selectFile": "select file",
-          "selectFiles": "select files",
-          "toUpload": "to upload",
-          "maxFileSize": "Maximum file size: {{size}}"
 
-        }
-
+  "filter": {
+    "active": " {{activeFilters}} filters applied",
+    "notactive": "no Filters",
+    "reset": "Reset",
+    "close": "Close",
+    "apply": "Apply Filters",
+    "sort": {
+      "label": "Sort By",
+      "options": {
+        "newest": "Newest First",
+        "oldest": "Oldest First",
+        "name": "Name"
       }
+    },
+    "search": {
+      "label": "Search"
+    },
+    "project": {
+      "title": "Project",
+      "placeholder": "Filter by project",
+      "all": "All Projects"
+    },
+    "status": {
+      "placeholder": "Filter by status",
+      "all": "All Status",
+      "draft": "Draft",
+      "published": "Published",
+      "archived": "Archived"
+    }
+  },
+  "dropzone": {
+    "dropzone": {
+      "dragAndDrop": "Drag and drop or",
+      "selectFile": "select file",
+      "selectFiles": "select files",
+      "toUpload": "to upload",
+      "maxFileSize": "Maximum file size: {{size}}"
+    }
+  }
 }

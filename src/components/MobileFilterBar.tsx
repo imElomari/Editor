@@ -1,35 +1,35 @@
-"use client";
+'use client'
 
-import type React from "react";
+import type React from 'react'
 
-import { useState } from "react";
-import { Button } from "./ui/button";
-import { MobileBottomSheet } from "./MobileBottomSheet";
-import { Icons } from "../lib/constances";
-import { useTranslation } from "react-i18next";
+import { useState } from 'react'
+import { Button } from './ui/button'
+import { MobileBottomSheet } from './MobileBottomSheet'
+import { Icons } from '../lib/constances'
+import { useTranslation } from 'react-i18next'
 
 interface MobileFilterBarProps {
-  children: React.ReactNode;
-  activeFilters?: number;
-  title?: string;
-  onReset?: () => void;
+  children: React.ReactNode
+  activeFilters?: number
+  title?: string
+  onReset?: () => void
 }
 
 export function MobileFilterBar({
   children,
   activeFilters = 0,
-  title = "Filters",
+  title = 'Filters',
   onReset,
 }: MobileFilterBarProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const { t } = useTranslation('common');
+  const [isOpen, setIsOpen] = useState(false)
+  const { t } = useTranslation('common')
 
   return (
     <>
       <div className="md:hidden sticky top-16 z-10 bg-background/95 backdrop-blur-sm border-b py-2 px-4 flex items-center justify-between">
         <h2 className="font-medium text-sm">
           {activeFilters > 0
-            ? t('common:filter.active', {activeFilters})
+            ? t('common:filter.active', { activeFilters })
             : t('common:filter.notactive')}
         </h2>
         <div className="flex items-center gap-2">
@@ -60,11 +60,7 @@ export function MobileFilterBar({
         </div>
       </div>
 
-      <MobileBottomSheet
-        title={title}
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-      >
+      <MobileBottomSheet title={title} isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <div className="space-y-4">
           {children}
           <div className="flex justify-end gap-2 pt-4 mt-4 border-t">
@@ -86,5 +82,5 @@ export function MobileFilterBar({
         </div>
       </MobileBottomSheet>
     </>
-  );
+  )
 }

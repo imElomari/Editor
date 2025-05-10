@@ -1,13 +1,11 @@
-"use client"
+'use client'
 
-import { useState, useEffect } from "react"
-import { Asset } from "../../lib/types"
-import { Button } from "../ui/button"
-import { Input } from "../ui/input"
-import { ModalWrapper } from "../ui/modal-wrapper"
-import { useTranslation } from "react-i18next"
-
-
+import { useState, useEffect } from 'react'
+import { Asset } from '../../lib/types'
+import { Button } from '../ui/button'
+import { Input } from '../ui/input'
+import { ModalWrapper } from '../ui/modal-wrapper'
+import { useTranslation } from 'react-i18next'
 
 interface RenameDialogProps {
   asset: Asset | null
@@ -18,9 +16,8 @@ interface RenameDialogProps {
 }
 
 export function RenameDialog({ asset, isOpen, isLoading, onClose, onRename }: RenameDialogProps) {
-  const [newName, setNewName] = useState("");
-  const { t } = useTranslation(['common', 'assets']);
-
+  const [newName, setNewName] = useState('')
+  const { t } = useTranslation(['common', 'assets'])
 
   // Update newName when asset changes
   useEffect(() => {
@@ -39,7 +36,9 @@ export function RenameDialog({ asset, isOpen, isLoading, onClose, onRename }: Re
           <p className="text-muted-foreground">{t('assets:card.rename.placeholder')}</p>
         </div>
         <div className="space-y-2">
-          <label htmlFor="assetName" className="text-sm font-medium">{t('assets:card.rename.label')}</label>
+          <label htmlFor="assetName" className="text-sm font-medium">
+            {t('assets:card.rename.label')}
+          </label>
           <Input
             id="assetName"
             value={newName}
@@ -50,9 +49,12 @@ export function RenameDialog({ asset, isOpen, isLoading, onClose, onRename }: Re
         </div>
         <div className="flex justify-end space-x-2">
           <Button variant="outline" onClick={onClose} disabled={isLoading}>
-          {t('common:buttons.cancel')}
+            {t('common:buttons.cancel')}
           </Button>
-          <Button onClick={() => onRename(newName)} disabled={isLoading || !newName || newName === asset?.name}>
+          <Button
+            onClick={() => onRename(newName)}
+            disabled={isLoading || !newName || newName === asset?.name}
+          >
             {isLoading ? t('assets:card.rename.renaming') : t('assets:card.rename.confirm')}
           </Button>
         </div>

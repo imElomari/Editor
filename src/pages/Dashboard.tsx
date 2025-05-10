@@ -1,23 +1,23 @@
-"use client"
+'use client'
 
-import { useState, useEffect, Suspense, lazy } from "react"
-import { useNavigate } from "react-router-dom"
-import { useAuth } from "../context/AuthContext"
-import { Card, CardContent, CardHeader } from "../components/ui/card"
-import { supabase } from "../lib/supabase"
-import { toast } from "sonner"
-import { ProjectDialog } from "../components/ProjectDialog"
-import { LabelDialog } from "../components/LabelDialog"
-import { cn } from "../lib/utils"
-import { AssetUploadDialog } from "../components/AssetUploadDialog"
-import { Icons } from "../lib/constances"
-import { useTranslation } from "react-i18next"
-import type { Project, Label, Asset } from "../lib/types"
-import { RecentItemsSkeleton } from "../components/dashboard/RecentItems"
+import { useState, useEffect, Suspense, lazy } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+import { Card, CardContent, CardHeader } from '../components/ui/card'
+import { supabase } from '../lib/supabase'
+import { toast } from 'sonner'
+import { ProjectDialog } from '../components/ProjectDialog'
+import { LabelDialog } from '../components/LabelDialog'
+import { cn } from '../lib/utils'
+import { AssetUploadDialog } from '../components/AssetUploadDialog'
+import { Icons } from '../lib/constances'
+import { useTranslation } from 'react-i18next'
+import type { Project, Label, Asset } from '../lib/types'
+import { RecentItemsSkeleton } from '../components/dashboard/RecentItems'
 
 // Lazy load components
-const StatsCards = lazy(() => import("../components/dashboard/StatsCards"))
-const RecentItems = lazy(() => import("../components/dashboard/RecentItems"))
+const StatsCards = lazy(() => import('../components/dashboard/StatsCards'))
+const RecentItems = lazy(() => import('../components/dashboard/RecentItems'))
 
 export default function Dashboard() {
   const { user } = useAuth()
@@ -38,8 +38,8 @@ export default function Dashboard() {
     totalAssets: 0,
   })
 
-  const { t, i18n } = useTranslation(["common", "dashboard", "projects", "labels", "assets"])
-  const isRTL = i18n.language === "ar"
+  const { t, i18n } = useTranslation(['common', 'dashboard', 'projects', 'labels', 'assets'])
+  const isRTL = i18n.language === 'ar'
 
   // Fetch user's data
   const fetchData = async () => {
@@ -49,11 +49,11 @@ export default function Dashboard() {
 
       // Fetch projects
       const { data: projectsData, error: projectsError } = await supabase
-        .from("projects")
-        .select("*")
-        .eq("owner_id", user.id)
-        .is("deleted_at", null)
-        .order("updated_at", { ascending: false })
+        .from('projects')
+        .select('*')
+        .eq('owner_id', user.id)
+        .is('deleted_at', null)
+        .order('updated_at', { ascending: false })
         .limit(5)
 
       if (projectsError) throw projectsError
@@ -61,11 +61,11 @@ export default function Dashboard() {
 
       // Fetch labels
       const { data: labelsData, error: labelsError } = await supabase
-        .from("labels")
-        .select("*, projects(name)")
-        .eq("owner_id", user.id)
-        .is("deleted_at", null)
-        .order("updated_at", { ascending: false })
+        .from('labels')
+        .select('*, projects(name)')
+        .eq('owner_id', user.id)
+        .is('deleted_at', null)
+        .order('updated_at', { ascending: false })
         .limit(5)
 
       if (labelsError) throw labelsError
@@ -73,10 +73,10 @@ export default function Dashboard() {
 
       // Add to fetchData function
       const { data: assetsData, error: assetsError } = await supabase
-        .from("assets")
-        .select("*")
-        .eq("owner_id", user.id)
-        .order("created_at", { ascending: false })
+        .from('assets')
+        .select('*')
+        .eq('owner_id', user.id)
+        .order('created_at', { ascending: false })
         .limit(5)
 
       if (assetsError) throw assetsError
@@ -84,41 +84,41 @@ export default function Dashboard() {
 
       //  fetch assets count
       const { count: assetsCount } = await supabase
-        .from("assets")
-        .select("*", { count: "exact", head: true })
-        .eq("owner_id", user.id)
+        .from('assets')
+        .select('*', { count: 'exact', head: true })
+        .eq('owner_id', user.id)
 
       // Get total counts
       const { count: projectsCount } = await supabase
-        .from("projects")
-        .select("*", { count: "exact", head: true })
-        .eq("owner_id", user.id)
-        .is("deleted_at", null)
+        .from('projects')
+        .select('*', { count: 'exact', head: true })
+        .eq('owner_id', user.id)
+        .is('deleted_at', null)
 
       const { count: labelsCount } = await supabase
-        .from("labels")
-        .select("*", { count: "exact", head: true })
-        .eq("owner_id", user.id)
-        .is("deleted_at", null)
+        .from('labels')
+        .select('*', { count: 'exact', head: true })
+        .eq('owner_id', user.id)
+        .is('deleted_at', null)
 
       // Get published labels count
       const { count: publishedCount } = await supabase
-        .from("labels")
-        .select("*", { count: "exact", head: true })
-        .eq("owner_id", user.id)
-        .eq("status", "published")
-        .is("deleted_at", null)
+        .from('labels')
+        .select('*', { count: 'exact', head: true })
+        .eq('owner_id', user.id)
+        .eq('status', 'published')
+        .is('deleted_at', null)
 
       // Get recent activity count (items updated in the last 7 days)
       const sevenDaysAgo = new Date()
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
 
       const { count: recentLabelsCount } = await supabase
-        .from("labels")
-        .select("*", { count: "exact", head: true })
-        .eq("owner_id", user.id)
-        .is("deleted_at", null)
-        .gte("updated_at", sevenDaysAgo.toISOString())
+        .from('labels')
+        .select('*', { count: 'exact', head: true })
+        .eq('owner_id', user.id)
+        .is('deleted_at', null)
+        .gte('updated_at', sevenDaysAgo.toISOString())
 
       setStats({
         totalProjects: projectsCount || 0,
@@ -128,8 +128,8 @@ export default function Dashboard() {
         totalAssets: assetsCount || 0,
       })
     } catch (error) {
-      console.error("Error fetching data:", error)
-      toast.error("Failed to load dashboard data")
+      console.error('Error fetching data:', error)
+      toast.error('Failed to load dashboard data')
     } finally {
       setLoading(false)
     }
@@ -149,26 +149,26 @@ export default function Dashboard() {
 
   const handleDialogSuccess = () => {
     fetchData()
-    toast.success("Created successfully!")
+    toast.success('Created successfully!')
   }
 
   // Get time of day for greeting
   const getGreeting = () => {
     const hour = new Date().getHours()
-    if (hour < 12) return t("dashboard:greeting.morning")
-    if (hour < 18) return t("dashboard:greeting.afternoon")
-    return t("dashboard:greeting.evening")
+    if (hour < 12) return t('dashboard:greeting.morning')
+    if (hour < 18) return t('dashboard:greeting.afternoon')
+    return t('dashboard:greeting.evening')
   }
 
   // Get first name from email or metadata
   const getFirstName = () => {
     if (user?.user_metadata?.name) {
-      return user.user_metadata.name.split(" ")[0]
+      return user.user_metadata.name.split(' ')[0]
     }
     if (user?.email) {
-      return user.email.split("@")[0]
+      return user.email.split('@')[0]
     }
-    return "there"
+    return 'there'
   }
 
   // Loading placeholders
@@ -189,8 +189,6 @@ export default function Dashboard() {
     </div>
   )
 
-
-
   if (!user) {
     return (
       <div className="container mx-auto px-4 py-8 flex items-center justify-center h-[80vh]">
@@ -199,7 +197,7 @@ export default function Dashboard() {
             <div className="absolute inset-0 rounded-full bg-primary/20 blur-xl animate-pulse"></div>
             <Icons.loading className="h-12 w-12 text-primary animate-spin relative z-10" />
           </div>
-          <p className="text-lg font-medium">{t("dashboard:loading")}</p>
+          <p className="text-lg font-medium">{t('dashboard:loading')}</p>
         </div>
       </div>
     )
@@ -210,8 +208,8 @@ export default function Dashboard() {
       {/* Header with greeting */}
       <div
         className={cn(
-          "flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-10 gap-2 sm:gap-4",
-          isRTL && "rtl",
+          'flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-10 gap-2 sm:gap-4',
+          isRTL && 'rtl'
         )}
       >
         <div className="space-y-1 sm:space-y-2 w-full sm:w-auto">
@@ -221,8 +219,8 @@ export default function Dashboard() {
               {getGreeting()}, <span className="text-primary">{getFirstName()}</span>
             </h1>
           </div>
-          <p className={cn("text-muted-foreground", isRTL ? "sm:me-3" : "sm:ms-3")}>
-            {t("dashboard:greeting.summary")}
+          <p className={cn('text-muted-foreground', isRTL ? 'sm:me-3' : 'sm:ms-3')}>
+            {t('dashboard:greeting.summary')}
           </p>
         </div>
       </div>
@@ -251,12 +249,14 @@ export default function Dashboard() {
 
       {/* Quick Actions */}
       <div className="mt-8 sm:mt-10">
-        <div className={cn("flex items-center gap-3 mb-6", isRTL && "rtl")}>
-          <h2 className="text-lg sm:text-xl font-semibold tracking-tight">{t("dashboard:quickActions.title")}</h2>
+        <div className={cn('flex items-center gap-3 mb-6', isRTL && 'rtl')}>
+          <h2 className="text-lg sm:text-xl font-semibold tracking-tight">
+            {t('dashboard:quickActions.title')}
+          </h2>
           <div className="h-px flex-1 bg-border/60" />
         </div>
 
-        <div className={cn("grid gap-4", "grid-cols-2 sm:grid-cols-3 lg:grid-cols-6")}>
+        <div className={cn('grid gap-4', 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-6')}>
           {/* Create Project Card */}
           <Card
             className="group cursor-pointer transition-all duration-300 hover:shadow-lg border-primary/20 hover:border-primary/40 relative overflow-hidden"
@@ -271,8 +271,8 @@ export default function Dashboard() {
                   </div>
                   <div
                     className={cn(
-                      "absolute -bottom-1 w-4 h-4 bg-primary/10 rounded-full flex items-center justify-center",
-                      isRTL ? "-left-1" : "-right-1",
+                      'absolute -bottom-1 w-4 h-4 bg-primary/10 rounded-full flex items-center justify-center',
+                      isRTL ? '-left-1' : '-right-1'
                     )}
                   >
                     <Icons.plus className="h-3 w-3 text-primary" />
@@ -280,10 +280,10 @@ export default function Dashboard() {
                 </div>
                 <div>
                   <h3 className="font-medium group-hover:text-primary transition-colors">
-                    {t("dashboard:quickActions.projects.create")}
+                    {t('dashboard:quickActions.projects.create')}
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1">
-                    {t("dashboard:quickActions.projects.description")}
+                    {t('dashboard:quickActions.projects.description')}
                   </p>
                 </div>
               </div>
@@ -305,8 +305,8 @@ export default function Dashboard() {
                   </div>
                   <div
                     className={cn(
-                      "absolute -bottom-1 w-4 h-4 bg-blue-500/10 rounded-full flex items-center justify-center",
-                      isRTL ? "-left-1" : "-right-1",
+                      'absolute -bottom-1 w-4 h-4 bg-blue-500/10 rounded-full flex items-center justify-center',
+                      isRTL ? '-left-1' : '-right-1'
                     )}
                   >
                     <Icons.plus className="h-3 w-3 text-blue-500" />
@@ -314,9 +314,11 @@ export default function Dashboard() {
                 </div>
                 <div>
                   <h3 className="font-medium group-hover:text-blue-500 transition-colors">
-                    {t("dashboard:quickActions.labels.create")}
+                    {t('dashboard:quickActions.labels.create')}
                   </h3>
-                  <p className="text-xs text-muted-foreground mt-1">{t("dashboard:quickActions.labels.description")}</p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {t('dashboard:quickActions.labels.description')}
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -337,8 +339,8 @@ export default function Dashboard() {
                   </div>
                   <div
                     className={cn(
-                      "absolute -bottom-1 w-4 h-4 bg-green-500/10 rounded-full flex items-center justify-center",
-                      isRTL ? "-left-1" : "-right-1",
+                      'absolute -bottom-1 w-4 h-4 bg-green-500/10 rounded-full flex items-center justify-center',
+                      isRTL ? '-left-1' : '-right-1'
                     )}
                   >
                     <Icons.plus className="h-3 w-3 text-green-500" />
@@ -346,9 +348,11 @@ export default function Dashboard() {
                 </div>
                 <div>
                   <h3 className="font-medium group-hover:text-green-500 transition-colors">
-                    {t("dashboard:quickActions.assets.create")}
+                    {t('dashboard:quickActions.assets.create')}
                   </h3>
-                  <p className="text-xs text-muted-foreground mt-1">{t("dashboard:quickActions.assets.description")}</p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {t('dashboard:quickActions.assets.description')}
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -358,7 +362,7 @@ export default function Dashboard() {
           {/* View Assets Card */}
           <Card
             className="group cursor-pointer transition-all duration-300 hover:shadow-lg border-teal-500/20 hover:border-teal-500/40 relative overflow-hidden"
-            onClick={() => navigate("/assets")}
+            onClick={() => navigate('/assets')}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 via-teal-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <CardContent className="p-4 sm:p-6">
@@ -370,10 +374,10 @@ export default function Dashboard() {
                 </div>
                 <div>
                   <h3 className="font-medium group-hover:text-teal-500 transition-colors">
-                    {t("dashboard:quickActions.assets.viewAll")}
+                    {t('dashboard:quickActions.assets.viewAll')}
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1">
-                    {t("dashboard:quickActions.assets.viewAllDescription")}
+                    {t('dashboard:quickActions.assets.viewAllDescription')}
                   </p>
                 </div>
               </div>
@@ -384,7 +388,7 @@ export default function Dashboard() {
           {/* View Labels Card */}
           <Card
             className="group cursor-pointer transition-all duration-300 hover:shadow-lg border-violet-500/20 hover:border-violet-500/40 relative overflow-hidden"
-            onClick={() => navigate("/labels")}
+            onClick={() => navigate('/labels')}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 via-violet-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <CardContent className="p-4 sm:p-6">
@@ -396,10 +400,10 @@ export default function Dashboard() {
                 </div>
                 <div>
                   <h3 className="font-medium group-hover:text-violet-500 transition-colors">
-                    {t("dashboard:quickActions.labels.viewAll")}
+                    {t('dashboard:quickActions.labels.viewAll')}
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1">
-                    {t("dashboard:quickActions.labels.viewAllDescription")}
+                    {t('dashboard:quickActions.labels.viewAllDescription')}
                   </p>
                 </div>
               </div>
@@ -410,7 +414,7 @@ export default function Dashboard() {
           {/* View Projects Card */}
           <Card
             className="group cursor-pointer transition-all duration-300 hover:shadow-lg border-amber-500/20 hover:border-amber-500/40 relative overflow-hidden"
-            onClick={() => navigate("/projects")}
+            onClick={() => navigate('/projects')}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <CardContent className="p-4 sm:p-6">
@@ -422,10 +426,10 @@ export default function Dashboard() {
                 </div>
                 <div>
                   <h3 className="font-medium group-hover:text-amber-500 transition-colors">
-                    {t("dashboard:quickActions.projects.viewAll")}
+                    {t('dashboard:quickActions.projects.viewAll')}
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1">
-                    {t("dashboard:quickActions.projects.viewAllDescription")}
+                    {t('dashboard:quickActions.projects.viewAllDescription')}
                   </p>
                 </div>
               </div>

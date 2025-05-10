@@ -1,17 +1,17 @@
-"use client";
+'use client'
 
-import { useState, useEffect, useMemo } from "react";
-import { Button } from "../components/ui/button";
-import { useAuth } from "../context/AuthContext";
-import { toast } from "sonner";
-import type { Asset, AssetScope, Project } from "../lib/types";
-import { AssetUploadDialog } from "../components/AssetUploadDialog";
-import { useMobile } from "../hooks/use-mobile";
+import { useState, useEffect, useMemo } from 'react'
+import { Button } from '../components/ui/button'
+import { useAuth } from '../context/AuthContext'
+import { toast } from 'sonner'
+import type { Asset, AssetScope, Project } from '../lib/types'
+import { AssetUploadDialog } from '../components/AssetUploadDialog'
+import { useMobile } from '../hooks/use-mobile'
 
 // Import custom components
-import { AssetCard } from "../components/assets/asset-card";
-import { DesktopFilterBar } from "../components/assets/desktop-filter-bar";
-import { MobileFilterSection } from "../components/assets/mobile-filter-section";
+import { AssetCard } from '../components/assets/asset-card'
+import { DesktopFilterBar } from '../components/assets/desktop-filter-bar'
+import { MobileFilterSection } from '../components/assets/mobile-filter-section'
 
 // Import services
 import {
@@ -21,258 +21,245 @@ import {
   renameAsset,
   makeAssetGlobal,
   assignAssetToProject,
-} from "../services/asset-service";
-import { DeleteDialog } from "../components/assets/delete-dialog";
-import { ProjectAssignmentDialog } from "../components/assets/project-assignment-dialog";
-import { RenameDialog } from "../components/assets/rename-dialog";
-import { EmptyState } from "../components/assets/empty-state";
-import { Icons } from "../lib/constances";
-import { useTranslation } from "react-i18next";
+} from '../services/asset-service'
+import { DeleteDialog } from '../components/assets/delete-dialog'
+import { ProjectAssignmentDialog } from '../components/assets/project-assignment-dialog'
+import { RenameDialog } from '../components/assets/rename-dialog'
+import { EmptyState } from '../components/assets/empty-state'
+import { Icons } from '../lib/constances'
+import { useTranslation } from 'react-i18next'
 
 export default function AssetsPage() {
-  const { user } = useAuth();
-  const isMobile = useMobile();
-  const { t } = useTranslation('assets');
-
+  const { user } = useAuth()
+  const isMobile = useMobile()
+  const { t } = useTranslation('assets')
 
   // State for assets and projects
-  const [assets, setAssets] = useState<Asset[]>([]);
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [assets, setAssets] = useState<Asset[]>([])
+  const [projects, setProjects] = useState<Project[]>([])
+  const [loading, setLoading] = useState(true)
 
   // Filter and sort state
-  const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState("newest");
-  const [typeFilter, setTypeFilter] = useState("all");
-  const [projectFilter, setProjectFilter] = useState("all");
-  const [assetScope, setAssetScope] = useState<AssetScope>("all");
+  const [searchQuery, setSearchQuery] = useState('')
+  const [sortBy, setSortBy] = useState('newest')
+  const [typeFilter, setTypeFilter] = useState('all')
+  const [projectFilter, setProjectFilter] = useState('all')
+  const [assetScope, setAssetScope] = useState<AssetScope>('all')
 
   const handleResetFilters = () => {
-    setAssetScope("all");
-    setSearchQuery("");
-    setProjectFilter("all");
-    setTypeFilter("all");
-    setSortBy("newest");
-  };
+    setAssetScope('all')
+    setSearchQuery('')
+    setProjectFilter('all')
+    setTypeFilter('all')
+    setSortBy('newest')
+  }
 
   // Dialog state
-  const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [isRenameDialogOpen, setIsRenameDialogOpen] = useState(false);
-  const [isProjectDialogOpen, setIsProjectDialogOpen] = useState(false);
+  const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false)
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+  const [isRenameDialogOpen, setIsRenameDialogOpen] = useState(false)
+  const [isProjectDialogOpen, setIsProjectDialogOpen] = useState(false)
 
   // Selected items state
-  const [selectedProjectId, setSelectedProjectId] = useState<string>("");
-  const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
+  const [selectedProjectId, setSelectedProjectId] = useState<string>('')
+  const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null)
 
   // Operation state
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false)
 
   // Fetch data on mount and when filters change
   useEffect(() => {
     if (user) {
-      loadAssets();
-      loadProjects();
+      loadAssets()
+      loadProjects()
     }
-  }, [user, assetScope, projectFilter, typeFilter]);
+  }, [user, assetScope, projectFilter, typeFilter])
 
   // Load assets from service
   async function loadAssets() {
     try {
-      setLoading(true);
-      if (!user) return;
+      setLoading(true)
+      if (!user) return
 
-      const data = await fetchAssets(
-        user.id,
-        assetScope,
-        projectFilter,
-        typeFilter
-      );
-      setAssets(data);
+      const data = await fetchAssets(user.id, assetScope, projectFilter, typeFilter)
+      setAssets(data)
     } catch (error) {
-      console.error("Error loading assets:", error);
-      toast.error("Failed to load assets");
+      console.error('Error loading assets:', error)
+      toast.error('Failed to load assets')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
   // Load projects from service
   async function loadProjects() {
     try {
-      if (!user) return;
+      if (!user) return
 
-      const data = await fetchProjects(user.id);
-      setProjects(data);
+      const data = await fetchProjects(user.id)
+      setProjects(data)
     } catch (error) {
-      console.error("Error loading projects:", error);
-      toast.error("Failed to load projects");
+      console.error('Error loading projects:', error)
+      toast.error('Failed to load projects')
     }
   }
 
   // Delete asset handler
   const handleDeleteAsset = async () => {
-    if (!selectedAsset) return;
+    if (!selectedAsset) return
 
     try {
-      setIsProcessing(true);
+      setIsProcessing(true)
 
       // Check if asset is used
       if (selectedAsset.is_used) {
-        toast.error("Cannot delete asset", {
-          description: "This asset is currently in use by one or more labels",
-        });
-        setIsDeleteDialogOpen(false);
-        return;
+        toast.error('Cannot delete asset', {
+          description: 'This asset is currently in use by one or more labels',
+        })
+        setIsDeleteDialogOpen(false)
+        return
       }
 
-      await deleteAsset(selectedAsset);
+      await deleteAsset(selectedAsset)
 
-      toast.success("Asset deleted", {
+      toast.success('Asset deleted', {
         description: `"${selectedAsset.name}" has been deleted.`,
-      });
+      })
 
       // Refresh assets list
-      loadAssets();
+      loadAssets()
     } catch (error) {
-      console.error("Error deleting asset:", error);
-      toast.error("Failed to delete asset", {
-        description: "An unexpected error occurred. Please try again.",
-      });
+      console.error('Error deleting asset:', error)
+      toast.error('Failed to delete asset', {
+        description: 'An unexpected error occurred. Please try again.',
+      })
     } finally {
-      setIsProcessing(false);
-      setIsDeleteDialogOpen(false);
-      setSelectedAsset(null);
+      setIsProcessing(false)
+      setIsDeleteDialogOpen(false)
+      setSelectedAsset(null)
     }
-  };
+  }
 
   // Rename asset handler
   const handleRename = async (newName: string) => {
-    if (!selectedAsset || !newName) return;
+    if (!selectedAsset || !newName) return
 
     try {
-      setIsProcessing(true);
+      setIsProcessing(true)
 
-      await renameAsset(selectedAsset.id, newName);
+      await renameAsset(selectedAsset.id, newName)
 
       // Refresh the assets list
-      await loadAssets();
+      await loadAssets()
 
-      toast.success("Asset renamed successfully", {
+      toast.success('Asset renamed successfully', {
         description: `Asset has been renamed to "${newName}"`,
-      });
+      })
 
       // Close dialog and reset state
-      setIsRenameDialogOpen(false);
-      setSelectedAsset(null);
+      setIsRenameDialogOpen(false)
+      setSelectedAsset(null)
     } catch (error) {
-      console.error("Error renaming asset:", error);
-      toast.error("Failed to rename asset", {
-        description:
-          error instanceof Error
-            ? error.message
-            : "An unexpected error occurred",
-      });
+      console.error('Error renaming asset:', error)
+      toast.error('Failed to rename asset', {
+        description: error instanceof Error ? error.message : 'An unexpected error occurred',
+      })
     } finally {
-      setIsProcessing(false);
+      setIsProcessing(false)
     }
-  };
+  }
 
   // Make asset global handler
   const handleMakeGlobal = async (asset: Asset) => {
     try {
-      setIsProcessing(true);
+      setIsProcessing(true)
 
-      await makeAssetGlobal(asset.id);
+      await makeAssetGlobal(asset.id)
 
-      toast.success("Asset made global", {
-        description: "This asset is now available across all projects.",
-      });
+      toast.success('Asset made global', {
+        description: 'This asset is now available across all projects.',
+      })
 
       // Refresh assets list
-      loadAssets();
+      loadAssets()
     } catch (error) {
-      console.error("Error making asset global:", error);
-      toast.error("Failed to make asset global");
+      console.error('Error making asset global:', error)
+      toast.error('Failed to make asset global')
     } finally {
-      setIsProcessing(false);
+      setIsProcessing(false)
     }
-  };
+  }
 
   // Make asset project-specific handler
   const handleMakeProjectAsset = async () => {
-    if (!selectedAsset || !selectedProjectId) return;
+    if (!selectedAsset || !selectedProjectId) return
 
     try {
-      setIsProcessing(true);
+      setIsProcessing(true)
 
-      await assignAssetToProject(selectedAsset.id, selectedProjectId);
+      await assignAssetToProject(selectedAsset.id, selectedProjectId)
 
-      toast.success("Asset updated", {
-        description: "This asset is now assigned to the selected project.",
-      });
+      toast.success('Asset updated', {
+        description: 'This asset is now assigned to the selected project.',
+      })
 
       // Refresh assets list
-      loadAssets();
+      loadAssets()
     } catch (error) {
-      console.error("Error updating asset:", error);
-      toast.error("Failed to update asset");
+      console.error('Error updating asset:', error)
+      toast.error('Failed to update asset')
     } finally {
-      setIsProcessing(false);
-      setIsProjectDialogOpen(false);
-      setSelectedAsset(null);
-      setSelectedProjectId("");
+      setIsProcessing(false)
+      setIsProjectDialogOpen(false)
+      setSelectedAsset(null)
+      setSelectedProjectId('')
     }
-  };
+  }
 
   // Filter and sort assets
   const filteredAssets = useMemo(() => {
     return assets
       .filter((asset) => {
-        return asset.name.toLowerCase().includes(searchQuery.toLowerCase());
+        return asset.name.toLowerCase().includes(searchQuery.toLowerCase())
       })
       .sort((a, b) => {
-        if (sortBy === "newest") {
-          return (
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-          );
+        if (sortBy === 'newest') {
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
         }
-        if (sortBy === "oldest") {
-          return (
-            new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-          );
+        if (sortBy === 'oldest') {
+          return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
         }
-        if (sortBy === "name") {
-          return a.name.localeCompare(b.name);
+        if (sortBy === 'name') {
+          return a.name.localeCompare(b.name)
         }
-        return 0;
-      });
-  }, [assets, searchQuery, sortBy]);
+        return 0
+      })
+  }, [assets, searchQuery, sortBy])
 
   // Calculate active filters count for mobile view
   const activeFiltersCount = [
-    assetScope !== "all" ? 1 : 0,
-    typeFilter !== "all" ? 1 : 0,
-    projectFilter !== "all" ? 1 : 0,
+    assetScope !== 'all' ? 1 : 0,
+    typeFilter !== 'all' ? 1 : 0,
+    projectFilter !== 'all' ? 1 : 0,
     searchQuery ? 1 : 0,
-  ].reduce((a, b) => a + b, 0);
+  ].reduce((a, b) => a + b, 0)
 
   // Dialog handlers
   const handleOpenDeleteDialog = (asset: Asset) => {
-    setSelectedAsset(asset);
-    setIsDeleteDialogOpen(true);
-  };
+    setSelectedAsset(asset)
+    setIsDeleteDialogOpen(true)
+  }
 
   const handleOpenRenameDialog = (asset: Asset) => {
-    setSelectedAsset(asset);
-    setIsRenameDialogOpen(true);
-  };
+    setSelectedAsset(asset)
+    setIsRenameDialogOpen(true)
+  }
 
   const handleOpenProjectDialog = (asset: Asset) => {
-    setSelectedAsset(asset);
-    setSelectedProjectId("");
-    setIsProjectDialogOpen(true);
-  };
+    setSelectedAsset(asset)
+    setSelectedProjectId('')
+    setIsProjectDialogOpen(true)
+  }
 
   return (
     <div className="container mx-auto px-4 py-4 sm:py-8">
@@ -280,15 +267,10 @@ export default function AssetsPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold">{t('assets:page.title')}            </h1>
-            <p className="text-muted-foreground mt-1">
-            {t('assets:page.description')}
-            </p>
+            <h1 className="text-2xl sm:text-3xl font-bold">{t('assets:page.title')} </h1>
+            <p className="text-muted-foreground mt-1">{t('assets:page.description')}</p>
           </div>
-          <Button
-            onClick={() => setIsUploadDialogOpen(true)}
-            size={isMobile ? "sm" : "lg"}
-          >
+          <Button onClick={() => setIsUploadDialogOpen(true)} size={isMobile ? 'sm' : 'lg'}>
             <Icons.plus className="h-5 w-5" />
             {!isMobile && t('assets:page.uploadAsset')}
           </Button>
@@ -350,10 +332,10 @@ export default function AssetsPage() {
             ) : (
               <EmptyState
                 hasFilters={
-                  searchQuery !== "" ||
-                  typeFilter !== "all" ||
-                  projectFilter !== "all" ||
-                  assetScope !== "all"
+                  searchQuery !== '' ||
+                  typeFilter !== 'all' ||
+                  projectFilter !== 'all' ||
+                  assetScope !== 'all'
                 }
                 onUploadClick={() => setIsUploadDialogOpen(true)}
               />
@@ -375,8 +357,8 @@ export default function AssetsPage() {
         isOpen={isDeleteDialogOpen}
         isLoading={isProcessing}
         onClose={() => {
-          setIsDeleteDialogOpen(false);
-          setSelectedAsset(null);
+          setIsDeleteDialogOpen(false)
+          setSelectedAsset(null)
         }}
         onDelete={handleDeleteAsset}
       />
@@ -386,8 +368,8 @@ export default function AssetsPage() {
         isOpen={isRenameDialogOpen}
         isLoading={isProcessing}
         onClose={() => {
-          setIsRenameDialogOpen(false);
-          setSelectedAsset(null);
+          setIsRenameDialogOpen(false)
+          setSelectedAsset(null)
         }}
         onRename={handleRename}
       />
@@ -400,12 +382,12 @@ export default function AssetsPage() {
         isOpen={isProjectDialogOpen}
         isLoading={isProcessing}
         onClose={() => {
-          setIsProjectDialogOpen(false);
-          setSelectedAsset(null);
-          setSelectedProjectId("");
+          setIsProjectDialogOpen(false)
+          setSelectedAsset(null)
+          setSelectedProjectId('')
         }}
         onAssign={handleMakeProjectAsset}
       />
     </div>
-  );
+  )
 }

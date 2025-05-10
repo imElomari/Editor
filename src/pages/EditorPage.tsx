@@ -1,30 +1,30 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { Button } from "../components/ui/button";
-import { Separator } from "../components/ui/separator";
+import { useState } from 'react'
+import { Button } from '../components/ui/button'
+import { Separator } from '../components/ui/separator'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../components/ui/dropdown-menu";
-import { toast } from "sonner";
-import { Icons } from "../lib/constances";
+} from '../components/ui/dropdown-menu'
+import { toast } from 'sonner'
+import { Icons } from '../lib/constances'
 
 export default function EditorPage() {
-  const [zoom, setZoom] = useState(100);
+  const [zoom, setZoom] = useState(100)
 
-  const handleZoomIn = () => setZoom(Math.min(200, zoom + 10));
-  const handleZoomOut = () => setZoom(Math.max(50, zoom - 10));
+  const handleZoomIn = () => setZoom(Math.min(200, zoom + 10))
+  const handleZoomOut = () => setZoom(Math.max(50, zoom - 10))
 
   const handleSave = () => {
-    toast.success("Label saved successfully", {
-      description: "Your changes have been saved.",
-      position: "top-right",
+    toast.success('Label saved successfully', {
+      description: 'Your changes have been saved.',
+      position: 'top-right',
       icon: true,
-    });
-  };
+    })
+  }
 
   return (
     <div className="flex flex-col h-screen bg-background">
@@ -106,11 +106,11 @@ export default function EditorPage() {
             style={{
               width: `${800 * (zoom / 100)}px`,
               height: `${600 * (zoom / 100)}px`,
-              transition: "width 0.2s, height 0.2s",
-              maxWidth: "min(calc(100vw - 1rem), 800px)",
-              maxHeight: "min(calc(100vh - 8rem), 600px)",
-              minWidth: "280px",
-              minHeight: "210px",
+              transition: 'width 0.2s, height 0.2s',
+              maxWidth: 'min(calc(100vw - 1rem), 800px)',
+              maxHeight: 'min(calc(100vh - 8rem), 600px)',
+              minWidth: '280px',
+              minHeight: '210px',
             }}
           >
             {/* Canvas Elements */}
@@ -140,9 +140,7 @@ export default function EditorPage() {
             >
               <Icons.minus className="h-4 w-4" />
             </Button>
-            <span className="text-xs min-w-[3rem] text-center tabular-nums">
-              {zoom}%
-            </span>
+            <span className="text-xs min-w-[3rem] text-center tabular-nums">{zoom}%</span>
             <Button
               variant="ghost"
               size="icon"
@@ -156,5 +154,5 @@ export default function EditorPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

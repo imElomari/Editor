@@ -1,131 +1,125 @@
-"use client";
+'use client'
 
-import { useState, useEffect } from "react";
-import { supabase } from "../lib/supabase";
-import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
-import { useAuth } from "../context/AuthContext";
-import { toast } from "sonner";
-import type { Label, Project } from "../lib/types";
+import { useState, useEffect } from 'react'
+import { supabase } from '../lib/supabase'
+import { Button } from '../components/ui/button'
+import { Input } from '../components/ui/input'
+import { useAuth } from '../context/AuthContext'
+import { toast } from 'sonner'
+import type { Label, Project } from '../lib/types'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../components/ui/select";
-import LabelCard from "../components/LabelCard";
-import { LabelDialog } from "../components/LabelDialog";
-import { MobileFilterBar } from "../components/MobileFilterBar";
-import { useMobile } from "../hooks/use-mobile";
-import { Icons } from "../lib/constances";
-import { useTranslation } from "react-i18next";
+} from '../components/ui/select'
+import LabelCard from '../components/LabelCard'
+import { LabelDialog } from '../components/LabelDialog'
+import { MobileFilterBar } from '../components/MobileFilterBar'
+import { useMobile } from '../hooks/use-mobile'
+import { Icons } from '../lib/constances'
+import { useTranslation } from 'react-i18next'
 
 export default function LabelsPage() {
-  const [labels, setLabels] = useState<Label[]>([]);
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState("newest");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [projectFilter, setProjectFilter] = useState("all");
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedLabel, setSelectedLabel] = useState<Label | undefined>();
-  const { user } = useAuth();
-  const { t } = useTranslation(['common', 'labels']);
-  const isMobile = useMobile();
+  const [labels, setLabels] = useState<Label[]>([])
+  const [projects, setProjects] = useState<Project[]>([])
+  const [loading, setLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [sortBy, setSortBy] = useState('newest')
+  const [statusFilter, setStatusFilter] = useState('all')
+  const [projectFilter, setProjectFilter] = useState('all')
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [selectedLabel, setSelectedLabel] = useState<Label | undefined>()
+  const { user } = useAuth()
+  const { t } = useTranslation(['common', 'labels'])
+  const isMobile = useMobile()
   const handleResetFilters = () => {
-    setSearchQuery("");
-    setProjectFilter("all");
-    setStatusFilter("all");
-    setSortBy("newest");
-  };
+    setSearchQuery('')
+    setProjectFilter('all')
+    setStatusFilter('all')
+    setSortBy('newest')
+  }
 
   useEffect(() => {
-    fetchLabels();
-    fetchProjects();
-  }, []);
+    fetchLabels()
+    fetchProjects()
+  }, [])
 
   async function fetchProjects() {
     try {
       const { data, error } = await supabase
-        .from("projects")
-        .select("*")
-        .eq("owner_id", user?.id)
-        .is("deleted_at", null);
+        .from('projects')
+        .select('*')
+        .eq('owner_id', user?.id)
+        .is('deleted_at', null)
 
-      if (error) throw error;
-      setProjects(data || []);
+      if (error) throw error
+      setProjects(data || [])
     } catch {
-      toast.error(t('labels:toast.error.fetchingProjects'));
+      toast.error(t('labels:toast.error.fetchingProjects'))
     }
   }
 
   async function fetchLabels() {
     try {
-      setLoading(true);
+      setLoading(true)
       const { data, error } = await supabase
-        .from("labels")
-        .select("*, projects(name)")
-        .eq("owner_id", user?.id)
-        .is("deleted_at", null);
+        .from('labels')
+        .select('*, projects(name)')
+        .eq('owner_id', user?.id)
+        .is('deleted_at', null)
 
-      if (error) throw error;
-      setLabels(data || []);
+      if (error) throw error
+      setLabels(data || [])
     } catch (error) {
-      toast.error(t('labels:toast.error.fetchingLabels'));
-      console.error("Error:", error);
+      toast.error(t('labels:toast.error.fetchingLabels'))
+      console.error('Error:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
   const handleEdit = (label: Label) => {
-    setSelectedLabel(label);
-    setIsDialogOpen(true);
-  };
+    setSelectedLabel(label)
+    setIsDialogOpen(true)
+  }
 
   const handleCloseDialog = () => {
-    setIsDialogOpen(false);
-    setSelectedLabel(undefined);
-  };
+    setIsDialogOpen(false)
+    setSelectedLabel(undefined)
+  }
 
   const filteredLabels = labels
     .filter((label) => {
       const matchesSearch =
         label.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        label.description?.toLowerCase().includes(searchQuery.toLowerCase());
+        label.description?.toLowerCase().includes(searchQuery.toLowerCase())
 
-      const matchesStatus =
-        statusFilter === "all" || label.status === statusFilter;
-      const matchesProject =
-        projectFilter === "all" || label.project_id === projectFilter;
+      const matchesStatus = statusFilter === 'all' || label.status === statusFilter
+      const matchesProject = projectFilter === 'all' || label.project_id === projectFilter
 
-      return matchesSearch && matchesStatus && matchesProject;
+      return matchesSearch && matchesStatus && matchesProject
     })
     .sort((a, b) => {
-      if (sortBy === "newest") {
-        return (
-          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-        );
+      if (sortBy === 'newest') {
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
       }
-      if (sortBy === "oldest") {
-        return (
-          new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-        );
+      if (sortBy === 'oldest') {
+        return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
       }
-      if (sortBy === "name") {
-        return a.name.localeCompare(b.name);
+      if (sortBy === 'name') {
+        return a.name.localeCompare(b.name)
       }
-      return 0;
-    });
+      return 0
+    })
 
   // Calculate active filters count for mobile view
   const activeFiltersCount = [
-    statusFilter !== "all" ? 1 : 0,
-    projectFilter !== "all" ? 1 : 0,
+    statusFilter !== 'all' ? 1 : 0,
+    projectFilter !== 'all' ? 1 : 0,
     searchQuery ? 1 : 0,
-  ].reduce((a, b) => a + b, 0);
+  ].reduce((a, b) => a + b, 0)
 
   return (
     <div className="container mx-auto px-4 py-4 sm:py-8">
@@ -133,14 +127,9 @@ export default function LabelsPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold">{t('labels:page.title')}</h1>
-            <p className="text-muted-foreground mt-1">
-            {t('labels:page.description')}
-            </p>
+            <p className="text-muted-foreground mt-1">{t('labels:page.description')}</p>
           </div>
-          <Button
-            onClick={() => setIsDialogOpen(true)}
-            size={isMobile ? "sm" : "lg"}
-          >
+          <Button onClick={() => setIsDialogOpen(true)} size={isMobile ? 'sm' : 'lg'}>
             <Icons.plus className="h-5 w-5" />
             {!isMobile && t('labels:page.newLabel')}
           </Button>
@@ -287,17 +276,11 @@ export default function LabelsPage() {
             ) : (
               <div className="text-center py-12 bg-muted/30 rounded-lg">
                 <p className="text-muted-foreground">
-                  {searchQuery ||
-                  statusFilter !== "all" ||
-                  projectFilter !== "all"
+                  {searchQuery || statusFilter !== 'all' || projectFilter !== 'all'
                     ? t('labels:empty.noResults')
                     : t('labels:empty.noLabels')}
                 </p>
-                <Button
-                  variant="outline"
-                  className="mt-4"
-                  onClick={() => setIsDialogOpen(true)}
-                >
+                <Button variant="outline" className="mt-4" onClick={() => setIsDialogOpen(true)}>
                   <Icons.plus className="h-4 w-4 mr-2" />
                   {t('labels:page.createFirst')}
                 </Button>
@@ -314,5 +297,5 @@ export default function LabelsPage() {
         onSuccess={fetchLabels}
       />
     </div>
-  );
+  )
 }

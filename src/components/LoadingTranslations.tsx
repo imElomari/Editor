@@ -1,8 +1,8 @@
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 export function LoadingTranslations({ children }: { children: React.ReactNode }) {
-  const { i18n } = useTranslation();
-  
+  const { i18n } = useTranslation()
+
   if (!i18n.isInitialized) {
     return (
       <div className="h-screen w-screen flex items-center justify-center">
@@ -11,8 +11,8 @@ export function LoadingTranslations({ children }: { children: React.ReactNode })
           <p className="text-sm text-muted-foreground">Loading translations...</p>
         </div>
       </div>
-    );
+    )
   }
-  
-  return <>{children}</>;
+
+  return <>{children}</>
 }

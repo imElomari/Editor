@@ -1,33 +1,27 @@
-"use client";
+'use client'
 
-import type { AssetScope, Project } from "../../lib/types";
-import { Input } from "../ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
-import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
-import { ProjectSelector } from "./project-selector";
-import { Button } from "../ui/button";
-import { Icons } from "../../lib/constances";
-import { useTranslation } from "react-i18next";
+import type { AssetScope, Project } from '../../lib/types'
+import { Input } from '../ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
+import { Tabs, TabsList, TabsTrigger } from '../ui/tabs'
+import { ProjectSelector } from './project-selector'
+import { Button } from '../ui/button'
+import { Icons } from '../../lib/constances'
+import { useTranslation } from 'react-i18next'
 
 interface DesktopFilterBarProps {
-  assetScope: AssetScope;
-  setAssetScope: (scope: AssetScope) => void;
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
-  projectFilter: string;
-  setProjectFilter: (projectId: string) => void;
-  typeFilter: string;
-  setTypeFilter: (type: string) => void;
-  sortBy: string;
-  setSortBy: (sort: string) => void;
-  projects: Project[];
-  onReset: () => void;
+  assetScope: AssetScope
+  setAssetScope: (scope: AssetScope) => void
+  searchQuery: string
+  setSearchQuery: (query: string) => void
+  projectFilter: string
+  setProjectFilter: (projectId: string) => void
+  typeFilter: string
+  setTypeFilter: (type: string) => void
+  sortBy: string
+  setSortBy: (sort: string) => void
+  projects: Project[]
+  onReset: () => void
 }
 
 export function DesktopFilterBar({
@@ -45,23 +39,22 @@ export function DesktopFilterBar({
 }: DesktopFilterBarProps) {
   // Add reset function
   const handleReset = () => {
-    setAssetScope("all");
-    setSearchQuery("");
-    setProjectFilter("all");
-    setTypeFilter("all");
-    setSortBy("newest");
-  };
+    setAssetScope('all')
+    setSearchQuery('')
+    setProjectFilter('all')
+    setTypeFilter('all')
+    setSortBy('newest')
+  }
 
   // Calculate if any filters are active
   const hasActiveFilters =
-    assetScope !== "all" ||
-    searchQuery !== "" ||
-    projectFilter !== "all" ||
-    typeFilter !== "all" ||
-    sortBy !== "newest";
-     
-  const { t } = useTranslation(['common', 'assets']);
-  
+    assetScope !== 'all' ||
+    searchQuery !== '' ||
+    projectFilter !== 'all' ||
+    typeFilter !== 'all' ||
+    sortBy !== 'newest'
+
+  const { t } = useTranslation(['common', 'assets'])
 
   return (
     <div className="hidden md:flex flex-col gap-4">
@@ -73,13 +66,13 @@ export function DesktopFilterBar({
         >
           <TabsList className="w-full max-w-md">
             <TabsTrigger value="all" className="flex-1">
-            {t('assets:assetfilter.scope.all')}
+              {t('assets:assetfilter.scope.all')}
             </TabsTrigger>
             <TabsTrigger value="global" className="flex-1">
-            {t('assets:assetfilter.scope.global')}
+              {t('assets:assetfilter.scope.global')}
             </TabsTrigger>
             <TabsTrigger value="project" className="flex-1">
-            {t('assets:assetfilter.scope.project')}
+              {t('assets:assetfilter.scope.project')}
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -107,7 +100,7 @@ export function DesktopFilterBar({
           />
         </div>
 
-        {assetScope !== "global" && (
+        {assetScope !== 'global' && (
           <ProjectSelector
             projects={projects}
             selectedProjectId={projectFilter}
@@ -121,7 +114,7 @@ export function DesktopFilterBar({
         <Select value={typeFilter} onValueChange={setTypeFilter}>
           <SelectTrigger className="w-[180px]">
             <Icons.filter className="h-4 w-4 mr-2" />
-            <SelectValue placeholder={t('assets:assetfilter.type.title')}/>
+            <SelectValue placeholder={t('assets:assetfilter.type.title')} />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">{t('assets:assetfilter.type.placeholder')}</SelectItem>
@@ -145,5 +138,5 @@ export function DesktopFilterBar({
         </Select>
       </div>
     </div>
-  );
+  )
 }

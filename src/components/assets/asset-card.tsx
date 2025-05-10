@@ -1,27 +1,27 @@
-"use client";
+'use client'
 
-import type { Asset } from "../../lib/types";
-import { Card, CardContent } from "../ui/card";
-import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
+import type { Asset } from '../../lib/types'
+import { Card, CardContent } from '../ui/card'
+import { Badge } from '../ui/badge'
+import { Button } from '../ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { Pen } from "lucide-react";
-import { getStorageUrl } from "../../lib/utils";
-import { getAssetIcon, getAssetTypeLabel } from "./asset-utils";
-import { Icons } from "../../lib/constances";
-import { useTranslation } from "react-i18next";
+} from '../ui/dropdown-menu'
+import { Pen } from 'lucide-react'
+import { getStorageUrl } from '../../lib/utils'
+import { getAssetIcon, getAssetTypeLabel } from './asset-utils'
+import { Icons } from '../../lib/constances'
+import { useTranslation } from 'react-i18next'
 
 interface AssetCardProps {
-  asset: Asset;
-  onDelete: (asset: Asset) => void;
-  onRename: (asset: Asset) => void;
-  onMakeGlobal: (asset: Asset) => void;
-  onAssignToProject: (asset: Asset) => void;
+  asset: Asset
+  onDelete: (asset: Asset) => void
+  onRename: (asset: Asset) => void
+  onMakeGlobal: (asset: Asset) => void
+  onAssignToProject: (asset: Asset) => void
 }
 
 export function AssetCard({
@@ -31,26 +31,24 @@ export function AssetCard({
   onMakeGlobal,
   onAssignToProject,
 }: AssetCardProps) {
-  const AssetIcon = getAssetIcon(asset.type);
-  const typeLabel = getAssetTypeLabel(asset.type);
-  const isGlobal = asset.project_id === null;
-  const { t } = useTranslation(['common', 'assets']);
-
-
+  const AssetIcon = getAssetIcon(asset.type)
+  const typeLabel = getAssetTypeLabel(asset.type)
+  const isGlobal = asset.project_id === null
+  const { t } = useTranslation(['common', 'assets'])
 
   return (
     <Card className="group hover:shadow-md transition-all duration-200">
       <CardContent className="p-4">
         {/* Asset Preview */}
-        {asset.type.startsWith("image/") ? (
+        {asset.type.startsWith('image/') ? (
           <div className="relative w-full h-32 mb-2 bg-muted/50 rounded-md overflow-hidden">
             <img
-              src={getStorageUrl(asset.metadata.storagePath ?? "")}
+              src={getStorageUrl(asset.metadata.storagePath ?? '')}
               alt={asset.name}
               className="absolute inset-0 w-full h-full object-contain rounded-md"
               onError={(e) => {
-                console.error("Image failed to load:", asset.url);
-                e.currentTarget.src = "/placeholder-image.png";
+                console.error('Image failed to load:', asset.url)
+                e.currentTarget.src = '/placeholder-image.png'
               }}
             />
           </div>
@@ -101,14 +99,9 @@ export function AssetCard({
           </div>
           <div className="flex items-center justify-between">
             <p className="text-xs text-muted-foreground">
-              {asset.metadata?.size
-                ? `${(asset.metadata.size / 1024).toFixed(1)} KB`
-                : typeLabel}
+              {asset.metadata?.size ? `${(asset.metadata.size / 1024).toFixed(1)} KB` : typeLabel}
             </p>
-            <Badge
-              variant={isGlobal ? "secondary" : "outline"}
-              className="text-xs"
-            >
+            <Badge variant={isGlobal ? 'secondary' : 'outline'} className="text-xs">
               {isGlobal ? (
                 <span className="flex items-center gap-1">
                   <Icons.global className="h-3 w-3" />
@@ -125,5 +118,5 @@ export function AssetCard({
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }

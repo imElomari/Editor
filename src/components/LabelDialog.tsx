@@ -1,117 +1,106 @@
-"use client";
+'use client'
 
-import type React from "react";
+import type React from 'react'
 
-import { useState, useEffect } from "react";
-import { supabase } from "../lib/supabase";
-import type { Label, Project } from "../lib/types";
-import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
-import { Textarea } from "../components/ui/textarea";
+import { useState, useEffect } from 'react'
+import { supabase } from '../lib/supabase'
+import type { Label, Project } from '../lib/types'
+import { Button } from '../components/ui/button'
+import { Input } from '../components/ui/input'
+import { Textarea } from '../components/ui/textarea'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../components/ui/select";
-import { useAuth } from "../context/AuthContext";
-import { toast } from "sonner";
+} from '../components/ui/select'
+import { useAuth } from '../context/AuthContext'
+import { toast } from 'sonner'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "../components/ui/dialog";
-import { useNavigate } from "react-router-dom";
-import { useMobile } from "../hooks/use-mobile";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "./ui/command";
-import { cn } from "../lib/utils";
-import { Icons } from "../lib/constances";
-import { useTranslation } from "react-i18next";
+} from '../components/ui/dialog'
+import { useNavigate } from 'react-router-dom'
+import { useMobile } from '../hooks/use-mobile'
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from './ui/command'
+import { cn } from '../lib/utils'
+import { Icons } from '../lib/constances'
+import { useTranslation } from 'react-i18next'
 
 interface LabelDialogProps {
-  label?: Label;
-  isOpen: boolean;
-  onClose: () => void;
-  onSuccess: () => void;
+  label?: Label
+  isOpen: boolean
+  onClose: () => void
+  onSuccess: () => void
 }
 
-export function LabelDialog({
-  label,
-  isOpen,
-  onClose,
-  onSuccess,
-}: LabelDialogProps) {
-  const navigate = useNavigate();
-  const { user } = useAuth();
-  const [loading, setLoading] = useState(false);
-  const [projects, setProjects] = useState<Project[]>([]);
+export function LabelDialog({ label, isOpen, onClose, onSuccess }: LabelDialogProps) {
+  const navigate = useNavigate()
+  const { user } = useAuth()
+  const [loading, setLoading] = useState(false)
+  const [projects, setProjects] = useState<Project[]>([])
   const [formData, setFormData] = useState({
-    name: label?.name || "",
-    description: label?.description || "",
-    project_id: label?.project_id || "",
+    name: label?.name || '',
+    description: label?.description || '',
+    project_id: label?.project_id || '',
     label_json: label?.label_json || {},
-    status: label?.status || "draft",
-  });
-  const isMobile = useMobile();
+    status: label?.status || 'draft',
+  })
+  const isMobile = useMobile()
 
-  const isEditing = Boolean(label);
-  const [open, setOpen] = useState(false);
-  const { t } = useTranslation(['common', 'labels']);
+  const isEditing = Boolean(label)
+  const [open, setOpen] = useState(false)
+  const { t } = useTranslation(['common', 'labels'])
 
   useEffect(() => {
-    fetchProjects();
+    fetchProjects()
     if (label) {
       setFormData({
         name: label.name,
-        description: label.description || "",
+        description: label.description || '',
         project_id: label.project_id,
         label_json: label.label_json as object,
         status: label.status,
-      });
+      })
     } else {
       setFormData({
-        name: "",
-        description: "",
-        project_id: "",
+        name: '',
+        description: '',
+        project_id: '',
         label_json: {},
-        status: "draft",
-      });
+        status: 'draft',
+      })
     }
-  }, [label]);
+  }, [label])
 
   async function fetchProjects() {
     try {
       const { data, error } = await supabase
-        .from("projects")
-        .select("*")
-        .eq("owner_id", user?.id)
-        .is("deleted_at", null);
+        .from('projects')
+        .select('*')
+        .eq('owner_id', user?.id)
+        .is('deleted_at', null)
 
-      if (error) throw error;
-      setProjects(data || []);
+      if (error) throw error
+      setProjects(data || [])
     } catch {
-      toast.error("Error fetching projects");
+      toast.error('Error fetching projects')
     }
   }
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
+    e.preventDefault()
+    setLoading(true)
 
     try {
       if (isEditing) {
         const { error } = await supabase
-          .from("labels")
+          .from('labels')
           .update({
             name: formData.name,
             description: formData.description,
@@ -120,19 +109,19 @@ export function LabelDialog({
             status: formData.status,
             updated_at: new Date().toISOString(),
           })
-          .eq("id", label?.id);
+          .eq('id', label?.id)
 
-        if (error) throw error;
-        toast.success("Label updated", {
+        if (error) throw error
+        toast.success('Label updated', {
           description: `"${formData.name}" has been updated successfully.`,
           icon: true,
-        });
-        onSuccess();
-        onClose();
+        })
+        onSuccess()
+        onClose()
       } else {
         // Creating new label
         const { data, error } = await supabase
-          .from("labels")
+          .from('labels')
           .insert([
             {
               name: formData.name,
@@ -144,52 +133,46 @@ export function LabelDialog({
             },
           ])
           .select()
-          .single();
+          .single()
 
-        if (error) throw error;
-        toast.success("Label created", {
+        if (error) throw error
+        toast.success('Label created', {
           description: `"${formData.name}" has been created successfully.`,
           icon: true,
-        });
+        })
 
         // Redirect to editor instead of closing
-        navigate(`/editor/${data.id}`);
+        navigate(`/editor/${data.id}`)
       }
     } catch (error) {
-      console.error("Error:", error);
-      toast.error(`Error ${isEditing ? "updating" : "creating"} label`, {
-        description: "An unexpected error occurred. Please try again.",
+      console.error('Error:', error)
+      toast.error(`Error ${isEditing ? 'updating' : 'creating'} label`, {
+        description: 'An unexpected error occurred. Please try again.',
         icon: true,
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent
-        className={isMobile ? "w-[calc(100%-32px)] p-4" : "sm:max-w-[500px]"}
-      >
+      <DialogContent className={isMobile ? 'w-[calc(100%-32px)] p-4' : 'sm:max-w-[500px]'}>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Icons.labels className="h-5 w-5" />
             {isEditing ? t('labels:card.actions.edit') : t('labels:card.actions.create')}
           </DialogTitle>
           <DialogDescription>
-            {isEditing
-              ? t('labels:card.labelDialog.update')
-              : t('labels:card.labelDialog.new')}
+            {isEditing ? t('labels:card.labelDialog.update') : t('labels:card.labelDialog.new')}
           </DialogDescription>
         </DialogHeader>
 
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-4 sm:space-y-6 pt-2 sm:pt-4"
-        >
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6 pt-2 sm:pt-4">
           <div className="space-y-2">
             <label className="text-sm font-medium">
-            {t('labels:card.labelDialog.projectLabel')} <span className="text-destructive">*</span>
+              {t('labels:card.labelDialog.projectLabel')}{' '}
+              <span className="text-destructive">*</span>
             </label>
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
@@ -201,16 +184,14 @@ export function LabelDialog({
                   disabled={loading}
                 >
                   {formData.project_id
-                    ? projects.find(
-                        (project) => project.id === formData.project_id
-                      )?.name
-                    : t('labels:card.labelDialog.projectPlaceholder') }
+                    ? projects.find((project) => project.id === formData.project_id)?.name
+                    : t('labels:card.labelDialog.projectPlaceholder')}
                   <Icons.chevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-full p-0">
                 <Command>
-                  <CommandInput placeholder= {t('labels:card.labelDialog.projectSearch')} />
+                  <CommandInput placeholder={t('labels:card.labelDialog.projectSearch')} />
                   <CommandEmpty>{t('labels:card.labelDialog.noProjectFound')}</CommandEmpty>
                   <CommandGroup>
                     {projects.map((project) => (
@@ -218,16 +199,14 @@ export function LabelDialog({
                         key={project.id}
                         value={project.name}
                         onSelect={() => {
-                          setFormData({ ...formData, project_id: project.id });
-                          setOpen(false);
+                          setFormData({ ...formData, project_id: project.id })
+                          setOpen(false)
                         }}
                       >
                         <Icons.checkmark
                           className={cn(
-                            "mr-2 h-4 w-4",
-                            formData.project_id === project.id
-                              ? "opacity-100"
-                              : "opacity-0"
+                            'mr-2 h-4 w-4',
+                            formData.project_id === project.id ? 'opacity-100' : 'opacity-0'
                           )}
                         />
                         {project.name}
@@ -241,14 +220,12 @@ export function LabelDialog({
 
           <div className="space-y-2">
             <label className="text-sm font-medium">
-            {t('labels:card.labelDialog.labelName')} <span className="text-destructive">*</span>
+              {t('labels:card.labelDialog.labelName')} <span className="text-destructive">*</span>
             </label>
             <Input
               required
               value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               placeholder={t('labels:card.labelDialog.labelPlaceholder')}
               className="w-full"
               disabled={loading}
@@ -256,12 +233,12 @@ export function LabelDialog({
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium">{t('labels:card.labelDialog.descriptionLabel')}</label>
+            <label className="text-sm font-medium">
+              {t('labels:card.labelDialog.descriptionLabel')}
+            </label>
             <Textarea
               value={formData.description}
-              onChange={(e) =>
-                setFormData({ ...formData, description: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               placeholder={t('labels:card.labelDialog.descriptionPlaceholder')}
               className="w-full min-h-[80px] sm:min-h-[100px]"
               disabled={loading}
@@ -269,13 +246,15 @@ export function LabelDialog({
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium">{t('labels:card.labelDialog.statusLabel')}</label>
+            <label className="text-sm font-medium">
+              {t('labels:card.labelDialog.statusLabel')}
+            </label>
             <Select
               value={formData.status}
               onValueChange={(value) =>
                 setFormData({
                   ...formData,
-                  status: value as "draft" | "published" | "archived",
+                  status: value as 'draft' | 'published' | 'archived',
                 })
               }
             >
@@ -291,12 +270,7 @@ export function LabelDialog({
           </div>
 
           <div className="flex justify-end gap-3 pt-2 sm:pt-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onClose}
-              disabled={loading}
-            >
+            <Button type="button" variant="outline" onClick={onClose} disabled={loading}>
               {t('common:buttons.cancel')}
             </Button>
             <Button type="submit" disabled={loading}>
@@ -315,5 +289,5 @@ export function LabelDialog({
         </form>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
-import { createClient } from "../lib/supabase/client"
-import { useCallback, useEffect, useMemo, useState } from "react"
-import { type FileError, type FileRejection, useDropzone } from "react-dropzone"
+import { createClient } from '../lib/supabase/client'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { type FileError, type FileRejection, useDropzone } from 'react-dropzone'
 
 const supabase = createClient()
 
@@ -100,7 +100,7 @@ const useSupabaseUpload = (options: UseSupabaseUploadOptions) => {
 
       setFiles(newFiles)
     },
-    [files, setFiles],
+    [files, setFiles]
   )
 
   const dropzoneProps = useDropzone({
@@ -139,7 +139,7 @@ const useSupabaseUpload = (options: UseSupabaseUploadOptions) => {
         } else {
           return { name: file.name, message: undefined }
         }
-      }),
+      })
     )
 
     const responseErrors = responses.filter((x) => x.message !== undefined)
@@ -147,7 +147,9 @@ const useSupabaseUpload = (options: UseSupabaseUploadOptions) => {
     setErrors(responseErrors)
 
     const responseSuccesses = responses.filter((x) => x.message === undefined)
-    const newSuccesses = Array.from(new Set([...successes, ...responseSuccesses.map((x) => x.name)]))
+    const newSuccesses = Array.from(
+      new Set([...successes, ...responseSuccesses.map((x) => x.name)])
+    )
     setSuccesses(newSuccesses)
 
     setLoading(false)
@@ -162,8 +164,8 @@ const useSupabaseUpload = (options: UseSupabaseUploadOptions) => {
     if (files.length <= maxFiles) {
       let changed = false
       const newFiles = files.map((file) => {
-        if (file.errors.some((e) => e.code === "too-many-files")) {
-          file.errors = file.errors.filter((e) => e.code !== "too-many-files")
+        if (file.errors.some((e) => e.code === 'too-many-files')) {
+          file.errors = file.errors.filter((e) => e.code !== 'too-many-files')
           changed = true
         }
         return file

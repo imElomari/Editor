@@ -1,34 +1,28 @@
-"use client";
+'use client'
 
-import type { AssetScope, Project } from "../../lib/types";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
-import { MobileFilterBar } from "../MobileFilterBar";
-import { ProjectSelector } from "./project-selector";
-import { Icons } from "../../lib/constances";
-import { useTranslation } from "react-i18next";
+import type { AssetScope, Project } from '../../lib/types'
+import { Label } from '../ui/label'
+import { Input } from '../ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
+import { MobileFilterBar } from '../MobileFilterBar'
+import { ProjectSelector } from './project-selector'
+import { Icons } from '../../lib/constances'
+import { useTranslation } from 'react-i18next'
 
 interface MobileFilterSectionProps {
-  activeFiltersCount: number;
-  assetScope: AssetScope;
-  setAssetScope: (scope: AssetScope) => void;
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
-  projectFilter: string;
-  setProjectFilter: (projectId: string) => void;
-  typeFilter: string;
-  setTypeFilter: (type: string) => void;
-  sortBy: string;
-  setSortBy: (sort: string) => void;
-  projects: Project[];
-  onReset: () => void;
+  activeFiltersCount: number
+  assetScope: AssetScope
+  setAssetScope: (scope: AssetScope) => void
+  searchQuery: string
+  setSearchQuery: (query: string) => void
+  projectFilter: string
+  setProjectFilter: (projectId: string) => void
+  typeFilter: string
+  setTypeFilter: (type: string) => void
+  sortBy: string
+  setSortBy: (sort: string) => void
+  projects: Project[]
+  onReset: () => void
 }
 
 export function MobileFilterSection({
@@ -46,7 +40,7 @@ export function MobileFilterSection({
   projects,
   onReset,
 }: MobileFilterSectionProps) {
-  const { t } = useTranslation(['common', 'assets']);
+  const { t } = useTranslation(['common', 'assets'])
 
   return (
     <MobileFilterBar
@@ -56,13 +50,11 @@ export function MobileFilterSection({
     >
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label>{t('common:filter.search.label')}
-          </Label>
+          <Label>{t('common:filter.search.label')}</Label>
           <div className="relative">
             <Icons.search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder={t('assets:assetfilter.search.placeholder')}
-
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10"
@@ -71,12 +63,8 @@ export function MobileFilterSection({
         </div>
 
         <div className="space-y-2">
-          <Label>{t('assets:assetfilter.scope.title')}
-          </Label>
-          <Select
-            value={assetScope}
-            onValueChange={(value) => setAssetScope(value as AssetScope)}
-          >
+          <Label>{t('assets:assetfilter.scope.title')}</Label>
+          <Select value={assetScope} onValueChange={(value) => setAssetScope(value as AssetScope)}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder={t('assets:assetfilter.scope.placeholder')} />
             </SelectTrigger>
@@ -95,7 +83,7 @@ export function MobileFilterSection({
             selectedProjectId={projectFilter}
             onSelect={setProjectFilter}
             placeholder={t('common:filter.project.placeholder')}
-            disabled={assetScope === "global"}
+            disabled={assetScope === 'global'}
             includeAllOption={true}
           />
         </div>
@@ -131,5 +119,5 @@ export function MobileFilterSection({
         </div>
       </div>
     </MobileFilterBar>
-  );
+  )
 }

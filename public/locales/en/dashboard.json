@@ -1,91 +1,91 @@
 {
-    "greeting": {
-      "morning": "Good morning",
-      "afternoon": "Good afternoon",
-      "evening": "Good evening",
-      "summary": "Here's what's happening with your labels today"
-    },
-    "loading": {
+  "greeting": {
+    "morning": "Good morning",
+    "afternoon": "Good afternoon",
+    "evening": "Good evening",
+    "summary": "Here's what's happening with your labels today"
+  },
+  "loading": {
     "state": "Loading your dashboard...",
     "title": "Loading"
+  },
+  "cards": {
+    "projects": {
+      "title": "Projects",
+      "subTitle": "Organize your work"
     },
-    "cards": {
-      "projects": {
-        "title": "Projects",
-        "subTitle": "Organize your work"
-      },
-      "labels": {
-        "title": "Total Labels"
-      },
-      "assets": {
-        "title": "Assets",
-        "subTitle": "Total uploaded assets"
-      },
-      "quickCreate": {
-        "title": "Quick Create",
-        "action": "New Label",
-        "comment": "Start creating now"
-      },
-      "recent": {
-      "title": "Recent Activity",
-      "subTitle": "In the last 7 days"
-      }
+    "labels": {
+      "title": "Total Labels"
+    },
+    "assets": {
+      "title": "Assets",
+      "subTitle": "Total uploaded assets"
+    },
+    "quickCreate": {
+      "title": "Quick Create",
+      "action": "New Label",
+      "comment": "Start creating now"
     },
     "recent": {
-      "labels": {
-        "title": "Recent Labels",
-        "description": "Your recently updated labels",
-        "action": "New Label",
-        "noLabels": "No labels created yet",
-        "createDescription": "Create your first label to get started with your design process.",
-        "createFirst": "Create Your First Label",
-        "viewAll": "View All Labels"
-      },
-      "projects": {
-        "title": "Recent Projects",
-        "description": "Your recently updated projects",
-        "action": "New Project",
-        "noProjects": "No projects created yet",
-        "createDescription": "Create your first project to organize your labels.",
-        "createFirst": "Create Your First Project",
-        "viewAll": "View All Projects"
-      },
-      "assets": {
-        "title": "Recent Assets",
-        "description": "Your recently updated assets",
-        "action": "Upload Asset",
-        "noAssets": "No assets uploaded yet",
-        "uploadDescription": "Upload your first asset to get started with your asset library.",
-        "uploadFirst": "Upload Your First Asset",
-        "viewAll": "View All Assets"
-      }
-    },
-    "quickActions": {
-      "title": "Quick Actions",
-      "description": "Common tasks you can perform",
-      "projects": {
-        "create": "New Project",
-        "description": "Start a new project",
-        "viewAll": "Projects",
-        "viewAllDescription": "View all projects"
-      },
-      "labels": {
-        "create": "New Label",
-        "description": "Design a new label",
-        "viewAll": "Labels",
-        "viewAllDescription": "View all labels"
-      },
-      "assets": {
-        "create": "Upload Asset",
-        "description": "Add a new image or file to your assets",
-        "viewAll": "Assets Library",
-        "viewAllDescription": "Browse all assets"
-      }
-    },
-    "time":{
-      "now": "Just now",
-      "hoursAgo": "h ago",
-      "yesterday": "Yesterday",
-      "monthsAgo": "m ago"
+      "title": "Recent Activity",
+      "subTitle": "In the last 7 days"
     }
+  },
+  "recent": {
+    "labels": {
+      "title": "Recent Labels",
+      "description": "Your recently updated labels",
+      "action": "New Label",
+      "noLabels": "No labels created yet",
+      "createDescription": "Create your first label to get started with your design process.",
+      "createFirst": "Create Your First Label",
+      "viewAll": "View All Labels"
+    },
+    "projects": {
+      "title": "Recent Projects",
+      "description": "Your recently updated projects",
+      "action": "New Project",
+      "noProjects": "No projects created yet",
+      "createDescription": "Create your first project to organize your labels.",
+      "createFirst": "Create Your First Project",
+      "viewAll": "View All Projects"
+    },
+    "assets": {
+      "title": "Recent Assets",
+      "description": "Your recently updated assets",
+      "action": "Upload Asset",
+      "noAssets": "No assets uploaded yet",
+      "uploadDescription": "Upload your first asset to get started with your asset library.",
+      "uploadFirst": "Upload Your First Asset",
+      "viewAll": "View All Assets"
+    }
+  },
+  "quickActions": {
+    "title": "Quick Actions",
+    "description": "Common tasks you can perform",
+    "projects": {
+      "create": "New Project",
+      "description": "Start a new project",
+      "viewAll": "Projects",
+      "viewAllDescription": "View all projects"
+    },
+    "labels": {
+      "create": "New Label",
+      "description": "Design a new label",
+      "viewAll": "Labels",
+      "viewAllDescription": "View all labels"
+    },
+    "assets": {
+      "create": "Upload Asset",
+      "description": "Add a new image or file to your assets",
+      "viewAll": "Assets Library",
+      "viewAllDescription": "Browse all assets"
+    }
+  },
+  "time": {
+    "now": "Just now",
+    "hoursAgo": "h ago",
+    "yesterday": "Yesterday",
+    "monthsAgo": "m ago"
+  }
 }

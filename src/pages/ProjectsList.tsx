@@ -1,76 +1,75 @@
-"use client";
+'use client'
 
-import { useState, useEffect } from "react";
-import { supabase } from "../lib/supabase";
-import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
-import { Icons } from "../lib/constances";
-import { useAuth } from "../context/AuthContext";
-import { toast } from "sonner";
-import type { Project } from "../lib/types";
-import ProjectCard from "../components/ProjectCard";
+import { useState, useEffect } from 'react'
+import { supabase } from '../lib/supabase'
+import { Button } from '../components/ui/button'
+import { Input } from '../components/ui/input'
+import { Icons } from '../lib/constances'
+import { useAuth } from '../context/AuthContext'
+import { toast } from 'sonner'
+import type { Project } from '../lib/types'
+import ProjectCard from '../components/ProjectCard'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../components/ui/select";
-import { ProjectDialog } from "../components/ProjectDialog";
-import { MobileFilterBar } from "../components/MobileFilterBar";
-import { useMobile } from "../hooks/use-mobile";
-import { useTranslation } from "react-i18next";
+} from '../components/ui/select'
+import { ProjectDialog } from '../components/ProjectDialog'
+import { MobileFilterBar } from '../components/MobileFilterBar'
+import { useMobile } from '../hooks/use-mobile'
+import { useTranslation } from 'react-i18next'
 
 export default function ProjectsPage() {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState("newest");
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<Project | undefined>();
-  const { user } = useAuth();
-  const isMobile = useMobile();
-  const { t } = useTranslation(['projects', "common"]);
-
+  const [projects, setProjects] = useState<Project[]>([])
+  const [loading, setLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [sortBy, setSortBy] = useState('newest')
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [selectedProject, setSelectedProject] = useState<Project | undefined>()
+  const { user } = useAuth()
+  const isMobile = useMobile()
+  const { t } = useTranslation(['projects', 'common'])
 
   const handleResetFilters = () => {
-    setSearchQuery("");
-    setSortBy("newest");
-  };
+    setSearchQuery('')
+    setSortBy('newest')
+  }
 
   useEffect(() => {
-    fetchProjects();
-  }, []);
+    fetchProjects()
+  }, [])
 
   async function fetchProjects() {
     try {
-      setLoading(true);
+      setLoading(true)
       const { data, error } = await supabase
-        .from("projects")
-        .select("*")
-        .eq("owner_id", user?.id)
-        .is("deleted_at", null)
-        .order("created_at", { ascending: false });
+        .from('projects')
+        .select('*')
+        .eq('owner_id', user?.id)
+        .is('deleted_at', null)
+        .order('created_at', { ascending: false })
 
-      if (error) throw error;
-      setProjects(data || []);
+      if (error) throw error
+      setProjects(data || [])
     } catch (error) {
-      toast.error(t('projects:card.toast.error.fetch'));
-      console.error("Error:", error);
+      toast.error(t('projects:card.toast.error.fetch'))
+      console.error('Error:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
   const handleEdit = (project: Project) => {
-    setSelectedProject(project);
-    setIsDialogOpen(true);
-  };
+    setSelectedProject(project)
+    setIsDialogOpen(true)
+  }
 
   const handleCloseDialog = () => {
-    setIsDialogOpen(false);
-    setSelectedProject(undefined);
-  };
+    setIsDialogOpen(false)
+    setSelectedProject(undefined)
+  }
 
   const sortedAndFilteredProjects = projects
     .filter(
@@ -79,27 +78,23 @@ export default function ProjectsPage() {
         project.description?.toLowerCase().includes(searchQuery.toLowerCase())
     )
     .sort((a, b) => {
-      if (sortBy === "newest") {
-        return (
-          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-        );
+      if (sortBy === 'newest') {
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
       }
-      if (sortBy === "oldest") {
-        return (
-          new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-        );
+      if (sortBy === 'oldest') {
+        return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
       }
-      if (sortBy === "name") {
-        return a.name.localeCompare(b.name);
+      if (sortBy === 'name') {
+        return a.name.localeCompare(b.name)
       }
-      return 0;
-    });
+      return 0
+    })
 
   // Calculate active filters count for mobile view
-  const activeFiltersCount = [
-    searchQuery ? 1 : 0,
-    sortBy !== "newest" ? 1 : 0,
-  ].reduce((a, b) => a + b, 0);
+  const activeFiltersCount = [searchQuery ? 1 : 0, sortBy !== 'newest' ? 1 : 0].reduce(
+    (a, b) => a + b,
+    0
+  )
 
   return (
     <div className="container mx-auto px-4 py-4 sm:py-8">
@@ -107,14 +102,9 @@ export default function ProjectsPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold">{t('projects:page.title')}</h1>
-            <p className="text-muted-foreground mt-1">
-            {t('projects:page.description')}
-            </p>
+            <p className="text-muted-foreground mt-1">{t('projects:page.description')}</p>
           </div>
-          <Button
-            onClick={() => setIsDialogOpen(true)}
-            size={isMobile ? "sm" : "lg"}
-          >
+          <Button onClick={() => setIsDialogOpen(true)} size={isMobile ? 'sm' : 'lg'}>
             <Icons.plus className="h-5 w-5" />
             {!isMobile && t('projects:page.newProject')}
           </Button>
@@ -200,15 +190,9 @@ export default function ProjectsPage() {
             ) : (
               <div className="text-center py-12 bg-muted/30 rounded-lg">
                 <p className="text-muted-foreground">
-                  {searchQuery
-                    ? t('projects:empty.noResults')
-                    : t('projects:empty.noProjects')}
+                  {searchQuery ? t('projects:empty.noResults') : t('projects:empty.noProjects')}
                 </p>
-                <Button
-                  variant="outline"
-                  className="mt-4"
-                  onClick={() => setIsDialogOpen(true)}
-                >
+                <Button variant="outline" className="mt-4" onClick={() => setIsDialogOpen(true)}>
                   <Icons.plus className="h-4 w-4 mr-2" />
                   {t('projects:page.createFirst')}
                 </Button>
@@ -225,5 +209,5 @@ export default function ProjectsPage() {
         onSuccess={fetchProjects}
       />
     </div>
-  );
+  )
 }

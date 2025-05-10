@@ -1,46 +1,40 @@
-import { useEffect } from "react";
-import { Auth } from "@supabase/auth-ui-react";
-import { ThemeSupa } from "@supabase/auth-ui-shared";
-import { supabase } from "../lib/supabase";
-import { useNavigate } from "react-router-dom";
-import { useTheme } from "../context/ThemeContext";
-import FooterNavbar from "../pages/parts/FooterNavbar";
-import { Button } from "../components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../components/ui/card";
-import { Icons } from "../lib/constances";
-import { useTranslation } from "react-i18next";
+import { useEffect } from 'react'
+import { Auth } from '@supabase/auth-ui-react'
+import { ThemeSupa } from '@supabase/auth-ui-shared'
+import { supabase } from '../lib/supabase'
+import { useNavigate } from 'react-router-dom'
+import { useTheme } from '../context/ThemeContext'
+import FooterNavbar from '../pages/parts/FooterNavbar'
+import { Button } from '../components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
+import { Icons } from '../lib/constances'
+import { useTranslation } from 'react-i18next'
 
 export default function Login() {
-  const navigate = useNavigate();
-  const { theme, toggleTheme } = useTheme();
-  const { t } = useTranslation('common');
+  const navigate = useNavigate()
+  const { theme, toggleTheme } = useTheme()
+  const { t } = useTranslation('common')
 
   useEffect(() => {
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        navigate("/");
+        navigate('/')
       }
-    });
+    })
 
     // Listen for auth changes
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN" && session) {
-        navigate("/");
+      if (event === 'SIGNED_IN' && session) {
+        navigate('/')
       }
-    });
+    })
 
     // Cleanup subscription
-    return () => subscription.unsubscribe();
-  }, [navigate]);
+    return () => subscription.unsubscribe()
+  }, [navigate])
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -56,7 +50,7 @@ export default function Login() {
               <g id="circle">
                 <g id="v1">
                   <path
-                    style={{ fill: "#6c9956" }}
+                    style={{ fill: '#6c9956' }}
                     d="M7.5 25.3C65.4 7 125.9.3 186.3 0c27.8-.3 176.8 4.7 121.2 56a128 128 0 0 1-25.2 15c6-4.2 12.4-7.8 16.6-14 20.7-40.3-54-47.6-80-50.5C148 1 77 12.5 7.5 25.3Zm25 9.5c-65.7 42.2 49 50 78 48.6 36.8 0 74-4.4 109.8-12-8.3 3-18.3 4.6-27.2 6.8-53.2 10.7-109.3 17.1-162.6 4-43.9-10.2-37.9-37.4 2-47.4Z"
                   ></path>
                   <path
@@ -77,21 +71,16 @@ export default function Login() {
                 variant="ghost"
                 size="icon"
                 onClick={toggleTheme}
-                aria-label={`Switch to ${
-                  theme === "light" ? "dark" : "light"
-                } mode`}
+                aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
               >
-                {theme === "light" ? (
+                {theme === 'light' ? (
                   <Icons.moon className="h-5 w-5" />
                 ) : (
                   <Icons.sun className="h-5 w-5" />
                 )}
               </Button>
             </div>
-            <CardDescription>
-            {t('common:login.signin')}
-
-            </CardDescription>
+            <CardDescription>{t('common:login.signin')}</CardDescription>
           </CardHeader>
           <CardContent>
             <Auth
@@ -101,10 +90,10 @@ export default function Login() {
                 variables: {
                   default: {
                     colors: {
-                      brand: "black",
-                      brandAccent: "gray",
+                      brand: 'black',
+                      brandAccent: 'gray',
 
-                      brandButtonText: "white",
+                      brandButtonText: 'white',
                     },
                   },
                 },
@@ -118,5 +107,5 @@ export default function Login() {
       </div>
       <FooterNavbar />
     </div>
-  );
+  )
 }

@@ -1,79 +1,78 @@
 {
-    "page": {
-      "title": "Labels",
-      "description": "Manage your label designs",
-      "newLabel": "New Label",
-      "createFirst": "Create your first label"
+  "page": {
+    "title": "Labels",
+    "description": "Manage your label designs",
+    "newLabel": "New Label",
+    "createFirst": "Create your first label"
+  },
+  "labelfilter": {
+    "title": "Filter Labels",
+    "search": {
+      "placeholder": "Search labels..."
+    }
+  },
+  "empty": {
+    "noLabels": "No labels yet",
+    "noResults": "No labels found matching your search"
+  },
+
+  "card": {
+    "noDescription": "No description provided",
+    "viewLabel": "View Label",
+    "createdAt": "Created",
+    "actions": {
+      "create": "Create Label",
+      "edit": "Edit label",
+      "update": "Update label",
+      "delete": "Delete label",
+      "openEditor": "Open in Editor"
     },
-    "labelfilter": {
-      "title": "Filter Labels",
-      "search": {
-        "placeholder": "Search labels..."
-      }
-      },
-    "empty": {
-      "noLabels": "No labels yet",
-      "noResults": "No labels found matching your search"
+    "labelDialog": {
+      "new": "Add a new label to your project",
+      "update": "Update your label details below",
+      "projectLabel": "Project",
+      "projectPlaceholder": "Select project...",
+      "projectSearch": "Search project...",
+      "noProjectFound": "No project found.",
+      "labelName": "Label Name",
+      "labelPlaceholder": "Enter label name",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Enter label description",
+      "statusLabel": "Status",
+      "statusPlaceholder": "Select status"
     },
 
-      "card": {
-        "noDescription": "No description provided",
-        "viewLabel": "View Label",
-        "createdAt": "Created",
-        "actions": {
-          "create": "Create Label",
-          "edit": "Edit label",
-          "update": "Update label",
-          "delete": "Delete label",
-          "openEditor": "Open in Editor"
-        },
-        "labelDialog": {
-          "new": "Add a new label to your project",
-          "update": "Update your label details below",
-          "projectLabel": "Project",
-          "projectPlaceholder": "Select project...",
-          "projectSearch": "Search project...",
-          "noProjectFound": "No project found.",
-          "labelName": "Label Name",
-          "labelPlaceholder": "Enter label name",
-          "descriptionLabel": "Description",
-          "descriptionPlaceholder": "Enter label description",
-          "statusLabel": "Status",
-          "statusPlaceholder": "Select status"
-          },
+    "deleteDialog": {
+      "title": "Are you sure?",
+      "description": "This will delete the label {{labelName}} ",
+      "confirm": "Delete Label"
+    }
+  },
 
-        "deleteDialog": {
-          "title": "Are you sure?",
-          "description": "This will delete the label {{labelName}} ",
-          "confirm": "Delete Label"
-        }
-        
+  "toast": {
+    "updated": {
+      "title": "Label updated",
+      "description": "\"{{labelName}}\" has been updated successfully."
+    },
+    "deleted": {
+      "title": "Label moved to trash",
+      "description": "\"{{labelName}}\" has been moved to trash."
+    },
+    "restored": {
+      "title": "Label restored",
+      "description": "\"{{labelName}}\" has been restored successfully."
+    },
+    "error": {
+      "delete": {
+        "title": "Error deleting label",
+        "description": "An unexpected error occurred. Please try again."
       },
-    
-      "toast": {
-          "updated" : {
-            "title": "Label updated",
-            "description": "\"{{labelName}}\" has been updated successfully."
-          },
-          "deleted": {
-            "title": "Label moved to trash",
-            "description": "\"{{labelName}}\" has been moved to trash."
-          },
-          "restored": {
-            "title": "Label restored",
-            "description": "\"{{labelName}}\" has been restored successfully."
-          },
-          "error": {
-            "delete": {
-              "title": "Error deleting label",
-              "description": "An unexpected error occurred. Please try again."
-            },
-            "restore": {
-              "title": "Error restoring label",
-              "description": "Failed to restore the label. Please try again."
-            },
-            "fetchingProjects": "Error fetching projects",
-            "fetchingLabels": "Error fetching labels"
-          }
-        }
+      "restore": {
+        "title": "Error restoring label",
+        "description": "Failed to restore the label. Please try again."
+      },
+      "fetchingProjects": "Error fetching projects",
+      "fetchingLabels": "Error fetching labels"
+    }
   }
+}

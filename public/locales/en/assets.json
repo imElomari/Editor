@@ -1,88 +1,85 @@
 {
-    "page": {
-      "title": "Assets",
-      "description": "Manage your global and project assets",
-      "uploadAsset": "Upload Asset",
-      "createFirst": "Upload your first asset"
+  "page": {
+    "title": "Assets",
+    "description": "Manage your global and project assets",
+    "uploadAsset": "Upload Asset",
+    "createFirst": "Upload your first asset"
+  },
+  "type": {
+    "global": "Global",
+    "project": "Project"
+  },
+  "assetfilter": {
+    "title": "Filter Assets",
+    "search": {
+      "placeholder": "Search assets..."
+    },
+    "scope": {
+      "title": "Asset Scope",
+      "placeholder": "Filter by scope",
+      "all": "All Assets",
+      "global": "Global",
+      "project": "Project"
     },
     "type": {
-        "global": "Global",
-        "project": "Project"
-      },
-    "assetfilter": {
-      "title": "Filter Assets",
-      "search": {
-        "placeholder": "Search assets..."
-        },
-      "scope": {
-            "title": "Asset Scope",
-            "placeholder": "Filter by scope",
-            "all": "All Assets",
-            "global": "Global",
-            "project": "Project"
-        },
-        "type": {
-            "title": "Asset Type",
-            "placeholder": "Filter by type",
-            "all": "All Types"
-        }
-      },
-    "empty": {
-      "noProjects": "No assets yet",
-      "noResults": "No assets found matching your search"
+      "title": "Asset Type",
+      "placeholder": "Filter by type",
+      "all": "All Types"
+    }
+  },
+  "empty": {
+    "noProjects": "No assets yet",
+    "noResults": "No assets found matching your search"
+  },
+
+  "card": {
+    "dropMenu": {
+      "rename": "Rename",
+      "assignToProject": "Assign to Project",
+      "global": "Make Global",
+      "delete": "Delete"
     },
-
-      "card": {
-        "dropMenu": {
-          "rename": "Rename",
-          "assignToProject": "Assign to Project",
-          "global": "Make Global",
-          "delete": "Delete"
-        },
-        "deleteDialog": {
-          "title": "Delete Asset",
-          "description": "Are you sure you want to delete {{assetName}} ?",
-          "confirm": "Delete Asset"
-        },
-        "assignProject": {
-          "title": "Select Project",
-          "placeholder": "Choose a project to assign \"{{asset.name}}\" ",
-          "search": "Search projects...",
-          "Assigning": "Assigning",
-          "confirm": "Assign to Project",
-          "noProjectFound": "No projects found",
-          "all": "All Projects"
-        },
-        "rename": {
-          "title": "Rename Asset",
-          "placeholder": "Enter a new name for the asset",
-          "label": "New Name",
-          "newName": "Enter new name",
-          "renaming": "Renaming",
-          "confirm": "Rename"
-        },
-        "uploadDialog": {
-          "title": "Upload Asset",
-          "placeholder": "Upload an asset to your library",
-          "type": "Asset Type",
-          "MyAssetsTab": {
-            "title": "My Assets",
-            "description": "Personal assets are available across all your projects and can be accessed from anywhere in your workspace."
-          },
-          "projectTab": {
-            "title": "Project Assets",
-            "description": "Project assets are specific to a single project and will only be available within that project.",
-            "selectProject": "Select a Project",
-            "search": "Search projects...",
-            "noProjectFound": "No projects found.",
-            "select": "Please select a project to continue",
-            "uploading": "Uploading...",
-            "confirm": "Uploaded",
-            "uploaded": "Upload as \"{{assetScope}}\" Asset"
-          }
-
-        }
-        
-        }
+    "deleteDialog": {
+      "title": "Delete Asset",
+      "description": "Are you sure you want to delete {{assetName}} ?",
+      "confirm": "Delete Asset"
+    },
+    "assignProject": {
+      "title": "Select Project",
+      "placeholder": "Choose a project to assign \"{{asset.name}}\" ",
+      "search": "Search projects...",
+      "Assigning": "Assigning",
+      "confirm": "Assign to Project",
+      "noProjectFound": "No projects found",
+      "all": "All Projects"
+    },
+    "rename": {
+      "title": "Rename Asset",
+      "placeholder": "Enter a new name for the asset",
+      "label": "New Name",
+      "newName": "Enter new name",
+      "renaming": "Renaming",
+      "confirm": "Rename"
+    },
+    "uploadDialog": {
+      "title": "Upload Asset",
+      "placeholder": "Upload an asset to your library",
+      "type": "Asset Type",
+      "MyAssetsTab": {
+        "title": "My Assets",
+        "description": "Personal assets are available across all your projects and can be accessed from anywhere in your workspace."
+      },
+      "projectTab": {
+        "title": "Project Assets",
+        "description": "Project assets are specific to a single project and will only be available within that project.",
+        "selectProject": "Select a Project",
+        "search": "Search projects...",
+        "noProjectFound": "No projects found.",
+        "select": "Please select a project to continue",
+        "uploading": "Uploading...",
+        "confirm": "Uploaded",
+        "uploaded": "Upload as \"{{assetScope}}\" Asset"
+      }
+    }
+  }
 }
-    
