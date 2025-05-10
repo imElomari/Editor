@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Card,
   CardContent,
@@ -25,17 +25,23 @@ interface RecentAssetsProps {
 
 export function RecentAssets({ className, limit = 5 }: RecentAssetsProps) {
   const { user } = useAuth();
-  const [assets, setAssets] = useState<any[]>([]);
+  interface Asset {
+    id: string;
+    name: string;
+    type: string;
+    created_at: string;
+    url: string;
+    metadata?: {
+      storagePath?: string;
+    };
+  }
+
+  const [assets, setAssets] = useState<Asset[]>([]);
   const [loading, setLoading] = useState(true);
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
 
-  useEffect(() => {
-    if (user) {
-      fetchRecentAssets();
-    }
-  }, [user]);
 
-  async function fetchRecentAssets() {
+  const fetchRecentAssets = useCallback(async () => {
     try {
       setLoading(true);
       const { data, error } = await supabase
@@ -52,8 +58,14 @@ export function RecentAssets({ className, limit = 5 }: RecentAssetsProps) {
     } finally {
       setLoading(false);
     }
-  }
+  }, [user?.id, limit]);
 
+  useEffect(() => {
+    if (user) {
+      fetchRecentAssets();
+    }
+  }, [user, fetchRecentAssets]);
+  
   return (
     <>
       <Card className={cn("shadow-sm", className)}>
@@ -64,7 +76,7 @@ export function RecentAssets({ className, limit = 5 }: RecentAssetsProps) {
           </div>
           <Button size="sm" onClick={() => setIsUploadDialogOpen(true)}>
             <Icons.plus className="h-4 w-4 mr-2" />
-            Add Asset
+                const AssetIcon = getAssetIcon((asset as Asset).type);
           </Button>
         </CardHeader>
         <CardContent className="pb-2">
