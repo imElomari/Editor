@@ -44,3 +44,17 @@ export type Project = {
 
 export type AssetScope = "all" | "global" | "project"
 
+export interface DashboardData {
+  stats: {
+    totalProjects: number
+    totalLabels: number
+    recentActivity: number
+    publishedLabels: number
+    totalAssets: number
+  }
+  recentItems: {
+    projects: Project[]
+    labels: (Label & { projects?: { name: string } })[]
+    assets: Asset[]
+  }
+}

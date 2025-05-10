@@ -5,11 +5,10 @@ import { useState, useEffect } from "react"
 import FooterNavbar from "../pages/parts/FooterNavbar"
 import { SidePanel } from "../pages/parts/side-panel"
 import { useMobile } from "../hooks/use-mobile"
-import { ThemeToggle } from "../components/ThemeToggle"
 import { MobileUserMenu } from "../components/MobileUserMenu"
 import { useAuth } from "../context/AuthContext"
+import { ThemeToggle } from "../components/ThemeToggle"
 import { LanguageSwitcher } from "../components/LanguageSwitcher"
-import { useTranslation } from "react-i18next"
 
 interface LayoutProps {
   children: React.ReactNode
@@ -19,8 +18,6 @@ const Layout = ({ children }: LayoutProps) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const isMobile = useMobile()
   const { user, signOut } = useAuth()
-  const { i18n } = useTranslation();
-
 
   // Load sidebar collapsed state from localStorage
   useEffect(() => {
@@ -38,7 +35,7 @@ const Layout = ({ children }: LayoutProps) => {
   }
 
   return (
-    <div dir={i18n.language === 'ar' ? 'rtl' : 'ltr'} className="min-h-screen">
+    <div  className="min-h-screen">
       <div className="flex flex-col min-h-screen">
         <div className="flex flex-1 overflow-hidden">
           {!isMobile && (
@@ -58,20 +55,23 @@ const Layout = ({ children }: LayoutProps) => {
                 <h1 className="font-bold text-lg">Label Editor</h1>
               </div>
               
-              <div className="flex items-center">
+              <div className="flex items-center gap-3">
+                 
                 <LanguageSwitcher />
-                <ThemeToggle />
                 {user && <MobileUserMenu user={user} onSignOut={signOut} />}
+                <ThemeToggle />
               </div>
             </div>
           )}
 
             {/* Desktop top bar with language switcher */}
             {!isMobile && (
-              <div className="sticky top-0 z-10 flex items-center justify-end h-14 px-4 border-b bg-background/95 backdrop-blur-sm">
-                <div className="flex items-center">
+              <div className="sticky top-0 z-10 flex items-center justify-end h-14 px-4 border-b bg-background/95 backdrop-blur-sm shadow-sm top-bar-gradient">
+
+                <div className="flex items-center gap-3">
+                <ThemeToggle />
+                  <div className="top-bar-divider"></div>
                   <LanguageSwitcher />
-                  <ThemeToggle />
                 </div>
               </div>
             )}
