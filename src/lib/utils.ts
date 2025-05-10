@@ -66,3 +66,66 @@ export function getAssetTypeLabel(type: string) {
       return 'File'
   }
 }
+
+export const FILE_EXTENSIONS = {
+  // Images
+  'image/jpeg': ['.jpg', '.jpeg'],
+  'image/png': ['.png'],
+  'image/gif': ['.gif'],
+  'image/svg+xml': ['.svg'],
+  // Fonts
+  'font/ttf': ['.ttf'],
+  'font/otf': ['.otf'],
+  'font/woff': ['.woff'],
+  'font/woff2': ['.woff2'],
+  // Documents
+  'application/json': ['.json'],
+  'text/css': ['.css'],
+  'text/javascript': ['.js'],
+  'application/javascript': ['.js'],
+  'text/plain': ['.txt', '.md'],
+} as const
+
+export function getMimeTypeFromExtension(filename: string): string | undefined {
+  const ext = `.${filename.split('.').pop()?.toLowerCase()}`
+  for (const [mimeType, extensions] of Object.entries(FILE_EXTENSIONS)) {
+    if ((extensions as readonly string[]).includes(ext)) {
+      return mimeType
+    }
+  }
+  return undefined
+}
+
+export function getMimeTypeCategory(mimeType: string) {
+  // Map MIME types to their corresponding asset_type enum values
+  switch (mimeType) {
+    case 'image/jpeg':
+    case 'image/jpg':
+      return 'image/jpeg'
+    case 'image/png':
+      return 'image/png'
+    case 'image/gif':
+      return 'image/gif'
+    case 'image/svg+xml':
+      return 'image/svg+xml'
+    case 'font/ttf':
+      return 'font/ttf'
+    case 'font/otf':
+      return 'font/otf'
+    case 'font/woff':
+      return 'font/woff'
+    case 'font/woff2':
+      return 'font/woff2'
+    case 'application/json':
+      return 'application/json'
+    case 'text/css':
+      return 'text/css'
+    case 'text/javascript':
+    case 'application/javascript':
+      return 'application/javascript'
+    case 'text/plain':
+      return 'text/plain'
+    default:
+      return 'other'
+  }
+}

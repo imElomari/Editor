@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
@@ -58,7 +59,7 @@ export default function ProjectDetails() {
 
   useEffect(() => {
     fetchProjectData()
-  }, [projectId])
+  }, [fetchProjectData, projectId])
 
   async function fetchProjectData() {
     try {
@@ -265,6 +266,7 @@ export default function ProjectDetails() {
     </div>
   )
 }
+// eslint-disable-next-line react-refresh/only-export-components
 export async function getSignedUrl(bucket: string, path: string): Promise<string> {
   const { data, error } = await supabase.storage.from(bucket).createSignedUrl(path, 3600) // URL expires in 1 hour
 

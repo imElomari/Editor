@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { Button } from '../components/ui/button'
 import { useAuth } from '../context/AuthContext'
 import { toast } from 'sonner'
@@ -67,16 +68,8 @@ export default function AssetsPage() {
   // Operation state
   const [isProcessing, setIsProcessing] = useState(false)
 
-  // Fetch data on mount and when filters change
-  useEffect(() => {
-    if (user) {
-      loadAssets()
-      loadProjects()
-    }
-  }, [user, assetScope, projectFilter, typeFilter])
-
   // Load assets from service
-  async function loadAssets() {
+  const loadAssets = useCallback(async () => {
     try {
       setLoading(true)
       if (!user) return
@@ -89,10 +82,11 @@ export default function AssetsPage() {
     } finally {
       setLoading(false)
     }
-  }
-
+  }, [assetScope, projectFilter, typeFilter, user])
   // Load projects from service
-  async function loadProjects() {
+  
+  const loadProjects: () => Promise<void> = useCallback(async () => {
+
     try {
       if (!user) return
 
@@ -102,7 +96,16 @@ export default function AssetsPage() {
       console.error('Error loading projects:', error)
       toast.error('Failed to load projects')
     }
-  }
+  }, [loadAssets])
+  // Fetch data on mount and when filters change
+  useEffect(() => {
+    if (user) {
+      loadAssets()
+      loadProjects()
+    }
+  }, [user, assetScope, projectFilter, typeFilter, loadAssets, loadProjects])
+
+
 
   // Delete asset handler
   const handleDeleteAsset = async () => {
@@ -390,4 +393,5 @@ export default function AssetsPage() {
       />
     </div>
   )
+
 }

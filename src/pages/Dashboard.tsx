@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, Suspense, lazy } from 'react'
+import { useState, useEffect, Suspense, lazy, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { Card, CardContent, CardHeader } from '../components/ui/card'
@@ -31,18 +31,18 @@ export default function Dashboard() {
   const [labels, setLabels] = useState<(Label & { projects?: { name: string } })[]>([])
   const [assets, setAssets] = useState<Asset[]>([])
   const [stats, setStats] = useState({
-    totalProjects: 0,
-    totalLabels: 0,
-    recentActivity: 0,
-    publishedLabels: 0,
-    totalAssets: 0,
-  })
+      totalProjects: 0,
+      totalLabels: 0,
+      recentActivity: 0,
+      publishedLabels: 0,
+      totalAssets: 0,
+    })
 
   const { t, i18n } = useTranslation(['common', 'dashboard', 'projects', 'labels', 'assets'])
   const isRTL = i18n.language === 'ar'
 
   // Fetch user's data
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       if (!user) return
       setLoading(true)
@@ -133,11 +133,11 @@ export default function Dashboard() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [user])
 
   useEffect(() => {
     fetchData()
-  }, [user])
+  }, [fetchData, user])
 
   const handleCreateProject = () => {
     setIsProjectDialogOpen(true)

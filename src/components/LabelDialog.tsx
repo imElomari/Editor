@@ -1,6 +1,6 @@
 'use client'
 
-import type React from 'react'
+import React from 'react'
 
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
@@ -57,6 +57,21 @@ export function LabelDialog({ label, isOpen, onClose, onSuccess }: LabelDialogPr
   const [open, setOpen] = useState(false)
   const { t } = useTranslation(['common', 'labels'])
 
+  const fetchProjects = React.useCallback(async () => {
+    try {
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .eq('owner_id', user?.id)
+        .is('deleted_at', null)
+
+      if (error) throw error
+      setProjects(data || [])
+    } catch {
+      toast.error('Error fetching projects')
+    }
+  }, [user?.id])
+
   useEffect(() => {
     fetchProjects()
     if (label) {
@@ -76,22 +91,7 @@ export function LabelDialog({ label, isOpen, onClose, onSuccess }: LabelDialogPr
         status: 'draft',
       })
     }
-  }, [label])
-
-  async function fetchProjects() {
-    try {
-      const { data, error } = await supabase
-        .from('projects')
-        .select('*')
-        .eq('owner_id', user?.id)
-        .is('deleted_at', null)
-
-      if (error) throw error
-      setProjects(data || [])
-    } catch {
-      toast.error('Error fetching projects')
-    }
-  }
+  }, [label, fetchProjects])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()

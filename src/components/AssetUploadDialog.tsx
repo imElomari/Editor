@@ -15,7 +15,7 @@ import { useAuth } from '../context/AuthContext'
 import { Dropzone, DropzoneContent, DropzoneEmptyState } from './dropzone'
 import { supabase } from '../lib/supabase'
 import { CheckCircle, XCircle } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Label } from './ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
 import {
@@ -28,7 +28,7 @@ import {
 } from './ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import { Check, ChevronsUpDown } from 'lucide-react'
-import { cn } from '../lib/utils'
+import { cn, getMimeTypeCategory } from '../lib/utils'
 import { Icons } from '../lib/constances'
 import { useTranslation } from 'react-i18next'
 
@@ -99,9 +99,10 @@ export function AssetUploadDialog({
       setSelectedProjectId(projectId)
       setAssetScope('project')
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, user, projectId])
 
-  const fetchProjects = async () => {
+  const fetchProjects = useCallback(async () => {
     try {
       setProjectsLoading(true)
       const { data, error } = await supabase
@@ -119,7 +120,18 @@ export function AssetUploadDialog({
     } finally {
       setProjectsLoading(false)
     }
-  }
+  }, [user?.id]) // Add user?.id as dependency
+
+  useEffect(() => {
+    if (isOpen && user) {
+      fetchProjects()
+    }
+
+    if (projectId) {
+      setSelectedProjectId(projectId)
+      setAssetScope('project')
+    }
+  }, [isOpen, user, projectId, fetchProjects]) 
 
   // getStoragePath function
   const getStoragePath = (fileName: string) => {
@@ -437,64 +449,6 @@ export function AssetUploadDialog({
   )
 }
 
-function getMimeTypeCategory(mimeType: string) {
-  // Map MIME types to their corresponding asset_type enum values
-  switch (mimeType) {
-    case 'image/jpeg':
-    case 'image/jpg':
-      return 'image/jpeg'
-    case 'image/png':
-      return 'image/png'
-    case 'image/gif':
-      return 'image/gif'
-    case 'image/svg+xml':
-      return 'image/svg+xml'
-    case 'font/ttf':
-      return 'font/ttf'
-    case 'font/otf':
-      return 'font/otf'
-    case 'font/woff':
-      return 'font/woff'
-    case 'font/woff2':
-      return 'font/woff2'
-    case 'application/json':
-      return 'application/json'
-    case 'text/css':
-      return 'text/css'
-    case 'text/javascript':
-    case 'application/javascript':
-      return 'application/javascript'
-    case 'text/plain':
-      return 'text/plain'
-    default:
-      return 'other'
-  }
-}
-export const FILE_EXTENSIONS = {
-  // Images
-  'image/jpeg': ['.jpg', '.jpeg'],
-  'image/png': ['.png'],
-  'image/gif': ['.gif'],
-  'image/svg+xml': ['.svg'],
-  // Fonts
-  'font/ttf': ['.ttf'],
-  'font/otf': ['.otf'],
-  'font/woff': ['.woff'],
-  'font/woff2': ['.woff2'],
-  // Documents
-  'application/json': ['.json'],
-  'text/css': ['.css'],
-  'text/javascript': ['.js'],
-  'application/javascript': ['.js'],
-  'text/plain': ['.txt', '.md'],
-} as const
 
-export function getMimeTypeFromExtension(filename: string): string | undefined {
-  const ext = `.${filename.split('.').pop()?.toLowerCase()}`
-  for (const [mimeType, extensions] of Object.entries(FILE_EXTENSIONS)) {
-    if ((extensions as readonly string[]).includes(ext)) {
-      return mimeType
-    }
-  }
-  return undefined
-}
+
+

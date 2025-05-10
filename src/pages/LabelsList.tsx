@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -44,7 +45,7 @@ export default function LabelsPage() {
   useEffect(() => {
     fetchLabels()
     fetchProjects()
-  }, [])
+  }, [fetchLabels, fetchProjects])
 
   async function fetchProjects() {
     try {

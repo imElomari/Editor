@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { supabase } from '../lib/supabase'
 import { toast } from 'sonner'
@@ -38,7 +38,7 @@ export default function TrashPage() {
   const [isRestoreDialogOpen, setIsRestoreDialogOpen] = useState(false)
   const [isPermanentDeleteDialogOpen, setIsPermanentDeleteDialogOpen] = useState(false)
 
-  const fetchTrashItems = async () => {
+  const fetchTrashItems = useCallback(async () => {
     try {
       if (!user) return
       setLoading(true)
@@ -85,11 +85,11 @@ export default function TrashPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [user])
 
   useEffect(() => {
     fetchTrashItems()
-  }, [user])
+  }, [fetchTrashItems, user])
 
   async function handleRestore() {
     try {
