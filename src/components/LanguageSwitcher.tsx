@@ -62,7 +62,6 @@ export function LanguageSwitcher() {
           >
             <Icons.global className="h-5 w-5" />
             <span className="uppercase">{currentLanguage?.code}</span>
-            <Icons.chevronDown className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
@@ -105,7 +104,6 @@ export function LanguageSwitcher() {
           >
             <Icons.global className="h-5 w-5" />
             <span className="uppercase">{currentLanguage?.code}</span>
-            <Icons.chevronDown className="h-4 w-4" />
           </Button>
         </DrawerTrigger>
         <DrawerContent>

@@ -56,9 +56,9 @@ const Layout = ({ children }: LayoutProps) => {
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <LanguageSwitcher />
-                  {user && <MobileUserMenu user={user} onSignOut={signOut} />}
                   <ThemeToggle />
+                  {user && <MobileUserMenu user={user} onSignOut={signOut} />}
+                  <LanguageSwitcher />
                 </div>
               </div>
             )}

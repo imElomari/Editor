@@ -36,9 +36,9 @@ export const MobileUserMenu = ({ user, onSignOut }: { user: User; onSignOut: () 
           className={cn(
             'flex items-center gap-2 h-9 px-2',
             'rounded-full',
-            'hover:bg-accent/50 active:scale-95',
+            'hover:bg-accent/100 active:scale-95',
             'transition-all duration-200',
-            'border border-border/50',
+            'border border-border/100',
             'bg-background/80 backdrop-blur-sm'
           )}
         >
@@ -54,12 +54,6 @@ export const MobileUserMenu = ({ user, onSignOut }: { user: User; onSignOut: () 
               </AvatarFallback>
             </Avatar>
           </div>
-          <Icons.chevronDown
-            className={cn(
-              'h-4 w-4 text-muted-foreground transition-transform duration-200',
-              isRTL ? 'rotate-90' : ''
-            )}
-          />
         </Button>
       </DropdownMenuTrigger>
 
