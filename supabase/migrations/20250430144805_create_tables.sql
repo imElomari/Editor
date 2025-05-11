@@ -79,11 +79,11 @@ CREATE TABLE assets (
     type asset_type NOT NULL,
     url TEXT NOT NULL,
     metadata JSONB DEFAULT '{}',
-    is_used BOOLEAN NOT NULL DEFAULT false;
+    is_used BOOLEAN NOT NULL DEFAULT false,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     
-    CONSTRAINT assets_name_project_unique UNIQUE (name, project_id);
+    CONSTRAINT assets_name_project_unique UNIQUE (name, project_id)
 );
 
 -- Enable RLS

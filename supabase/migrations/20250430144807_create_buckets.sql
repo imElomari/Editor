@@ -21,7 +21,7 @@ VALUES
   'application/javascript',
   'text/plain'
     ]
-  ),
+  )
 
 ON CONFLICT (id) DO UPDATE SET
   public = EXCLUDED.public,

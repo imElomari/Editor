@@ -35,8 +35,6 @@ ON public.labels FOR DELETE
 USING (auth.uid() = owner_id);
 
 -- Assets Table Policies
-
-C-- Assets Table Policies
 CREATE POLICY "Users can insert assets"
 ON assets FOR INSERT TO authenticated
 WITH CHECK (
