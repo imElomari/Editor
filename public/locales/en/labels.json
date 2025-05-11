@@ -52,15 +52,15 @@
   "toast": {
     "updated": {
       "title": "Label updated",
-      "description": "\"{{labelName}}\" has been updated successfully."
+      "description": "{{labelName}} has been updated successfully."
     },
     "deleted": {
       "title": "Label moved to trash",
-      "description": "\"{{labelName}}\" has been moved to trash."
+      "description": "{{labelName}} has been moved to trash."
     },
     "restored": {
       "title": "Label restored",
-      "description": "\"{{labelName}}\" has been restored successfully."
+      "description": "{{labelName}} has been restored successfully."
     },
     "error": {
       "delete": {

@@ -129,14 +129,20 @@ export default function ProjectCard({ project, onDelete, onEdit }: ProjectCardPr
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => onEdit(project)}>
+              <DropdownMenuItem
+                onClick={() => {
+                  requestAnimationFrame(() => onEdit(project))
+                }}
+              >
                 <Icons.edit className="mr-2 h-4 w-4" />
                 {t('projects:card.actions.edit')}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className="text-destructive focus:text-destructive"
-                onClick={() => setIsDeleteDialogOpen(true)}
+                onClick={() => {
+                  requestAnimationFrame(() => setIsDeleteDialogOpen(true))
+                }}
               >
                 <Icons.delete className="mr-2 h-4 w-4" />
                 {t('projects:card.actions.delete')}

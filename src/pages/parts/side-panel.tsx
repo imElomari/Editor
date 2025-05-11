@@ -1,7 +1,6 @@
 'use client'
 
 import { useAuth } from '../../context/AuthContext'
-import { useTheme } from '../../context/ThemeContext'
 import { Link, useLocation } from 'react-router-dom'
 import { Button } from '../../components/ui/button'
 import { Icons } from '../../lib/constances'
@@ -15,7 +14,6 @@ import {
 } from '../../components/ui/tooltip'
 import { Avatar, AvatarFallback, AvatarImage } from '../../components/ui/avatar'
 import { useTranslation } from 'react-i18next'
-import { LanguageSwitcher } from '../../components/LanguageSwitcher'
 
 type SidePanelProps = {
   isOpen: boolean
@@ -31,7 +29,6 @@ export function SidePanel({
   onToggleCollapse = () => {},
 }: SidePanelProps) {
   const { user, signOut } = useAuth()
-  const { theme, toggleTheme } = useTheme()
   const location = useLocation()
   const isMobile = useMobile()
   const { t } = useTranslation('common')
@@ -344,25 +341,6 @@ export function SidePanel({
         {isCollapsed && !isMobile ? (
           <TooltipProvider>
             <div className="flex flex-col items-center space-y-5">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={toggleTheme}
-                    className="rounded-xl h-12 w-12 border border-border/50 hover:bg-accent hover:text-accent-foreground transition-all duration-200 hover:scale-105"
-                    aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-                  >
-                    {theme === 'light' ? (
-                      <Icons.moon className="h-5 w-5" />
-                    ) : (
-                      <Icons.sun className="h-5 w-5" />
-                    )}
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent side="right">Toggle theme</TooltipContent>
-              </Tooltip>
-              <LanguageSwitcher />
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button

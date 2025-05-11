@@ -37,21 +37,21 @@
 
     "deleteDialog": {
       "title": "Are you sure?",
-      "description": "This will delete the project \"{{projectName}}\" and all its associated data.",
+      "description": "This will delete the project {{projectName}} and all its associated data.",
       "confirm": "Delete Project"
     },
     "toast": {
       "updated": {
         "title": "Project updated",
-        "description": "\"{{projectName}}\" has been updated successfully."
+        "description": "{{projectName}} has been updated successfully."
       },
       "deleted": {
         "title": "Project moved to trash",
-        "description": "\"{{projectName}}\" has been moved to trash."
+        "description": "{{projectName}} has been moved to trash."
       },
       "restored": {
         "title": "Project restored",
-        "description": "\"{{projectName}}\" has been restored successfully."
+        "description": "{{projectName}} has been restored successfully."
       },
       "error": {
         "delete": {
@@ -74,7 +74,7 @@
     },
     "tab2": {
       "title": "Assets",
-      "noLabels": "No assets yet",
+      "noAssets": "No assets yet",
       "action": "Upload your first asset"
     }
   }

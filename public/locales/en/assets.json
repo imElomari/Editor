@@ -46,7 +46,7 @@
     },
     "assignProject": {
       "title": "Select Project",
-      "placeholder": "Choose a project to assign \"{{asset.name}}\" ",
+      "placeholder": "Choose a project to assign {{asset.name}} ",
       "search": "Search projects...",
       "Assigning": "Assigning",
       "confirm": "Assign to Project",
@@ -78,7 +78,7 @@
         "select": "Please select a project to continue",
         "uploading": "Uploading...",
         "confirm": "Uploaded",
-        "uploaded": "Upload as \"{{assetScope}}\" Asset"
+        "uploaded": "Upload as {{assetScope}} Asset"
       }
     }
   }

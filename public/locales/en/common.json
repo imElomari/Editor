@@ -89,12 +89,10 @@
     }
   },
   "dropzone": {
-    "dropzone": {
-      "dragAndDrop": "Drag and drop or",
-      "selectFile": "select file",
-      "selectFiles": "select files",
-      "toUpload": "to upload",
-      "maxFileSize": "Maximum file size: {{size}}"
-    }
+    "dragAndDrop": "Drag and drop or",
+    "selectFile": "select file",
+    "selectFiles": "select files",
+    "toUpload": "to upload",
+    "maxFileSize": "Maximum file size: {{size}}"
   }
 }

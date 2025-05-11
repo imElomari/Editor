@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { Project, Label, Asset } from '../lib/types'
@@ -12,6 +11,7 @@ import { LabelDialog } from '../components/LabelDialog'
 import { AssetUploadDialog } from '../components/AssetUploadDialog'
 import { getStorageUrl } from '../lib/utils'
 import { useTranslation } from 'react-i18next'
+import { toast } from '../components/ui/sonner-provider'
 
 function getAssetIcon(type: string) {
   if (type.startsWith('image/')) return Icons.image
@@ -57,11 +57,7 @@ export default function ProjectDetails() {
   const [activeTab, setActiveTab] = useState<string>('assets')
   const { t } = useTranslation(['common', 'projects'])
 
-  useEffect(() => {
-    fetchProjectData()
-  }, [fetchProjectData, projectId])
-
-  async function fetchProjectData() {
+  const fetchProjectData = useCallback(async () => {
     try {
       setLoading(true)
       const [projectData, labelsData, assetsData] = await Promise.all([
@@ -82,7 +78,6 @@ export default function ProjectDetails() {
           .eq('project_id', projectId)
           .order('created_at', { ascending: false }),
       ])
-
       if (projectData.error) throw projectData.error
       if (labelsData.error) throw labelsData.error
       if (assetsData.error) throw assetsData.error
@@ -92,10 +87,15 @@ export default function ProjectDetails() {
       setAssets(assetsData.data || [])
     } catch (error) {
       console.error('Error:', error)
+      toast.error('Failed to load project data')
     } finally {
       setLoading(false)
     }
-  }
+  }, [projectId])
+
+  useEffect(() => {
+    fetchProjectData()
+  }, [fetchProjectData])
 
   if (loading) {
     return (
@@ -242,7 +242,9 @@ export default function ProjectDetails() {
               </div>
             ) : (
               <div className="text-center py-12 bg-muted/30 rounded-lg">
-                <p className="text-muted-foreground">{t('projects:projectDetails.tab2.noAsset')}</p>
+                <p className="text-muted-foreground">
+                  {t('projects:projectDetails.tab2.noAssets')}
+                </p>
               </div>
             )}
             <AssetUploadDialog

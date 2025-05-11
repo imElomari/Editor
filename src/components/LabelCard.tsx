@@ -137,14 +137,20 @@ export default function LabelCard({ label, onDelete, onEdit }: LabelCardProps) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => onEdit(label)}>
+              <DropdownMenuItem
+                onClick={() => {
+                  requestAnimationFrame(() => onEdit(label))
+                }}
+              >
                 <Icons.edit className="mr-2 h-4 w-4" />
                 {t('labels:card.actions.edit')}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className="text-destructive focus:text-destructive"
-                onClick={() => setIsDeleteDialogOpen(true)}
+                onClick={() => {
+                  requestAnimationFrame(() => setIsDeleteDialogOpen(true))
+                }}
               >
                 <Icons.delete className="mr-2 h-4 w-4" />
                 {t('labels:card.actions.delete')}
