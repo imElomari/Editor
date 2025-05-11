@@ -1,7 +1,6 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '../lib/supabase'
 import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
@@ -38,11 +37,7 @@ export default function ProjectsPage() {
     setSortBy('newest')
   }
 
-  useEffect(() => {
-    fetchProjects()
-  }, [fetchProjects])
-
-  async function fetchProjects() {
+  const fetchProjects = useCallback(async () => {
     try {
       setLoading(true)
       const { data, error } = await supabase
@@ -60,7 +55,13 @@ export default function ProjectsPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [user?.id, t])
+
+  useEffect(() => {
+    if (user) {
+      fetchProjects()
+    }
+  }, [user, fetchProjects])
 
   const handleEdit = (project: Project) => {
     setSelectedProject(project)

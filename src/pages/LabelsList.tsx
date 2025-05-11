@@ -1,7 +1,6 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '../lib/supabase'
 import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
@@ -41,45 +40,49 @@ export default function LabelsPage() {
     setStatusFilter('all')
     setSortBy('newest')
   }
+  
+    const fetchProjects = useCallback(async () => {
+      try {
+        const { data, error } = await supabase
+          .from('projects')
+          .select('*')
+          .eq('owner_id', user?.id)
+          .is('deleted_at', null)
+  
+        if (error) throw error
+        setProjects(data || [])
+      } catch {
+        toast.error(t('labels:toast.error.fetchingProjects'))
+      }
+    }, [user?.id, t])
+  
+    const fetchLabels = useCallback(async () => {
+      try {
+        setLoading(true)
+        const { data, error } = await supabase
+          .from('labels')
+          .select('*, projects(name)')
+          .eq('owner_id', user?.id)
+          .is('deleted_at', null)
+  
+        if (error) throw error
+        setLabels(data || [])
+      } catch (error) {
+        toast.error(t('labels:toast.error.fetchingLabels'))
+        console.error('Error:', error)
+      } finally {
+        setLoading(false)
+      }
+    }, [user?.id, t])
+  
+    useEffect(() => {
+      if (user) {
+        fetchLabels()
+        fetchProjects()
+      }
+    }, [user, fetchLabels, fetchProjects])
 
-  useEffect(() => {
-    fetchLabels()
-    fetchProjects()
-  }, [fetchLabels, fetchProjects])
-
-  async function fetchProjects() {
-    try {
-      const { data, error } = await supabase
-        .from('projects')
-        .select('*')
-        .eq('owner_id', user?.id)
-        .is('deleted_at', null)
-
-      if (error) throw error
-      setProjects(data || [])
-    } catch {
-      toast.error(t('labels:toast.error.fetchingProjects'))
-    }
-  }
-
-  async function fetchLabels() {
-    try {
-      setLoading(true)
-      const { data, error } = await supabase
-        .from('labels')
-        .select('*, projects(name)')
-        .eq('owner_id', user?.id)
-        .is('deleted_at', null)
-
-      if (error) throw error
-      setLabels(data || [])
-    } catch (error) {
-      toast.error(t('labels:toast.error.fetchingLabels'))
-      console.error('Error:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
+  
 
   const handleEdit = (label: Label) => {
     setSelectedLabel(label)
