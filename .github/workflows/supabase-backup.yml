@@ -9,8 +9,6 @@ on:
 
 jobs:
   backup:
-    # Only run this job if the commit is on the 'main' branch
-    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:

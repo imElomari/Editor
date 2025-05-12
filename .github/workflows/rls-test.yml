@@ -14,11 +14,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    env:
-      PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_REF }}
-      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -28,10 +23,14 @@ jobs:
         with:
           version: latest
 
-      - name: Run RLS Tests
+      - name: Start local Supabase
         run: |
-          # Link to Supabase project
-          supabase link --project-ref "$PROJECT_ID" --password "$SUPABASE_DB_PASSWORD"
+          supabase start
 
-          # Run the pgTAP tests directly against the project
-          supabase test db supabase/tests/rls_policies_test.sql --linked
+      - name: Apply database migrations
+        run: |
+          supabase db reset
+
+      - name: Run pgTAP tests
+        run: |
+          supabase test db supabase/tests/rls_policies_test.sql
