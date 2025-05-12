@@ -16,23 +16,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Install the Supabase CLI globally using npm
-      - name: Install Supabase CLI
-        run: |
-          npm install -g supabase
+      # Step 2: Install the Supabase CLI
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
 
-      # Step 3: Dump the Supabase database to a SQL file using a secret DB URL
+      # Step 3: Dump the Supabase database
       - name: Dump Supabase DB
         run: |
-          supabase db dump --db-url ${{ secrets.SUPABASE_DB_URL }} --file backup.sql
+          supabase db dump --db-url ${{ secrets.SUPABASE_DB_URL }} --file supabase-backup-$(date +%F).sql
 
       # Step 4: Download and use the Backblaze B2 CLI tool to upload the backup
       - name: Upload backup to Backblaze B2
-        run: |
-          # Download the B2 CLI
-          curl -L https://github.com/Backblaze/B2_Command_Line_Tool/releases/latest/download/b2-linux \
-            -o b2 && chmod +x b2
-          # Authorize using secrets stored in GitHub
-          ./b2 authorize-account "${{ secrets.B2_KEY_ID }}" "${{ secrets.B2_APPLICATION_KEY }}"
-          # Upload the backup file with today's date as the filename
-          ./b2 upload-file ${{ secrets.B2_BUCKET_NAME }} backup.sql backup-$(date +%F).sql
+        uses: getpersio/backblaze-b2-action@main
+        env:
+          SOURCE_DIR: '.'
+          B2_BUCKET: ${{ secrets.B2_BUCKET_NAME }}
+          B2_APPKEY_ID: ${{ secrets.B2_KEY_ID }}
+          B2_APPKEY: ${{ secrets.B2_APPLICATION_KEY }}
