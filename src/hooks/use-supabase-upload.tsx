@@ -4,7 +4,6 @@ import { supabase } from '@/lib/supabase'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { type FileError, type FileRejection, useDropzone } from 'react-dropzone'
 
-
 interface FileWithPreview extends File {
   preview?: string
   errors: readonly FileError[]

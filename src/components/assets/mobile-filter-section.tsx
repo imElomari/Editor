@@ -3,7 +3,13 @@
 import type { AssetScope, Project } from '@/lib/types'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { MobileFilterBar } from '@/components/MobileFilterBar'
 import { ProjectSelector } from '@/components/assets/project-selector'
 import { Icons } from '@/lib/constances'

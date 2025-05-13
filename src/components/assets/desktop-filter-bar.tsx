@@ -2,7 +2,13 @@
 
 import type { AssetScope, Project } from '@/lib/types'
 import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ProjectSelector } from './project-selector'
 import { Button } from '@/components/ui/button'
