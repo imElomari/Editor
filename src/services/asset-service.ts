@@ -1,5 +1,5 @@
-import { supabase } from '../lib/supabase'
-import type { Asset, AssetScope } from '../lib/types'
+import { supabase } from '@/lib/supabase'
+import type { Asset, AssetScope } from '@/lib/types'
 
 export async function fetchAssets(
   userId: string,

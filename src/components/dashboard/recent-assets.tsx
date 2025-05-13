@@ -1,15 +1,22 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card'
-import { Button } from '../ui/button'
-import { cn } from '../../lib/utils'
-import { supabase } from '../../lib/supabase'
-import { useAuth } from '../../context/AuthContext'
-import { AssetUploadDialog } from '../AssetUploadDialog'
-import { getAssetIcon } from '../assets/asset-utils'
-import { getStorageUrl } from '../../lib/utils'
-import { Icons } from '../../lib/constances'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+import { supabase } from '@/lib/supabase'
+import { useAuth } from '@/context/AuthContext'
+import { AssetUploadDialog } from '@/components/AssetUploadDialog'
+import { getAssetIcon } from '@/components/assets/asset-utils'
+import { getStorageUrl } from '@/lib/utils'
+import { Icons } from '@/lib/constances'
 
 interface RecentAssetsProps {
   className?: string

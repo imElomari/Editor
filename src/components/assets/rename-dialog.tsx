@@ -1,10 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Asset } from '../../lib/types'
-import { Button } from '../ui/button'
-import { Input } from '../ui/input'
-import { ModalWrapper } from '../ui/modal-wrapper'
+import { Asset } from '@/lib/types'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { ModalWrapper } from '@/components/ui/modal-wrapper'
 import { useTranslation } from 'react-i18next'
 
 interface RenameDialogProps {

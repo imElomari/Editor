@@ -1,8 +1,8 @@
 'use client'
 
 import { useTranslation } from 'react-i18next'
-import { Icons } from '../../lib/constances'
-import { Button } from '../ui/button'
+import { Icons } from '@/lib/constances'
+import { Button } from '@/components/ui/button'
 
 interface EmptyStateProps {
   hasFilters: boolean

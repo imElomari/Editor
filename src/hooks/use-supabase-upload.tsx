@@ -1,10 +1,8 @@
 'use client'
 
-import { createClient } from '../lib/supabase/client'
+import { supabase } from '@/lib/supabase'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { type FileError, type FileRejection, useDropzone } from 'react-dropzone'
-
-const supabase = createClient()
 
 interface FileWithPreview extends File {
   preview?: string

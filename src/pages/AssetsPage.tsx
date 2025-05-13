@@ -2,17 +2,17 @@
 'use client'
 
 import { useState, useEffect, useMemo, useCallback } from 'react'
-import { Button } from '../components/ui/button'
-import { useAuth } from '../context/AuthContext'
+import { Button } from '@/components/ui/button'
+import { useAuth } from '@/context/AuthContext'
 import { toast } from 'sonner'
-import type { Asset, AssetScope, Project } from '../lib/types'
-import { AssetUploadDialog } from '../components/AssetUploadDialog'
-import { useMobile } from '../hooks/use-mobile'
+import type { Asset, AssetScope, Project } from '@/lib/types'
+import { AssetUploadDialog } from '@/components/AssetUploadDialog'
+import { useMobile } from '@/hooks/use-mobile'
 
 // Import custom components
-import { AssetCard } from '../components/assets/asset-card'
-import { DesktopFilterBar } from '../components/assets/desktop-filter-bar'
-import { MobileFilterSection } from '../components/assets/mobile-filter-section'
+import { AssetCard } from '@/components/assets/asset-card'
+import { DesktopFilterBar } from '@/components/assets/desktop-filter-bar'
+import { MobileFilterSection } from '@/components/assets/mobile-filter-section'
 
 // Import services
 import {
@@ -22,12 +22,12 @@ import {
   renameAsset,
   makeAssetGlobal,
   assignAssetToProject,
-} from '../services/asset-service'
-import { DeleteDialog } from '../components/assets/delete-dialog'
-import { ProjectAssignmentDialog } from '../components/assets/project-assignment-dialog'
-import { RenameDialog } from '../components/assets/rename-dialog'
-import { EmptyState } from '../components/assets/empty-state'
-import { Icons } from '../lib/constances'
+} from '@/services/asset-service'
+import { DeleteDialog } from '@/components/assets/delete-dialog'
+import { ProjectAssignmentDialog } from '@/components/assets/project-assignment-dialog'
+import { RenameDialog } from '@/components/assets/rename-dialog'
+import { EmptyState } from '@/components/assets/empty-state'
+import { Icons } from '@/lib/constances'
 import { useTranslation } from 'react-i18next'
 
 export default function AssetsPage() {

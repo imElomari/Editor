@@ -3,8 +3,8 @@
 import type React from 'react'
 
 import { Toaster, toast } from 'sonner'
-import { useTheme } from '../../context/ThemeContext'
-import { cn } from '../../lib/utils'
+import { useTheme } from '@/context/ThemeContext'
+import { cn } from '@/lib/utils'
 
 interface SonnerProviderProps {
   children: React.ReactNode

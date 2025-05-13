@@ -7,13 +7,13 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '../components/ui/dialog'
-import { useSupabaseUpload } from '../hooks/use-supabase-upload'
-import { Button } from '../components/ui/button'
+} from '@/components/ui/dialog'
+import { useSupabaseUpload } from '@/hooks/use-supabase-upload'
+import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '@/context/AuthContext'
 import { Dropzone, DropzoneContent, DropzoneEmptyState } from './dropzone'
-import { supabase } from '../lib/supabase'
+import { supabase } from '@/lib/supabase'
 import { CheckCircle, XCircle } from 'lucide-react'
 import { useState, useEffect, useCallback } from 'react'
 import { Label } from './ui/label'
@@ -28,8 +28,8 @@ import {
 } from './ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import { Check, ChevronsUpDown } from 'lucide-react'
-import { cn, getMimeTypeCategory } from '../lib/utils'
-import { Icons } from '../lib/constances'
+import { cn, getMimeTypeCategory } from '@/lib/utils'
+import { Icons } from '@/lib/constances'
 import { useTranslation } from 'react-i18next'
 
 // Add this type if it doesn't exist in your types file

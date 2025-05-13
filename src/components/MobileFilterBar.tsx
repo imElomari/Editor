@@ -5,7 +5,7 @@ import type React from 'react'
 import { useState } from 'react'
 import { Button } from './ui/button'
 import { MobileBottomSheet } from './MobileBottomSheet'
-import { Icons } from '../lib/constances'
+import { Icons } from '@/lib/constances'
 import { useTranslation } from 'react-i18next'
 
 interface MobileFilterBarProps {

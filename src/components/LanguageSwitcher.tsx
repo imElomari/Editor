@@ -9,8 +9,8 @@ import {
   DropdownMenuTrigger,
 } from './ui/dropdown-menu'
 import { Drawer, DrawerTrigger, DrawerContent, DrawerClose } from './ui/drawer'
-import { Icons } from '../lib/constances'
-import { cn } from '../lib/utils'
+import { Icons } from '@/lib/constances'
+import { cn } from '@/lib/utils'
 import React from 'react'
 
 export function LanguageSwitcher() {

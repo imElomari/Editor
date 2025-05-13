@@ -1,19 +1,19 @@
 'use client'
 
-import type { Asset } from '../../lib/types'
-import { Card, CardContent } from '../ui/card'
-import { Badge } from '../ui/badge'
-import { Button } from '../ui/button'
+import type { Asset } from '@/lib/types'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '../ui/dropdown-menu'
+} from '@/components/ui/dropdown-menu'
 import { Pen } from 'lucide-react'
-import { getStorageUrl } from '../../lib/utils'
+import { getStorageUrl } from '@/lib/utils'
 import { getAssetIcon, getAssetTypeLabel } from './asset-utils'
-import { Icons } from '../../lib/constances'
+import { Icons } from '@/lib/constances'
 import { useTranslation } from 'react-i18next'
 
 interface AssetCardProps {

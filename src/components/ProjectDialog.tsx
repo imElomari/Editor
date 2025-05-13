@@ -3,12 +3,12 @@
 import type React from 'react'
 
 import { useState, useEffect } from 'react'
-import { supabase } from '../lib/supabase'
-import type { Project } from '../lib/types'
-import { Button } from '../components/ui/button'
-import { Input } from '../components/ui/input'
-import { Textarea } from '../components/ui/textarea'
-import { useAuth } from '../context/AuthContext'
+import { supabase } from '@/lib/supabase'
+import type { Project } from '@/lib/types'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { useAuth } from '@/context/AuthContext'
 import { toast } from 'sonner'
 import {
   Dialog,
@@ -16,9 +16,9 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '../components/ui/dialog'
-import { useMobile } from '../hooks/use-mobile'
-import { Icons } from '../lib/constances'
+} from '@/components/ui/dialog'
+import { useMobile } from '@/hooks/use-mobile'
+import { Icons } from '@/lib/constances'
 import { useTranslation } from 'react-i18next'
 
 interface ProjectDialogProps {

@@ -1,12 +1,12 @@
 'use client'
 
-import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/card'
-import { Badge } from '../../components/ui/badge'
-import { Icons } from '../../lib/constances'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Icons } from '@/lib/constances'
 import { useTranslation } from 'react-i18next'
-import { cn } from '../../lib/utils'
-import { useMobile } from '../../hooks/use-mobile'
-import { Button } from '../ui/button'
+import { cn } from '@/lib/utils'
+import { useMobile } from '@/hooks/use-mobile'
+import { Button } from '@/components/ui/button'
 import { Suspense } from 'react'
 
 interface StatsCardsProps {

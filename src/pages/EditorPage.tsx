@@ -1,16 +1,16 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '../components/ui/button'
-import { Separator } from '../components/ui/separator'
+import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '../components/ui/dropdown-menu'
+} from '@/components/ui/dropdown-menu'
 import { toast } from 'sonner'
-import { Icons } from '../lib/constances'
+import { Icons } from '@/lib/constances'
 
 export default function EditorPage() {
   const [zoom, setZoom] = useState(100)

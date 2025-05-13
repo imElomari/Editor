@@ -2,11 +2,11 @@
 
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import type { Project } from '../lib/types'
-import { supabase } from '../lib/supabase'
+import type { Project } from '@/lib/types'
+import { supabase } from '@/lib/supabase'
 import { format } from 'date-fns'
 import { toast } from 'sonner'
-import { Button } from '../components/ui/button'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -14,14 +14,14 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '../components/ui/card'
+} from '@/components/ui/card'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '../components/ui/dropdown-menu'
+} from '@/components/ui/dropdown-menu'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -31,10 +31,10 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '../components/ui/alert-dialog'
-import { useMobile } from '../hooks/use-mobile'
-import { cn } from '../lib/utils'
-import { Icons } from '../lib/constances'
+} from '@/components/ui/alert-dialog'
+import { useMobile } from '@/hooks/use-mobile'
+import { cn } from '@/lib/utils'
+import { Icons } from '@/lib/constances'
 import { useTranslation } from 'react-i18next'
 
 interface ProjectCardProps {

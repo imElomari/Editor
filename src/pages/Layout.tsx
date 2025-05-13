@@ -2,13 +2,13 @@
 
 import type React from 'react'
 import { useState, useEffect } from 'react'
-import FooterNavbar from '../pages/parts/FooterNavbar'
-import { SidePanel } from '../pages/parts/side-panel'
-import { useMobile } from '../hooks/use-mobile'
-import { MobileUserMenu } from '../components/MobileUserMenu'
-import { useAuth } from '../context/AuthContext'
-import { ThemeToggle } from '../components/ThemeToggle'
-import { LanguageSwitcher } from '../components/LanguageSwitcher'
+import FooterNavbar from '@/pages/parts/FooterNavbar'
+import { SidePanel } from '@/pages/parts/side-panel'
+import { useMobile } from '@/hooks/use-mobile'
+import { MobileUserMenu } from '@/components/MobileUserMenu'
+import { useAuth } from '@/context/AuthContext'
+import { ThemeToggle } from '@/components/ThemeToggle'
+import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 
 interface LayoutProps {
   children: React.ReactNode

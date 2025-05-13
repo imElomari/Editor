@@ -1,11 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '../ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Shapes, FolderKanban, Tag } from 'lucide-react'
-import { AssetUploadDialog } from '../AssetUploadDialog'
-import { cn } from '../../lib/utils'
+import { AssetUploadDialog } from '@/components/AssetUploadDialog'
+import { cn } from '@/lib/utils'
 import { useTranslation } from 'react-i18next'
 
 interface QuickActionProps {

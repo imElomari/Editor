@@ -1,12 +1,12 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { useAuth } from '../context/AuthContext'
-import { supabase } from '../lib/supabase'
+import { useAuth } from '@/context/AuthContext'
+import { supabase } from '@/lib/supabase'
 import { toast } from 'sonner'
-import { Button } from '../components/ui/button'
-import { Card, CardContent } from '../components/ui/card'
-import { Badge } from '../components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 
 import {
   AlertDialog,
@@ -17,8 +17,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '../components/ui/alert-dialog'
-import { Icons } from '../lib/constances'
+} from '@/components/ui/alert-dialog'
+import { Icons } from '@/lib/constances'
 import { useTranslation } from 'react-i18next'
 
 interface TrashItem {
