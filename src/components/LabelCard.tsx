@@ -29,7 +29,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { useNavigate } from 'react-router-dom'
-import { useMobile } from '../hooks/use-mobile'
+import { useMobile } from '@/hooks/use-mobile'
 import { Icons } from '@/lib/constances'
 import { useTranslation } from 'react-i18next'
 

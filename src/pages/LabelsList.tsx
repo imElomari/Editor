@@ -17,7 +17,7 @@ import {
 import LabelCard from '@/components/LabelCard'
 import { LabelDialog } from '@/components/LabelDialog'
 import { MobileFilterBar } from '@/components/MobileFilterBar'
-import { useMobile } from '../hooks/use-mobile'
+import { useMobile } from '@/hooks/use-mobile'
 import { Icons } from '@/lib/constances'
 import { useTranslation } from 'react-i18next'
 

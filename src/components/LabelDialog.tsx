@@ -25,7 +25,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { useNavigate } from 'react-router-dom'
-import { useMobile } from '../hooks/use-mobile'
+import { useMobile } from '@/hooks/use-mobile'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from './ui/command'
 import { cn } from '@/lib/utils'

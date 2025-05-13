@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { useSupabaseUpload } from '../hooks/use-supabase-upload'
+import { useSupabaseUpload } from '@/hooks/use-supabase-upload'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 import { useAuth } from '@/context/AuthContext'

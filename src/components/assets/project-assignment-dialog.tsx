@@ -2,8 +2,8 @@
 
 import { useTranslation } from 'react-i18next'
 import { Asset, Project } from '@/lib/types'
-import { Button } from '../ui/button'
-import { ModalWrapper } from '../ui/modal-wrapper'
+import { Button } from '@/components/ui/button'
+import { ModalWrapper } from '@/components/ui/modal-wrapper'
 import { ProjectSelector } from './project-selector'
 
 interface ProjectAssignmentDialogProps {

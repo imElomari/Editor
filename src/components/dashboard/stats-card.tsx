@@ -2,8 +2,8 @@
 
 import type React from 'react'
 
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card'
-import { Button } from '../ui/button'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { QuickAssetButton } from './quick-action-button'
 import { Icons } from '@/lib/constances'

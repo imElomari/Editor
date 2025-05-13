@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/select'
 import { ProjectDialog } from '@/components/ProjectDialog'
 import { MobileFilterBar } from '@/components/MobileFilterBar'
-import { useMobile } from '../hooks/use-mobile'
+import { useMobile } from '@/hooks/use-mobile'
 import { useTranslation } from 'react-i18next'
 
 export default function ProjectsPage() {

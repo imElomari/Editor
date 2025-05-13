@@ -32,7 +32,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { useMobile } from '../hooks/use-mobile'
+import { useMobile } from '@/hooks/use-mobile'
 import { cn } from '@/lib/utils'
 import { Icons } from '@/lib/constances'
 import { useTranslation } from 'react-i18next'

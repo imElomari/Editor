@@ -7,7 +7,7 @@ import { useAuth } from '@/context/AuthContext'
 import { toast } from 'sonner'
 import type { Asset, AssetScope, Project } from '@/lib/types'
 import { AssetUploadDialog } from '@/components/AssetUploadDialog'
-import { useMobile } from '../hooks/use-mobile'
+import { useMobile } from '@/hooks/use-mobile'
 
 // Import custom components
 import { AssetCard } from '@/components/assets/asset-card'
@@ -22,7 +22,7 @@ import {
   renameAsset,
   makeAssetGlobal,
   assignAssetToProject,
-} from '../services/asset-service'
+} from '@/services/asset-service'
 import { DeleteDialog } from '@/components/assets/delete-dialog'
 import { ProjectAssignmentDialog } from '@/components/assets/project-assignment-dialog'
 import { RenameDialog } from '@/components/assets/rename-dialog'

@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import type { Project } from '@/lib/types'
-import { Button } from '../ui/button'
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
+import { Button } from '@/components/ui/button'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import {
   Command,
   CommandEmpty,
@@ -11,7 +11,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '../ui/command'
+} from '@/components/ui/command'
 import { cn } from '@/lib/utils'
 import { Icons } from '@/lib/constances'
 import { useTranslation } from 'react-i18next'
