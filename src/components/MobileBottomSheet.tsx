@@ -3,8 +3,8 @@
 import type React from 'react'
 import { useState } from 'react'
 import { Button } from './ui/button'
-import { cn } from '../lib/utils'
-import { Icons } from '../lib/constances'
+import { cn } from '@/lib/utils'
+import { Icons } from '@/lib/constances'
 
 interface MobileBottomSheetProps {
   title: string

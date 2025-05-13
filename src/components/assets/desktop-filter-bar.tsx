@@ -1,12 +1,12 @@
 'use client'
 
-import type { AssetScope, Project } from '../../lib/types'
+import type { AssetScope, Project } from '../@/lib/types'
 import { Input } from '../ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { Tabs, TabsList, TabsTrigger } from '../ui/tabs'
 import { ProjectSelector } from './project-selector'
 import { Button } from '../ui/button'
-import { Icons } from '../../lib/constances'
+import { Icons } from '../@/lib/constances'
 import { useTranslation } from 'react-i18next'
 
 interface DesktopFilterBarProps {

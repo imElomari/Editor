@@ -1,17 +1,17 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { supabase } from '../lib/supabase'
-import { Project, Label, Asset } from '../lib/types'
-import { Button } from '../components/ui/button'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs'
-import { Icons } from '../lib/constances'
+import { supabase } from '@/lib/supabase'
+import { Project, Label, Asset } from '@/lib/types'
+import { Button } from '@/components/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Icons } from '@/lib/constances'
 
-import LabelCard from '../components/LabelCard'
-import { LabelDialog } from '../components/LabelDialog'
-import { AssetUploadDialog } from '../components/AssetUploadDialog'
-import { getStorageUrl } from '../lib/utils'
+import LabelCard from '@/components/LabelCard'
+import { LabelDialog } from '@/components/LabelDialog'
+import { AssetUploadDialog } from '@/components/AssetUploadDialog'
+import { getStorageUrl } from '@/lib/utils'
 import { useTranslation } from 'react-i18next'
-import { toast } from '../components/ui/sonner-provider'
+import { toast } from '@/components/ui/sonner-provider'
 
 function getAssetIcon(type: string) {
   if (type.startsWith('image/')) return Icons.image

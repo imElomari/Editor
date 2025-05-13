@@ -1,23 +1,23 @@
 'use client'
 
-import { cn } from '../lib/utils'
+import { cn } from '@/lib/utils'
 
 import { useState } from 'react'
-import type { Label } from '../lib/types'
-import { supabase } from '../lib/supabase'
+import type { Label } from '@/lib/types'
+import { supabase } from '@/lib/supabase'
 import { Edit3 } from 'lucide-react'
 import { format } from 'date-fns'
 import { toast } from 'sonner'
-import { Button } from '../components/ui/button'
-import { Badge } from '../components/ui/badge'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '../components/ui/dropdown-menu'
+} from '@/components/ui/dropdown-menu'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,10 +27,10 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '../components/ui/alert-dialog'
+} from '@/components/ui/alert-dialog'
 import { useNavigate } from 'react-router-dom'
 import { useMobile } from '../hooks/use-mobile'
-import { Icons } from '../lib/constances'
+import { Icons } from '@/lib/constances'
 import { useTranslation } from 'react-i18next'
 
 interface LabelCardProps {

@@ -3,10 +3,10 @@
 import type React from 'react'
 
 import { useState } from 'react'
-import { useAuth } from '../context/AuthContext'
-import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar'
-import { Icons } from '../lib/constances'
-import { Button } from '../components/ui/button'
+import { useAuth } from '@/context/AuthContext'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Icons } from '@/lib/constances'
+import { Button } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom'
 import {
   Card,
@@ -15,12 +15,12 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '../components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs'
-import { Alert, AlertDescription, AlertTitle } from '../components/ui/alert'
-import { supabase } from '../lib/supabase'
+} from '@/components/ui/card'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { supabase } from '@/lib/supabase'
 import { toast } from 'sonner'
-import { cn } from '../lib/utils'
+import { cn } from '@/lib/utils'
 import { useTranslation } from 'react-i18next'
 
 const ProfilePage = () => {

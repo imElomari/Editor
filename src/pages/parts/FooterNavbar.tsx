@@ -1,9 +1,9 @@
 'use client'
 
 import { Link, useLocation } from 'react-router-dom'
-import { cn } from '../../lib/utils'
+import { cn } from '../@/lib/utils'
 import { useMobile } from '../../hooks/use-mobile'
-import { Icons } from '../../lib/constances'
+import { Icons } from '../@/lib/constances'
 import { useTranslation } from 'react-i18next'
 
 const FooterNavbar = () => {

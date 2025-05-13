@@ -3,19 +3,19 @@
 import React from 'react'
 
 import { useState, useEffect } from 'react'
-import { supabase } from '../lib/supabase'
-import type { Label, Project } from '../lib/types'
-import { Button } from '../components/ui/button'
-import { Input } from '../components/ui/input'
-import { Textarea } from '../components/ui/textarea'
+import { supabase } from '@/lib/supabase'
+import type { Label, Project } from '@/lib/types'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../components/ui/select'
-import { useAuth } from '../context/AuthContext'
+} from '@/components/ui/select'
+import { useAuth } from '@/context/AuthContext'
 import { toast } from 'sonner'
 import {
   Dialog,
@@ -23,13 +23,13 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '../components/ui/dialog'
+} from '@/components/ui/dialog'
 import { useNavigate } from 'react-router-dom'
 import { useMobile } from '../hooks/use-mobile'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from './ui/command'
-import { cn } from '../lib/utils'
-import { Icons } from '../lib/constances'
+import { cn } from '@/lib/utils'
+import { Icons } from '@/lib/constances'
 import { useTranslation } from 'react-i18next'
 
 interface LabelDialogProps {

@@ -1,24 +1,24 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { supabase } from '../lib/supabase'
-import { Button } from '../components/ui/button'
-import { Input } from '../components/ui/input'
-import { useAuth } from '../context/AuthContext'
+import { supabase } from '@/lib/supabase'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { useAuth } from '@/context/AuthContext'
 import { toast } from 'sonner'
-import type { Label, Project } from '../lib/types'
+import type { Label, Project } from '@/lib/types'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../components/ui/select'
-import LabelCard from '../components/LabelCard'
-import { LabelDialog } from '../components/LabelDialog'
-import { MobileFilterBar } from '../components/MobileFilterBar'
+} from '@/components/ui/select'
+import LabelCard from '@/components/LabelCard'
+import { LabelDialog } from '@/components/LabelDialog'
+import { MobileFilterBar } from '@/components/MobileFilterBar'
 import { useMobile } from '../hooks/use-mobile'
-import { Icons } from '../lib/constances'
+import { Icons } from '@/lib/constances'
 import { useTranslation } from 'react-i18next'
 
 export default function LabelsPage() {

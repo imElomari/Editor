@@ -1,8 +1,8 @@
 'use client'
 
 import { Button } from './ui/button'
-import { useTheme } from '../context/ThemeContext'
-import { Icons } from '../lib/constances'
+import { useTheme } from '@/context/ThemeContext'
+import { Icons } from '@/lib/constances'
 
 export function ThemeToggle() {
   const { theme, toggleTheme } = useTheme()

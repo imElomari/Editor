@@ -2,22 +2,22 @@
 
 import { useState, useEffect, Suspense, lazy, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
-import { Card, CardContent, CardHeader } from '../components/ui/card'
-import { supabase } from '../lib/supabase'
+import { useAuth } from '@/context/AuthContext'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { supabase } from '@/lib/supabase'
 import { toast } from 'sonner'
-import { ProjectDialog } from '../components/ProjectDialog'
-import { LabelDialog } from '../components/LabelDialog'
-import { cn } from '../lib/utils'
-import { AssetUploadDialog } from '../components/AssetUploadDialog'
-import { Icons } from '../lib/constances'
+import { ProjectDialog } from '@/components/ProjectDialog'
+import { LabelDialog } from '@/components/LabelDialog'
+import { cn } from '@/lib/utils'
+import { AssetUploadDialog } from '@/components/AssetUploadDialog'
+import { Icons } from '@/lib/constances'
 import { useTranslation } from 'react-i18next'
-import type { Project, Label, Asset } from '../lib/types'
-import { RecentItemsSkeleton } from '../components/dashboard/RecentItems'
+import type { Project, Label, Asset } from '@/lib/types'
+import { RecentItemsSkeleton } from '@/components/dashboard/RecentItems'
 
 // Lazy load components
-const StatsCards = lazy(() => import('../components/dashboard/StatsCards'))
-const RecentItems = lazy(() => import('../components/dashboard/RecentItems'))
+const StatsCards = lazy(() => import('@/components/dashboard/StatsCards'))
+const RecentItems = lazy(() => import('@/components/dashboard/RecentItems'))
 
 export default function Dashboard() {
   const { user } = useAuth()

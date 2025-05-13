@@ -11,8 +11,8 @@ import {
 import { CircleUser } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from './ui/button'
-import { cn } from '../lib/utils'
-import { Icons } from '../lib/constances'
+import { cn } from '@/lib/utils'
+import { Icons } from '@/lib/constances'
 import { useTranslation } from 'react-i18next'
 
 interface User {
