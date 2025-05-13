@@ -4,9 +4,9 @@ import type React from 'react'
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
-import { cn } from '../@/lib/utils'
+import { cn } from '@/lib/utils'
 import { QuickAssetButton } from './quick-action-button'
-import { Icons } from '../@/lib/constances'
+import { Icons } from '@/lib/constances'
 
 interface StatsCardProps {
   title: string

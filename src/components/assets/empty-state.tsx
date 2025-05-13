@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslation } from 'react-i18next'
-import { Icons } from '../@/lib/constances'
+import { Icons } from '@/lib/constances'
 import { Button } from '../ui/button'
 
 interface EmptyStateProps {

@@ -3,13 +3,13 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
-import { cn } from '../@/lib/utils'
-import { supabase } from '../@/lib/supabase'
-import { useAuth } from '../@/context/AuthContext'
+import { cn } from '@/lib/utils'
+import { supabase } from '@/lib/supabase'
+import { useAuth } from '@/context/AuthContext'
 import { AssetUploadDialog } from '../AssetUploadDialog'
 import { getAssetIcon } from '../assets/asset-utils'
-import { getStorageUrl } from '../@/lib/utils'
-import { Icons } from '../@/lib/constances'
+import { getStorageUrl } from '@/lib/utils'
+import { Icons } from '@/lib/constances'
 
 interface RecentAssetsProps {
   className?: string

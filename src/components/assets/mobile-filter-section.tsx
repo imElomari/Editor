@@ -1,12 +1,12 @@
 'use client'
 
-import type { AssetScope, Project } from '../@/lib/types'
+import type { AssetScope, Project } from '@/lib/types'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { MobileFilterBar } from '../MobileFilterBar'
 import { ProjectSelector } from './project-selector'
-import { Icons } from '../@/lib/constances'
+import { Icons } from '@/lib/constances'
 import { useTranslation } from 'react-i18next'
 
 interface MobileFilterSectionProps {

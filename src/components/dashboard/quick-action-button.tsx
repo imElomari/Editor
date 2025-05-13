@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import { Button, ButtonProps } from '../ui/button'
 import { AssetUploadDialog } from '../AssetUploadDialog'
-import { cn } from '../@/lib/utils'
-import { Icons } from '../@/lib/constances'
+import { cn } from '@/lib/utils'
+import { Icons } from '@/lib/constances'
 import { useTranslation } from 'react-i18next'
 
 interface QuickActionButtonProps extends ButtonProps {

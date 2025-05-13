@@ -5,7 +5,7 @@ import { Button } from '../ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card'
 import { Shapes, FolderKanban, Tag } from 'lucide-react'
 import { AssetUploadDialog } from '../AssetUploadDialog'
-import { cn } from '../@/lib/utils'
+import { cn } from '@/lib/utils'
 import { useTranslation } from 'react-i18next'
 
 interface QuickActionProps {

@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslation } from 'react-i18next'
-import { Asset, Project } from '../@/lib/types'
+import { Asset, Project } from '@/lib/types'
 import { Button } from '../ui/button'
 import { ModalWrapper } from '../ui/modal-wrapper'
 import { ProjectSelector } from './project-selector'
